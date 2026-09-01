@@ -62,7 +62,10 @@ editing the same form.
 
 One page, grouped by category: create a category, create/delete services
 under it, delete a category (blocked by the DB if anything still
-references it — see "Known tradeoffs" in `docs/ARCHITECTURE.md`).
+references it — see "Known tradeoffs" in `docs/ARCHITECTURE.md`). Each
+category and each service also has an inline alias editor (the `keywords`
+table — see `docs/SEARCH.md`) so admins can teach search a new phrase
+("no sale agua" → Bombas de agua) without touching SQL.
 
 ## Locations (`/admin/ubicaciones`)
 

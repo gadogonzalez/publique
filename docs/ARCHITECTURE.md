@@ -53,6 +53,8 @@ Current (MVP):
 - `/admin`, `/admin/negocios`, `/admin/negocios/nuevo`,
   `/admin/negocios/[id]/editar`, `/admin/categorias`, `/admin/ubicaciones`,
   `/admin/login`
+- `/sitemap.xml`, `/robots.txt` — generated (`src/app/sitemap.ts`,
+  `src/app/robots.ts`) from active businesses + categories, admin disallowed.
 
 Designed for, not built yet: SEO landing pages of the shape
 `/mendoza/guaymallen/electricistas` and `/mendoza/guaymallen/dorrego/plomeros`.

@@ -41,11 +41,11 @@ agua" / "se me rompió la bomba de agua" are seeded as aliases of the
 
 ## Growing the vocabulary
 
-Add more phrases people actually search for as rows in `keywords` (global,
-via `/admin/categorias` today only supports categories/services — add
-keywords via SQL or a future admin UI) or as `business_keywords` for a
-specific listing (via the business editor, "Palabras clave adicionales").
-No code change needed.
+Add more phrases people actually search for as rows in `keywords` — global
+aliases scoped to a service or category, edited from `/admin/categorias`
+(each service/category card has an alias editor) — or as `business_keywords`
+for one specific listing (via the business editor, "Palabras clave
+adicionales"). No code change needed either way.
 
 ## Swapping the engine later
 

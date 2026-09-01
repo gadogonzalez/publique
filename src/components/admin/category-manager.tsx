@@ -5,20 +5,91 @@ import { useRouter } from "next/navigation";
 import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import {
   createCategory,
+  createKeyword,
   createService,
   deleteCategory,
+  deleteKeyword,
   deleteService,
 } from "@/app/admin/(dashboard)/categorias/actions";
-import type { Category, Service } from "@/lib/types/database";
+import type { Category, Keyword, Service } from "@/lib/types/database";
+
+/** Inline "add/remove alias" chips, reused for both a service's and a
+ * category's keywords. Keywords are what let a natural phrase like "no sale
+ * agua" reach a service in search -- see docs/SEARCH.md. */
+function KeywordEditor({
+  keywords,
+  target,
+  onChanged,
+}: {
+  keywords: Keyword[];
+  target: { service_id?: string; category_id?: string };
+  onChanged: () => void;
+}) {
+  const [isPending, startTransition] = useTransition();
+  const [draft, setDraft] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
+  function add() {
+    const term = draft.trim();
+    if (!term) return;
+    startTransition(async () => {
+      const result = await createKeyword(term, target);
+      if (!result.ok) return setError(result.error ?? "Error");
+      setError(null);
+      setDraft("");
+      onChanged();
+    });
+  }
+
+  return (
+    <div className="mt-1.5">
+      <div className="flex flex-wrap items-center gap-1.5">
+        {keywords.map((k) => (
+          <Badge
+            key={k.id}
+            variant="outline"
+            className="cursor-pointer text-xs"
+            onClick={() =>
+              startTransition(async () => {
+                const result = await deleteKeyword(k.id);
+                if (!result.ok) setError(result.error ?? "Error");
+                else onChanged();
+              })
+            }
+          >
+            {k.term} ×
+          </Badge>
+        ))}
+        <Input
+          placeholder="+ alias (ej: no sale agua)"
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              add();
+            }
+          }}
+          disabled={isPending}
+          className="h-7 w-40 text-xs"
+        />
+      </div>
+      {error && <p className="mt-1 text-xs text-destructive">{error}</p>}
+    </div>
+  );
+}
 
 export function CategoryManager({
   categories,
   services,
+  keywords,
 }: {
   categories: Category[];
   services: Service[];
+  keywords: Keyword[];
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -77,25 +148,40 @@ export function CategoryManager({
                 </button>
               </div>
 
-              <ul className="mb-3 space-y-1">
+              <div className="mb-3 border-b border-border pb-3">
+                <p className="text-xs font-medium text-muted-foreground">
+                  Alias de la categoría
+                </p>
+                <KeywordEditor
+                  keywords={keywords.filter((k) => k.category_id === c.id)}
+                  target={{ category_id: c.id }}
+                  onChanged={refresh}
+                />
+              </div>
+
+              <ul className="mb-3 space-y-2">
                 {categoryServices.map((s) => (
-                  <li
-                    key={s.id}
-                    className="flex items-center justify-between rounded-md bg-secondary px-2 py-1 text-sm"
-                  >
-                    {s.name}
-                    <button
-                      onClick={() =>
-                        startTransition(async () => {
-                          const result = await deleteService(s.id);
-                          if (!result.ok) setError(result.error ?? "Error");
-                          else refresh();
-                        })
-                      }
-                      aria-label={`Borrar ${s.name}`}
-                    >
-                      <X className="h-3.5 w-3.5 text-muted-foreground hover:text-destructive" />
-                    </button>
+                  <li key={s.id} className="rounded-md bg-secondary px-2 py-1.5 text-sm">
+                    <div className="flex items-center justify-between">
+                      {s.name}
+                      <button
+                        onClick={() =>
+                          startTransition(async () => {
+                            const result = await deleteService(s.id);
+                            if (!result.ok) setError(result.error ?? "Error");
+                            else refresh();
+                          })
+                        }
+                        aria-label={`Borrar ${s.name}`}
+                      >
+                        <X className="h-3.5 w-3.5 text-muted-foreground hover:text-destructive" />
+                      </button>
+                    </div>
+                    <KeywordEditor
+                      keywords={keywords.filter((k) => k.service_id === s.id)}
+                      target={{ service_id: s.id }}
+                      onChanged={refresh}
+                    />
                   </li>
                 ))}
                 {categoryServices.length === 0 && (

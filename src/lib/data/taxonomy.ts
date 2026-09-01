@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Category, Service } from "@/lib/types/database";
+import type { Category, Keyword, Service } from "@/lib/types/database";
 
 export async function getCategories(): Promise<Category[]> {
   const supabase = await createClient();
@@ -14,6 +14,16 @@ export async function getCategories(): Promise<Category[]> {
 export async function getServices(): Promise<Service[]> {
   const supabase = await createClient();
   const { data, error } = await supabase.from("services").select("*").order("name");
+  if (error) throw error;
+  return data ?? [];
+}
+
+/** Global keyword/alias table (see docs/SEARCH.md) -- feeds
+ * service/category matching in search_businesses(), edited from
+ * /admin/categorias. */
+export async function getKeywords(): Promise<Keyword[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("keywords").select("*").order("term");
   if (error) throw error;
   return data ?? [];
 }
