@@ -31,12 +31,16 @@ export default async function NegociosPage({ searchParams }: NegociosPageProps) 
   const params = await searchParams;
   const supabase = await createClient();
 
+  // See src/lib/data/businesses.ts BUSINESS_SELECT for why `locations` needs
+  // the explicit FK name here: `businesses` reaches `locations` both via
+  // location_id directly and via business_service_areas, so an unqualified
+  // `location:locations(*)` embed is ambiguous (PGRST201).
   let query = supabase
     .from("businesses")
     .select(
       params.categoria
-        ? "*, location:locations(*), plan:plans(*), business_categories!inner(category_id, category:categories(*))"
-        : "*, location:locations(*), plan:plans(*), business_categories(category_id, category:categories(*))"
+        ? "*, location:locations!businesses_location_id_fkey(*), plan:plans(*), business_categories!inner(category_id, category:categories(*))"
+        : "*, location:locations!businesses_location_id_fkey(*), plan:plans(*), business_categories(category_id, category:categories(*))"
     )
     .order("updated_at", { ascending: false });
 

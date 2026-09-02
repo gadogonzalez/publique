@@ -11,8 +11,17 @@ import type {
   Service,
 } from "@/lib/types/database";
 
+// `locations` is reachable from `businesses` two ways: the direct
+// `location_id` FK (physical base) and, via the `business_service_areas`
+// junction table, PostgREST's auto-detected many-to-many path (coverage
+// areas). Both are real per docs/DATABASE.md, so the top-level embed must
+// name the FK constraint (`!businesses_location_id_fkey`, from
+// 0005_businesses.sql) or PostgREST can't tell which one `location:
+// locations(*)` means and returns PGRST201. The nested embed inside
+// `business_service_areas` doesn't need this -- that junction table has
+// only one FK to `locations`, so it's already unambiguous.
 const BUSINESS_SELECT =
-  "*, location:locations(*), categories:business_categories(category:categories(*)), services:business_services(service:services(*)), service_areas:business_service_areas(location:locations(*)), images:business_images(*), hours:business_hours(*), keywords:business_keywords(*), plan:plans(*)";
+  "*, location:locations!businesses_location_id_fkey(*), categories:business_categories(category:categories(*)), services:business_services(service:services(*)), service_areas:business_service_areas(location:locations(*)), images:business_images(*), hours:business_hours(*), keywords:business_keywords(*), plan:plans(*)";
 
 /** Shape returned by BUSINESS_SELECT before join tables are flattened. */
 interface RawBusinessRow extends Business {
