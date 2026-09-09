@@ -41,7 +41,6 @@ export function BusinessThumb({
   return (
     <CategoryIcon
       icon={category?.icon}
-      colorKey={category?.slug ?? name}
       className={cn("rounded-none", className)}
       iconClassName="h-1/4 w-1/4 min-h-6 min-w-6"
     />

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CategoryIcon } from "@/components/category-icon";
+import { CategoryPictogram } from "@/components/category-icon";
 import type { Category } from "@/lib/types/database";
 
 export function CategoryShortcut({ category }: { category: Category }) {
@@ -8,11 +8,9 @@ export function CategoryShortcut({ category }: { category: Category }) {
       href={`/buscar?categoria=${category.slug}`}
       className="group flex flex-col items-center gap-2 text-center"
     >
-      <CategoryIcon
+      <CategoryPictogram
         icon={category.icon}
-        colorKey={category.slug}
-        className="h-14 w-14 transition-transform group-hover:scale-105 sm:h-16 sm:w-16"
-        iconClassName="h-6 w-6 sm:h-7 sm:w-7"
+        className="h-7 w-7 transition-transform group-hover:scale-110 sm:h-8 sm:w-8"
       />
       <span className="text-xs font-medium leading-tight sm:text-sm">
         {category.name}

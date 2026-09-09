@@ -31,3 +31,18 @@ export function formatWhatsAppLink(phone: string, message?: string): string {
 export function formatTelLink(phone: string): string {
   return `tel:${phone.replace(/[^\d+]/g, "")}`;
 }
+
+/** Google Maps search link from coordinates (preferred) or a street address. */
+export function getMapsUrl(
+  address?: string | null,
+  latitude?: number | null,
+  longitude?: number | null
+): string | null {
+  if (latitude != null && longitude != null) {
+    return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+  }
+  if (address) {
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+  }
+  return null;
+}

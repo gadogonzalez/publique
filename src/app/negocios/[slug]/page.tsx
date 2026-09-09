@@ -139,7 +139,6 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
             businessId={business.id}
             businessName={business.name}
             whatsapp={business.whatsapp}
-            phone={business.phone}
             address={business.address}
             latitude={business.latitude}
             longitude={business.longitude}
@@ -257,7 +256,9 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
         businessId={business.id}
         businessName={business.name}
         whatsapp={business.whatsapp}
-        phone={business.phone}
+        address={business.address}
+        latitude={business.latitude}
+        longitude={business.longitude}
       />
     </div>
   );

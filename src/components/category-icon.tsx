@@ -1,32 +1,39 @@
 import { createElement } from "react";
-import { getCategoryColor, getCategoryIcon } from "@/lib/category-icon";
+import { getCategoryIcon } from "@/lib/category-icon";
 import { cn } from "@/lib/utils";
 
+/** Bare monochrome pictogram for a category -- no tile, no background.
+ * Used in the category navigation row, directly on the page background. */
+export function CategoryPictogram({
+  icon,
+  className,
+}: {
+  icon?: string | null;
+  className?: string;
+}) {
+  return createElement(getCategoryIcon(icon), {
+    className: cn("text-foreground", className ?? "h-6 w-6"),
+    strokeWidth: 1.5,
+  });
+}
+
 /**
- * Reusable colored-tile + pictogram, used both as a standalone category
- * shortcut and as the fallback business "logo"/cover when no photo exists.
- * Never a broken image, never a blank box.
+ * Neutral tile wrapping a category pictogram -- the graceful fallback shown
+ * in place of a business photo when none exists. Never a broken image, a
+ * blank box, or a random avatar.
  */
 export function CategoryIcon({
   icon,
-  colorKey,
   className,
   iconClassName,
 }: {
   icon?: string | null;
-  colorKey: string;
   className?: string;
   iconClassName?: string;
 }) {
-  const { bg, fg } = getCategoryColor(colorKey);
-  const iconElement = createElement(getCategoryIcon(icon), {
-    className: cn(fg, iconClassName ?? "h-6 w-6"),
-    strokeWidth: 1.75,
-  });
-
   return (
-    <div className={cn("flex items-center justify-center rounded-2xl", bg, className)}>
-      {iconElement}
+    <div className={cn("flex items-center justify-center bg-secondary", className)}>
+      <CategoryPictogram icon={icon} className={iconClassName} />
     </div>
   );
 }

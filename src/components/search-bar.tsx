@@ -32,22 +32,27 @@ export function SearchBar({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex w-full items-end gap-2">
-      <div className="relative flex-1">
-        <Search className="pointer-events-none absolute left-0 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder={placeholder}
-          aria-label="¿Qué necesitás?"
-          className={
-            size === "lg"
-              ? "h-auto rounded-none border-0 border-b border-border bg-transparent pl-8 pb-3 text-lg focus-visible:ring-0 focus-visible:border-primary"
-              : "pl-8"
-          }
-        />
-      </div>
-      <Button type="submit" size={size === "lg" ? "lg" : "default"}>
+    <form
+      onSubmit={handleSubmit}
+      className={
+        size === "lg"
+          ? "flex w-full items-center gap-1 rounded-xl border border-border bg-card p-1.5 shadow-sm"
+          : "flex w-full items-center gap-1 rounded-lg border border-border bg-card p-1"
+      }
+    >
+      <Search className="ml-2 h-4 w-4 shrink-0 text-muted-foreground" />
+      <Input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder={placeholder}
+        aria-label="¿Qué necesitás?"
+        className={
+          size === "lg"
+            ? "h-auto border-0 bg-transparent px-2 py-2 text-base focus-visible:ring-0"
+            : "h-auto border-0 bg-transparent px-2 py-1.5 text-sm focus-visible:ring-0"
+        }
+      />
+      <Button type="submit" variant="dark" size={size === "lg" ? "default" : "sm"} className="shrink-0">
         Buscar
       </Button>
     </form>

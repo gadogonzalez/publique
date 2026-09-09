@@ -1,10 +1,9 @@
 "use client";
 
 import { MapPin, MessageCircle, Phone, Globe } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { trackClient } from "@/lib/analytics/client";
-import { formatTelLink, formatWhatsAppLink } from "@/lib/utils";
+import { cn, formatTelLink, formatWhatsAppLink, getMapsUrl } from "@/lib/utils";
 
 interface CtaButtonsProps {
   businessId: string;
@@ -38,12 +37,7 @@ export function CtaButtons({
   variant = "default",
   className,
 }: CtaButtonsProps) {
-  const mapsUrl =
-    latitude != null && longitude != null
-      ? `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`
-      : address
-        ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`
-        : null;
+  const mapsUrl = getMapsUrl(address, latitude, longitude);
 
   const linkClass =
     "inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground";
