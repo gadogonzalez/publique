@@ -1,20 +1,24 @@
 import Image from "next/image";
+import { CategoryIcon } from "@/components/category-icon";
 import { cn } from "@/lib/utils";
+import type { Category } from "@/lib/types/database";
 
 /**
  * Cover-image tile used across listings/profile. Businesses without
- * photography get an intentional monogram tile instead of a broken image
- * or a generic icon.
+ * photography get their category's colored icon tile instead of a broken
+ * image, a blank box, or a random avatar.
  */
 export function BusinessThumb({
   src,
   name,
+  category,
   className,
   sizes,
   priority,
 }: {
   src?: string | null;
   name: string;
+  category?: Category | null;
   className?: string;
   sizes?: string;
   priority?: boolean;
@@ -35,15 +39,11 @@ export function BusinessThumb({
   }
 
   return (
-    <div
-      className={cn(
-        "flex items-center justify-center bg-secondary",
-        className
-      )}
-    >
-      <span className="font-serif text-3xl text-secondary-foreground/40">
-        {name.charAt(0).toUpperCase()}
-      </span>
-    </div>
+    <CategoryIcon
+      icon={category?.icon}
+      colorKey={category?.slug ?? name}
+      className={cn("rounded-none", className)}
+      iconClassName="h-1/4 w-1/4 min-h-6 min-w-6"
+    />
   );
 }

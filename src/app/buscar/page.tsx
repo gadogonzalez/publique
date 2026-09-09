@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SearchBar } from "@/components/search-bar";
 import { SearchFilters } from "@/components/search-filters";
-import { BusinessListing } from "@/components/business-listing";
+import { BusinessCard } from "@/components/business-card";
 import { search } from "@/lib/search";
 import { getBusinessesByIds } from "@/lib/data/businesses";
 import { getCategories, getCategoryBySlug } from "@/lib/data/taxonomy";
@@ -52,28 +52,28 @@ export default async function BuscarPage({ searchParams }: BuscarPageProps) {
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
 
   return (
-    <div className="container py-10">
+    <div className="container py-8">
       <div className="max-w-xl">
         <SearchBar defaultValue={query} size="default" />
       </div>
 
-      <div className="mt-8 border-t border-border pt-6">
-        {query ? (
-          <h1 className="font-serif text-2xl sm:text-3xl">
-            Resultados para &ldquo;{query}&rdquo;
-          </h1>
-        ) : (
-          <h1 className="font-serif text-2xl sm:text-3xl">Todos los negocios</h1>
-        )}
-        <p className="mt-1 text-sm text-muted-foreground">
-          {totalCount} {totalCount === 1 ? "resultado" : "resultados"}
-          {category ? <> en {category.name}</> : null}
-          {location ? <> · {location.name}</> : null}
-        </p>
-
-        <div className="mt-4">
-          <SearchFilters categories={categories} localities={localities} />
+      <div className="mt-6 flex flex-col gap-4 border-t border-border pt-6 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          {query ? (
+            <h1 className="font-serif text-2xl sm:text-3xl">
+              Resultados para &ldquo;{query}&rdquo;
+            </h1>
+          ) : (
+            <h1 className="font-serif text-2xl sm:text-3xl">Todos los negocios</h1>
+          )}
+          <p className="mt-1 text-sm text-muted-foreground">
+            {totalCount} {totalCount === 1 ? "resultado" : "resultados"}
+            {category ? <> en {category.name}</> : null}
+            {location ? <> · {location.name}</> : null}
+          </p>
         </div>
+
+        <SearchFilters categories={categories} localities={localities} />
       </div>
 
       {businesses.length === 0 ? (
@@ -84,15 +84,15 @@ export default async function BuscarPage({ searchParams }: BuscarPageProps) {
           Probá con otra palabra, o explorá por categoría y zona.
         </p>
       ) : (
-        <div className="mt-2 divide-y divide-border">
+        <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {businesses.map((business) => (
-            <BusinessListing key={business.id} business={business} />
+            <BusinessCard key={business.id} business={business} />
           ))}
         </div>
       )}
 
       {totalPages > 1 && (
-        <nav className="mt-8 flex justify-center gap-4 border-t border-border pt-6 text-sm">
+        <nav className="mt-10 flex justify-center gap-4 border-t border-border pt-6 text-sm">
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
             <a
               key={p}

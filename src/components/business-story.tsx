@@ -18,9 +18,9 @@ export function BusinessStory({ business }: { business: BusinessWithRelations })
         <BusinessThumb
           src={business.cover_image_url}
           name={business.name}
+          category={category}
           sizes="(max-width: 640px) 100vw, 50vw"
-          className="aspect-[4/3] w-full"
-          priority
+          className="aspect-[4/3] w-full rounded-2xl"
         />
       </Link>
 

@@ -11,6 +11,12 @@ const nextConfig = {
         protocol: "https",
         hostname: "placehold.co",
       },
+      {
+        // Reserved for demo/editorial photography added via the admin
+        // panel. Not hardcoded into seed data (see scripts/seed.ts).
+        protocol: "https",
+        hostname: "images.pexels.com",
+      },
     ],
   },
 };

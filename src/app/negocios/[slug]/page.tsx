@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Instagram, Clock, MapPin } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { BusinessThumb } from "@/components/business-thumb";
 import { CtaButtons } from "@/components/cta-buttons";
 import { StickyContactBar } from "@/components/sticky-contact-bar";
@@ -89,13 +90,23 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
       <BusinessThumb
         src={business.cover_image_url}
         name={business.name}
+        category={business.categories[0]}
         className="h-56 w-full sm:h-96"
         sizes="100vw"
         priority
       />
 
-      <div className="container pt-8">
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+      <div className="container pt-6">
+        {business.categories[0] && (
+          <Link
+            href={`/buscar?categoria=${business.categories[0].slug}`}
+            className="text-sm text-muted-foreground hover:text-primary"
+          >
+            {business.categories[0].name}
+          </Link>
+        )}
+
+        <div className="mt-2 flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex items-start gap-4">
             {business.logo_url && (
               <Image
@@ -115,20 +126,12 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
               <h1 className="font-serif text-3xl leading-tight sm:text-4xl">
                 {business.name}
               </h1>
-              <div className="mt-2 flex flex-wrap items-center gap-x-2 text-sm text-muted-foreground">
-                {business.categories.map((c, i) => (
-                  <span key={c.id}>
-                    {c.name}
-                    {i < business.categories.length - 1 && ","}
-                  </span>
-                ))}
-                {business.location && (
-                  <span className="flex items-center gap-1">
-                    <MapPin className="h-3.5 w-3.5" />
-                    {business.location.name}
-                  </span>
-                )}
-              </div>
+              {business.location && (
+                <p className="mt-2 flex items-center gap-1 text-sm text-muted-foreground">
+                  <MapPin className="h-3.5 w-3.5" />
+                  {business.location.name}
+                </p>
+              )}
             </div>
           </div>
 
@@ -159,18 +162,24 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
             {business.services.length > 0 && (
               <section className="border-t border-border pt-8">
                 <h2 className="mb-3 font-serif text-xl">Servicios</h2>
-                <p className="text-muted-foreground">
-                  {business.services.map((s) => s.name).join(" · ")}
-                </p>
+                <div className="flex flex-wrap gap-2">
+                  {business.services.map((s) => (
+                    <Badge key={s.id}>{s.name}</Badge>
+                  ))}
+                </div>
               </section>
             )}
 
             {business.service_areas.length > 0 && (
               <section className="border-t border-border pt-8">
                 <h2 className="mb-3 font-serif text-xl">Zonas de cobertura</h2>
-                <p className="text-muted-foreground">
-                  {business.service_areas.map((a) => a.name).join(" · ")}
-                </p>
+                <div className="flex flex-wrap gap-2">
+                  {business.service_areas.map((a) => (
+                    <Badge key={a.id} variant="outline">
+                      {a.name}
+                    </Badge>
+                  ))}
+                </div>
               </section>
             )}
 
@@ -179,7 +188,10 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
                 <h2 className="mb-3 font-serif text-xl">Galería</h2>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                   {business.images.map((img) => (
-                    <div key={img.id} className="relative aspect-square overflow-hidden">
+                    <div
+                      key={img.id}
+                      className="relative aspect-square overflow-hidden rounded-xl"
+                    >
                       <Image
                         src={img.url}
                         alt={img.alt_text ?? business.name}

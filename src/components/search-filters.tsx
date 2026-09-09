@@ -22,33 +22,41 @@ export function SearchFilters({
   }
 
   return (
-    <div className="flex flex-wrap gap-4 text-sm">
-      <Select
-        value={searchParams.get("categoria") ?? ""}
-        onChange={(e) => updateParam("categoria", e.target.value)}
-        aria-label="Categoría"
-        className="h-auto w-auto rounded-none border-0 border-b border-border bg-transparent px-0 py-1 focus-visible:ring-0 focus-visible:border-primary"
-      >
-        <option value="">Todas las categorías</option>
-        {categories.map((c) => (
-          <option key={c.id} value={c.slug}>
-            {c.name}
-          </option>
-        ))}
-      </Select>
-      <Select
-        value={searchParams.get("zona") ?? ""}
-        onChange={(e) => updateParam("zona", e.target.value)}
-        aria-label="Zona"
-        className="h-auto w-auto rounded-none border-0 border-b border-border bg-transparent px-0 py-1 focus-visible:ring-0 focus-visible:border-primary"
-      >
-        <option value="">Todas las zonas</option>
-        {localities.map((l) => (
-          <option key={l.id} value={l.id}>
-            {l.name}
-          </option>
-        ))}
-      </Select>
+    <div className="flex flex-wrap gap-4">
+      <label className="text-sm">
+        <span className="mb-1 block text-xs font-medium text-muted-foreground">
+          Categoría
+        </span>
+        <Select
+          value={searchParams.get("categoria") ?? ""}
+          onChange={(e) => updateParam("categoria", e.target.value)}
+          className="h-9 w-auto py-1"
+        >
+          <option value="">Todas</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.slug}>
+              {c.name}
+            </option>
+          ))}
+        </Select>
+      </label>
+      <label className="text-sm">
+        <span className="mb-1 block text-xs font-medium text-muted-foreground">
+          Zona
+        </span>
+        <Select
+          value={searchParams.get("zona") ?? ""}
+          onChange={(e) => updateParam("zona", e.target.value)}
+          className="h-9 w-auto py-1"
+        >
+          <option value="">Todas</option>
+          {localities.map((l) => (
+            <option key={l.id} value={l.id}>
+              {l.name}
+            </option>
+          ))}
+        </Select>
+      </label>
     </div>
   );
 }
