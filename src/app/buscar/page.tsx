@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SearchBar } from "@/components/search-bar";
 import { SearchFilters } from "@/components/search-filters";
-import { BusinessCard } from "@/components/business-card";
+import { BusinessListing } from "@/components/business-listing";
 import { search } from "@/lib/search";
 import { getBusinessesByIds } from "@/lib/data/businesses";
 import { getCategories, getCategoryBySlug } from "@/lib/data/taxonomy";
@@ -52,50 +52,47 @@ export default async function BuscarPage({ searchParams }: BuscarPageProps) {
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
 
   return (
-    <div className="container py-8">
-      <div className="mb-6 max-w-xl">
+    <div className="container py-10">
+      <div className="max-w-xl">
         <SearchBar defaultValue={query} size="default" />
       </div>
 
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="text-sm text-muted-foreground">
-            {query ? (
-              <>
-                Resultados para <strong className="text-foreground">“{query}”</strong>
-              </>
-            ) : (
-              "Todos los negocios"
-            )}
-            {category ? <> en {category.name}</> : null}
-            {location ? <> · {location.name}</> : null}
-          </p>
-          <p className="text-sm text-muted-foreground">
-            {totalCount} {totalCount === 1 ? "resultado" : "resultados"}
-          </p>
+      <div className="mt-8 border-t border-border pt-6">
+        {query ? (
+          <h1 className="font-serif text-2xl sm:text-3xl">
+            Resultados para &ldquo;{query}&rdquo;
+          </h1>
+        ) : (
+          <h1 className="font-serif text-2xl sm:text-3xl">Todos los negocios</h1>
+        )}
+        <p className="mt-1 text-sm text-muted-foreground">
+          {totalCount} {totalCount === 1 ? "resultado" : "resultados"}
+          {category ? <> en {category.name}</> : null}
+          {location ? <> · {location.name}</> : null}
+        </p>
+
+        <div className="mt-4">
+          <SearchFilters categories={categories} localities={localities} />
         </div>
-        <SearchFilters categories={categories} localities={localities} />
       </div>
 
       {businesses.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-border p-10 text-center text-muted-foreground">
-          <p className="font-medium text-foreground">
+        <p className="py-14 text-muted-foreground">
+          <span className="font-medium text-foreground">
             No encontramos resultados todavía.
-          </p>
-          <p className="mt-1 text-sm">
-            Probá con otra palabra, o explorá por categoría y zona.
-          </p>
-        </div>
+          </span>{" "}
+          Probá con otra palabra, o explorá por categoría y zona.
+        </p>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-2 divide-y divide-border">
           {businesses.map((business) => (
-            <BusinessCard key={business.id} business={business} />
+            <BusinessListing key={business.id} business={business} />
           ))}
         </div>
       )}
 
       {totalPages > 1 && (
-        <nav className="mt-8 flex justify-center gap-2 text-sm">
+        <nav className="mt-8 flex justify-center gap-4 border-t border-border pt-6 text-sm">
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
             <a
               key={p}
@@ -107,8 +104,8 @@ export default async function BuscarPage({ searchParams }: BuscarPageProps) {
               }).toString()}`}
               className={
                 p === page
-                  ? "rounded-md bg-primary px-3 py-1.5 text-primary-foreground"
-                  : "rounded-md border border-border px-3 py-1.5 hover:border-primary"
+                  ? "font-semibold text-primary underline underline-offset-4"
+                  : "text-muted-foreground hover:text-foreground"
               }
             >
               {p}

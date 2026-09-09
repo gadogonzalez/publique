@@ -32,9 +32,9 @@ export function SearchBar({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex w-full gap-2">
+    <form onSubmit={handleSubmit} className="flex w-full items-end gap-2">
       <div className="relative flex-1">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+        <Search className="pointer-events-none absolute left-0 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
         <Input
           value={value}
           onChange={(e) => setValue(e.target.value)}
@@ -42,8 +42,8 @@ export function SearchBar({
           aria-label="¿Qué necesitás?"
           className={
             size === "lg"
-              ? "h-14 pl-11 text-base shadow-sm"
-              : "pl-11"
+              ? "h-auto rounded-none border-0 border-b border-border bg-transparent pl-8 pb-3 text-lg focus-visible:ring-0 focus-visible:border-primary"
+              : "pl-8"
           }
         />
       </div>

@@ -22,11 +22,12 @@ export function SearchFilters({
   }
 
   return (
-    <div className="flex flex-col gap-2 sm:flex-row">
+    <div className="flex flex-wrap gap-4 text-sm">
       <Select
         value={searchParams.get("categoria") ?? ""}
         onChange={(e) => updateParam("categoria", e.target.value)}
         aria-label="Categoría"
+        className="h-auto w-auto rounded-none border-0 border-b border-border bg-transparent px-0 py-1 focus-visible:ring-0 focus-visible:border-primary"
       >
         <option value="">Todas las categorías</option>
         {categories.map((c) => (
@@ -39,6 +40,7 @@ export function SearchFilters({
         value={searchParams.get("zona") ?? ""}
         onChange={(e) => updateParam("zona", e.target.value)}
         aria-label="Zona"
+        className="h-auto w-auto rounded-none border-0 border-b border-border bg-transparent px-0 py-1 focus-visible:ring-0 focus-visible:border-primary"
       >
         <option value="">Todas las zonas</option>
         {localities.map((l) => (

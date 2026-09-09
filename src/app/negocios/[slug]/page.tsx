@@ -3,9 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Instagram, Clock, MapPin } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { BusinessThumb } from "@/components/business-thumb";
 import { CtaButtons } from "@/components/cta-buttons";
-import { RatingStars } from "@/components/rating-stars";
+import { StickyContactBar } from "@/components/sticky-contact-bar";
 import { getBusinessBySlug } from "@/lib/data/businesses";
 import { trackServer } from "@/lib/analytics/server";
 
@@ -80,44 +80,47 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
   };
 
   return (
-    <div>
+    <div className="pb-20 sm:pb-16">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="relative h-48 w-full bg-secondary sm:h-64">
-        {business.cover_image_url && (
-          <Image
-            src={business.cover_image_url}
-            alt={business.name}
-            fill
-            priority
-            className="object-cover"
-          />
-        )}
-      </div>
+      <BusinessThumb
+        src={business.cover_image_url}
+        name={business.name}
+        className="h-56 w-full sm:h-96"
+        sizes="100vw"
+        priority
+      />
 
-      <div className="container -mt-10 pb-16">
-        <div className="flex flex-col gap-4 rounded-xl border border-border bg-card p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-4">
+      <div className="container pt-8">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex items-start gap-4">
             {business.logo_url && (
               <Image
                 src={business.logo_url}
                 alt=""
-                width={64}
-                height={64}
-                className="h-16 w-16 rounded-full border border-border object-cover"
+                width={56}
+                height={56}
+                className="h-14 w-14 shrink-0 rounded-full border border-border object-cover"
               />
             )}
             <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-xl font-bold">{business.name}</h1>
-                {business.featured && <Badge variant="accent">Destacado</Badge>}
-              </div>
-              <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                {business.categories.map((c) => (
-                  <span key={c.id}>{c.name}</span>
+              {business.featured && (
+                <p className="mb-1 text-xs font-medium uppercase tracking-wider text-primary">
+                  Destacado
+                </p>
+              )}
+              <h1 className="font-serif text-3xl leading-tight sm:text-4xl">
+                {business.name}
+              </h1>
+              <div className="mt-2 flex flex-wrap items-center gap-x-2 text-sm text-muted-foreground">
+                {business.categories.map((c, i) => (
+                  <span key={c.id}>
+                    {c.name}
+                    {i < business.categories.length - 1 && ","}
+                  </span>
                 ))}
                 {business.location && (
                   <span className="flex items-center gap-1">
@@ -126,9 +129,9 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
                   </span>
                 )}
               </div>
-              <RatingStars rating={null} className="mt-1" />
             </div>
           </div>
+
           <CtaButtons
             businessId={business.id}
             businessName={business.name}
@@ -138,14 +141,15 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
             latitude={business.latitude}
             longitude={business.longitude}
             website={business.website}
+            className="hidden sm:flex"
           />
         </div>
 
-        <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <div className="space-y-8 lg:col-span-2">
+        <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-3">
+          <div className="space-y-10 lg:col-span-2">
             {business.long_description && (
               <section>
-                <h2 className="mb-2 text-lg font-semibold">Sobre nosotros</h2>
+                <h2 className="mb-3 font-serif text-xl">Sobre nosotros</h2>
                 <p className="whitespace-pre-line text-muted-foreground">
                   {business.long_description}
                 </p>
@@ -153,35 +157,29 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
             )}
 
             {business.services.length > 0 && (
-              <section>
-                <h2 className="mb-2 text-lg font-semibold">Servicios</h2>
-                <div className="flex flex-wrap gap-2">
-                  {business.services.map((s) => (
-                    <Badge key={s.id}>{s.name}</Badge>
-                  ))}
-                </div>
+              <section className="border-t border-border pt-8">
+                <h2 className="mb-3 font-serif text-xl">Servicios</h2>
+                <p className="text-muted-foreground">
+                  {business.services.map((s) => s.name).join(" · ")}
+                </p>
               </section>
             )}
 
             {business.service_areas.length > 0 && (
-              <section>
-                <h2 className="mb-2 text-lg font-semibold">Zonas de cobertura</h2>
-                <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
-                  {business.service_areas.map((a) => (
-                    <span key={a.id} className="rounded-full border border-border px-3 py-1">
-                      {a.name}
-                    </span>
-                  ))}
-                </div>
+              <section className="border-t border-border pt-8">
+                <h2 className="mb-3 font-serif text-xl">Zonas de cobertura</h2>
+                <p className="text-muted-foreground">
+                  {business.service_areas.map((a) => a.name).join(" · ")}
+                </p>
               </section>
             )}
 
             {business.images.length > 0 && (
-              <section>
-                <h2 className="mb-2 text-lg font-semibold">Galería</h2>
+              <section className="border-t border-border pt-8">
+                <h2 className="mb-3 font-serif text-xl">Galería</h2>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                   {business.images.map((img) => (
-                    <div key={img.id} className="relative aspect-square overflow-hidden rounded-lg">
+                    <div key={img.id} className="relative aspect-square overflow-hidden">
                       <Image
                         src={img.url}
                         alt={img.alt_text ?? business.name}
@@ -195,7 +193,7 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
             )}
           </div>
 
-          <aside className="space-y-6">
+          <aside className="space-y-8 lg:border-l lg:border-border lg:pl-10">
             {business.address && (
               <section>
                 <h2 className="mb-2 flex items-center gap-2 text-sm font-semibold">
@@ -242,6 +240,13 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
           </aside>
         </div>
       </div>
+
+      <StickyContactBar
+        businessId={business.id}
+        businessName={business.name}
+        whatsapp={business.whatsapp}
+        phone={business.phone}
+      />
     </div>
   );
 }
