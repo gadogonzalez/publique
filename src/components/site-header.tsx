@@ -1,9 +1,20 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Search } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function SiteHeader() {
+  const isHome = usePathname() === "/";
+
   return (
-    <header className="border-b border-border">
+    <header
+      className={cn(
+        "left-0 right-0 top-0 z-20",
+        isHome ? "absolute bg-transparent" : "relative border-b border-border bg-card"
+      )}
+    >
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="flex items-baseline gap-2">
           <span className="font-serif text-xl font-medium">Publique</span>
