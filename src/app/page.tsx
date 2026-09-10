@@ -5,6 +5,7 @@ import { CategoryShortcut } from "@/components/category-shortcut";
 import { BusinessDiscoveryGrid } from "@/components/business-discovery-grid";
 import { ZoneTile } from "@/components/zone-tile";
 import { CommunityBanner } from "@/components/community-banner";
+import { Reveal } from "@/components/reveal";
 import { getCategories } from "@/lib/data/taxonomy";
 import { getLocalities } from "@/lib/data/locations";
 import { getBusinessesByIds } from "@/lib/data/businesses";
@@ -36,8 +37,10 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="grid grid-cols-4 gap-4 md:grid-cols-8">
-            {categories.map((category) => (
-              <CategoryShortcut key={category.id} category={category} />
+            {categories.map((category, i) => (
+              <Reveal key={category.id} delay={i * 30}>
+                <CategoryShortcut category={category} />
+              </Reveal>
             ))}
           </div>
         </section>
@@ -46,7 +49,7 @@ export default async function HomePage() {
       {businesses.length > 0 && (
         <section className="container border-t border-border py-10">
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="font-serif text-2xl font-bold">Negocios en tu zona</h2>
+            <h2 className="font-serif text-2xl font-bold tracking-tight">Negocios en tu zona</h2>
           </div>
           <BusinessDiscoveryGrid businesses={businesses} />
           <div className="mt-10 flex justify-center">
@@ -71,15 +74,17 @@ export default async function HomePage() {
               Ver todas las zonas <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
+          <Reveal className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
             {localities.map((locality) => (
               <ZoneTile key={locality.id} locality={locality} />
             ))}
-          </div>
+          </Reveal>
         </section>
       )}
 
-      <CommunityBanner />
+      <Reveal>
+        <CommunityBanner />
+      </Reveal>
     </div>
   );
 }

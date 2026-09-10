@@ -58,33 +58,31 @@ export function HeroSearch() {
       />
 
       <div className="container relative z-10 flex h-full flex-col justify-center pt-16">
-        <div className="max-w-md">
+        <div className="mx-auto w-full max-w-[52rem] text-left">
           <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
             Comercio local, gente real
           </p>
-          <h1 className="mt-3 font-serif text-4xl font-bold leading-[1.05] sm:text-5xl">
-            Encontrá
+          <h1 className="mt-3 font-serif text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl">
+            Encontrá lo que necesitás,
             <br />
-            lo que necesitás,
-            <br />
-            cerca tuyo
+            cerca tuyo.
           </h1>
-          <p className="mt-4 max-w-sm text-muted-foreground">
+          <p className="mt-4 max-w-md text-muted-foreground">
             Servicios, comercios y profesionales en Guaymallén. Rápido, simple
             y confiable.
           </p>
 
-          <div className="mt-6">
+          <div className="mt-6 max-w-xl">
             <SearchBar />
           </div>
 
-          <div className="mt-4 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-            <span>Búsquedas populares:</span>
+          <div className="mt-4 flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
+            <span className="mr-0.5">Búsquedas populares:</span>
             {POPULAR_SEARCHES.map((q) => (
               <Link
                 key={q}
                 href={`/buscar?q=${encodeURIComponent(q)}`}
-                className="rounded-full border border-border/60 bg-background/70 px-3 py-1 text-xs hover:border-foreground hover:text-foreground"
+                className="whitespace-nowrap rounded-full border border-border/60 bg-background/70 px-2.5 py-1 text-xs hover:border-foreground hover:text-foreground"
               >
                 {q}
               </Link>

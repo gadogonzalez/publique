@@ -4,6 +4,9 @@
 
 @layer base {
   :root {
+    --font-serif:
+      -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+      "Helvetica Neue", Arial, sans-serif;
     --background: 40 33% 98%;
     --foreground: 20 14% 12%;
     --card: 0 0% 100%;
@@ -28,6 +31,8 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-serif);
+    line-height: 1.45;
   }
   ::selection {
     @apply bg-primary/20;

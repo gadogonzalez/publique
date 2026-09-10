@@ -7,7 +7,7 @@ export function CommunityBanner() {
         <p className="text-xs font-medium uppercase tracking-wider text-background/70">
           Apoyá lo local
         </p>
-        <h2 className="mt-3 font-serif text-3xl font-bold leading-tight sm:text-4xl">
+        <h2 className="mt-3 font-serif text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
           Más que negocios,
           <br />
           comunidad

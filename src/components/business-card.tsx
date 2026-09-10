@@ -32,7 +32,7 @@ export function BusinessCard({ business }: { business: BusinessWithRelations }) 
             {category.name}
           </p>
         )}
-        <h3 className="mt-1 font-serif text-lg font-bold leading-tight">{business.name}</h3>
+        <h3 className="mt-1 font-serif text-lg font-bold leading-tight tracking-tight">{business.name}</h3>
         {business.location && (
           <p className="mt-1 flex items-center gap-1 text-sm text-muted-foreground">
             <MapPin className="h-3.5 w-3.5" />

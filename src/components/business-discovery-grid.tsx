@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { BusinessCard } from "@/components/business-card";
+import { Reveal } from "@/components/reveal";
 import { cn } from "@/lib/utils";
 import type { BusinessWithRelations } from "@/lib/types/database";
 
@@ -50,8 +51,10 @@ export function BusinessDiscoveryGrid({
       </div>
 
       <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
-        {sorted.map((business) => (
-          <BusinessCard key={business.id} business={business} />
+        {sorted.map((business, i) => (
+          <Reveal key={business.id} delay={(i % 4) * 60}>
+            <BusinessCard business={business} />
+          </Reveal>
         ))}
       </div>
     </div>
