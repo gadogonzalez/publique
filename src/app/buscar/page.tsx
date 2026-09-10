@@ -60,11 +60,11 @@ export default async function BuscarPage({ searchParams }: BuscarPageProps) {
       <div className="mt-6 flex flex-col gap-4 border-t border-border pt-6 sm:flex-row sm:items-end sm:justify-between">
         <div>
           {query ? (
-            <h1 className="font-serif text-2xl sm:text-3xl">
+            <h1 className="font-serif text-2xl font-bold sm:text-3xl">
               Resultados para &ldquo;{query}&rdquo;
             </h1>
           ) : (
-            <h1 className="font-serif text-2xl sm:text-3xl">Todos los negocios</h1>
+            <h1 className="font-serif text-2xl font-bold sm:text-3xl">Todos los negocios</h1>
           )}
           <p className="mt-1 text-sm text-muted-foreground">
             {totalCount} {totalCount === 1 ? "resultado" : "resultados"}

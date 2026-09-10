@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Fraunces } from "next/font/google";
+import { Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 
-const fraunces = Fraunces({
+const displayFont = Bricolage_Grotesque({
   subsets: ["latin"],
   variable: "--font-serif",
-  axes: ["opsz", "SOFT", "WONK"],
+  axes: ["opsz"],
   display: "swap",
 });
 
@@ -34,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es-AR" className={fraunces.variable}>
+    <html lang="es-AR" className={displayFont.variable}>
       <body className="flex min-h-screen flex-col antialiased">
         <SiteHeader />
         <main className="flex-1">{children}</main>

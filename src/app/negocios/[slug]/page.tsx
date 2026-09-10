@@ -123,7 +123,7 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
                   Destacado
                 </p>
               )}
-              <h1 className="font-serif text-3xl leading-tight sm:text-4xl">
+              <h1 className="font-serif text-3xl font-bold leading-tight sm:text-4xl">
                 {business.name}
               </h1>
               {business.location && (
@@ -151,7 +151,7 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
           <div className="space-y-10 lg:col-span-2">
             {business.long_description && (
               <section>
-                <h2 className="mb-3 font-serif text-xl">Sobre nosotros</h2>
+                <h2 className="mb-3 font-serif text-xl font-bold">Sobre nosotros</h2>
                 <p className="whitespace-pre-line text-muted-foreground">
                   {business.long_description}
                 </p>
@@ -160,7 +160,7 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
 
             {business.services.length > 0 && (
               <section className="border-t border-border pt-8">
-                <h2 className="mb-3 font-serif text-xl">Servicios</h2>
+                <h2 className="mb-3 font-serif text-xl font-bold">Servicios</h2>
                 <div className="flex flex-wrap gap-2">
                   {business.services.map((s) => (
                     <Badge key={s.id}>{s.name}</Badge>
@@ -171,7 +171,7 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
 
             {business.service_areas.length > 0 && (
               <section className="border-t border-border pt-8">
-                <h2 className="mb-3 font-serif text-xl">Zonas de cobertura</h2>
+                <h2 className="mb-3 font-serif text-xl font-bold">Zonas de cobertura</h2>
                 <div className="flex flex-wrap gap-2">
                   {business.service_areas.map((a) => (
                     <Badge key={a.id} variant="outline">
@@ -184,7 +184,7 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
 
             {business.images.length > 0 && (
               <section className="border-t border-border pt-8">
-                <h2 className="mb-3 font-serif text-xl">Galería</h2>
+                <h2 className="mb-3 font-serif text-xl font-bold">Galería</h2>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                   {business.images.map((img) => (
                     <div

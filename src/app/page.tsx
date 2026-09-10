@@ -46,7 +46,7 @@ export default async function HomePage() {
       {businesses.length > 0 && (
         <section className="container border-t border-border py-10">
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="font-serif text-2xl">Negocios en tu zona</h2>
+            <h2 className="font-serif text-2xl font-bold">Negocios en tu zona</h2>
           </div>
           <BusinessDiscoveryGrid businesses={businesses} />
           <div className="mt-10 flex justify-center">

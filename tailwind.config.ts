@@ -43,7 +43,9 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        serif: ["var(--font-serif)", "Georgia", "serif"],
+        // Key kept as "serif" to avoid renaming font-serif across every
+        // component -- it now loads a display grotesque, not a serif.
+        serif: ["var(--font-serif)", "ui-sans-serif", "system-ui", "sans-serif"],
       },
     },
   },

@@ -62,7 +62,7 @@ export function HeroSearch() {
           <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
             Comercio local, gente real
           </p>
-          <h1 className="mt-3 font-serif text-4xl leading-[1.05] sm:text-5xl">
+          <h1 className="mt-3 font-serif text-4xl font-bold leading-[1.05] sm:text-5xl">
             Encontrá
             <br />
             lo que necesitás,
