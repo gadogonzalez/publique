@@ -7,7 +7,18 @@ const config: Config = {
     container: {
       center: true,
       padding: "1rem",
-      screens: { "2xl": "1280px" },
+      // Full breakpoint scale, capped at 1280px from "xl" up (was only
+      // overriding "2xl", so .container had NO max-width at all between
+      // 0 and 1536px -- it spanned nearly the full viewport on every
+      // common desktop width, which is why centered content inside it
+      // looked arbitrarily off-center depending on exact window width.
+      screens: {
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+        "2xl": "1280px",
+      },
     },
     extend: {
       colors: {
