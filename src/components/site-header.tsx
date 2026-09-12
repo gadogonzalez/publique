@@ -95,7 +95,7 @@ export function SiteHeader({ localities = [] }: { localities?: Location[] }) {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50">
       <div className={cn("flex h-20 items-center justify-between", isHome ? WIDE : "container")}>
         <div className="flex items-center gap-3">
           <Link href="/" className="font-serif text-xl font-bold tracking-tight" onClick={() => setOpen(false)}>
