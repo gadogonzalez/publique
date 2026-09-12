@@ -34,7 +34,7 @@ export function BusinessDiscoveryGrid({
 
   return (
     <div>
-      <div className="mb-5 flex gap-4 text-sm">
+      <div className="mb-6 flex gap-5 text-sm">
         {TABS.map((tab) => (
           <button
             key={tab.key}
@@ -51,11 +51,18 @@ export function BusinessDiscoveryGrid({
       </div>
 
       <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-        {sorted.map((business, i) => (
-          <MotionReveal key={business.id} delay={(i % 3) * 80}>
-            <FeaturedBusinessCard business={business} />
-          </MotionReveal>
-        ))}
+        {sorted.map((business, i) => {
+          const featured = sort === "todos" && i === 0;
+          return (
+            <MotionReveal
+              key={business.id}
+              delay={(i % 3) * 80}
+              className={featured ? "sm:col-span-2 sm:row-span-2" : undefined}
+            >
+              <FeaturedBusinessCard business={business} featured={featured} />
+            </MotionReveal>
+          );
+        })}
       </div>
     </div>
   );

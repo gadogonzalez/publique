@@ -51,6 +51,7 @@ const config: Config = {
           pink: "hsl(var(--brand-pink))",
           "pink-foreground": "hsl(var(--brand-pink-foreground))",
         },
+        "accent-soft": "hsl(var(--accent-pink-soft))",
       },
       borderRadius: {
         lg: "var(--radius)",

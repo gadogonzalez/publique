@@ -82,23 +82,30 @@ export function SiteHeader({ localities = [] }: { localities?: Location[] }) {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
-
-      <div className="container flex h-14 items-center justify-between">
+    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+      <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/" className="font-serif text-xl font-medium" onClick={() => setOpen(false)}>
+          <Link href="/" className="font-serif text-xl font-bold tracking-tight" onClick={() => setOpen(false)}>
             Publiqué
           </Link>
           <LocationSelector localities={localities} />
         </div>
 
-        <nav className="hidden items-center gap-6 text-sm font-medium sm:flex">
+        <nav className="hidden items-center gap-1 rounded-full bg-muted p-1.5 text-sm font-medium sm:flex">
           {LINKS.map((link) => (
-            <Link key={link.label} href={link.href} className="hover:text-primary">
+            <Link
+              key={link.label}
+              href={link.href}
+              className="rounded-full px-3.5 py-1.5 transition-colors hover:bg-background"
+            >
               {link.label}
             </Link>
           ))}
-          <Link href="/buscar" aria-label="Buscar" className="hover:text-primary">
+          <Link
+            href="/buscar"
+            aria-label="Buscar"
+            className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-background"
+          >
             <Search className="h-4 w-4" />
           </Link>
         </nav>
@@ -116,7 +123,7 @@ export function SiteHeader({ localities = [] }: { localities?: Location[] }) {
 
       <div
         className={cn(
-          "fixed inset-x-0 top-14 bottom-0 z-40 flex-col overflow-y-auto border-t border-border bg-card/95 backdrop-blur sm:hidden",
+          "fixed inset-x-0 top-16 bottom-0 z-40 flex-col overflow-y-auto border-t border-border bg-card/95 backdrop-blur sm:hidden",
           open ? "flex" : "hidden"
         )}
       >
