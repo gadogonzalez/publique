@@ -61,7 +61,7 @@ export default async function HomePage() {
           <div className="mt-10 flex justify-center">
             <Link
               href="/buscar"
-              className="flex items-center gap-1 text-sm font-medium hover:text-brand-pink"
+              className="flex items-center gap-1 text-sm font-medium hover:text-brand-primary"
             >
               Ver todos los negocios <ArrowRight className="h-3.5 w-3.5" />
             </Link>

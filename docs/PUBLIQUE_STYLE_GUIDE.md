@@ -127,23 +127,30 @@ or hero, using a simple geometric mark, not a literal pin/map-pin clipart.
 
 ## 5. Color palette
 
-Two independent inputs, kept honest and separate:
+**Status: corrected.** The vivid pink (`#FF2D78`, and an earlier
+placeholder `#F45FA0` used briefly in implementation) documented in
+previous revisions of this section is **deprecated** and no longer the
+homepage brand color. It read as an arbitrary hot-pink wash rather than
+anything derived from the stated visual reference. This section now
+documents the corrected direction.
 
-- Phantom's actual palette (violet, near-black, cream, lavender — §3) —
-  used for *structural* reference: how many colors, what role each plays.
-- Publiqué's own brand color, **pink**, which predates this Phantom
-  research (established in earlier design rounds) and is not derived from
-  Phantom.
+The palette is now derived directly from the Phantom reference (Mobbin,
+§3) rather than kept as an independent prior decision: a pale
+lavender/off-white canvas, a mid-saturation violet/purple used for
+branded surfaces and CTAs, and a purple-tinted near-black for dark
+sections — the same *rhythm* Phantom itself uses (light canvas → purple
+brand surface → near-black → white), not "add a purple accent."
 
-**Proposed pink**: `#FF2D78` (vivid magenta-pink). Chosen to be clearly
-its own hue — not a tint of Phantom's violet — while sitting in the same
-"impossible to ignore, calibrated for occasional use" register. Final hex
-is a proposal, easy to swap in one place (`--brand-pink`) once real brand
-assets exist.
+Values below are visual estimates read from Mobbin screenshots (no
+CSS/design-token export is available for a third-party site), reported
+as estimates rather than invented from memory.
 
-| Token | Value (proposed) | Role |
+| Token | Value (estimate) | Role |
 |---|---|---|
-| `--brand-pink` | `#FF2D78` | The one accent. Full-width brand moments, selected highlights, active states. Never a body-text color, rarely a large background. |
+| `--brand-primary` | `#8B7FF0` | Mid violet/purple. CTA emphasis on dark surfaces, active/selected state. Never a large background by itself. |
+| `--brand-primary-soft` | `#F2EFFC` | Pale lavender canvas — an alternative to `--background` for a homepage section that wants Phantom's light-lavender feel. |
+| `--brand-surface-strong` | `#C7BEF5` | Saturated lavender/purple, full-bleed brand-statement surface (replaces the old hot-pink section). Dark text on top, per Phantom's own light-purple CTA modules. |
+| `--brand-dark` | `#15121B` | Purple-tinted near-black, for hero overlays/dark accents distinct from the site's neutral `--foreground`. |
 | `--brand-black` | `#15121B` | Near-black, slightly warm (not pure `#000`). Primary UI controls, primary text. |
 | `--background` | `#FAF8F6` | Default page background — warm off-white, not stark white. |
 | `--surface` | `#FFFFFF` | Cards/panels that need to lift off the background (used sparingly — see §12, §15). |
@@ -153,16 +160,15 @@ assets exist.
 | `--border-subtle` | `#E7E2DD` | The *only* border color in the system. Used for hairline separators, never as a card outline by default. |
 | `--action-primary` | `--brand-black` | Default button background. |
 | `--action-primary-foreground` | `#FFFFFF` | Text/icon on primary buttons. |
-| `--action-hover` | `#2A2530` | Primary button hover (lightened black, not the brand pink — keeps pink meaningful). |
-| `--accent-pink-soft` | `#FFE3EC` | Pink at low opacity/tint — for a subtle active/selected state where full pink would be too loud. |
+| `--action-hover` | `#2A2530` | Primary button hover (lightened black, not the brand accent — keeps the accent meaningful). |
 
-**Usage rule** (directly from the brief, reinforced by the Phantom
-finding that its own violet is used generously but never as a UI-wide
-wash): pink appears in full-bleed brand sections (a "TU BARRIO EN UN SOLO
-LUGAR" statement section, a featured/campaign section, maybe the footer's
-newsletter-style panel), as an occasional CTA emphasis, and as
-active/selected state color. It does **not** become the color of every
-button, link, or icon. Primary UI controls stay black-on-white/cream.
+**Usage rule** (reinforced by the Phantom finding that its own violet is
+used generously but never as a UI-wide wash): the brand-surface-strong
+purple appears in full-bleed brand sections (a "TU BARRIO EN UN SOLO
+LUGAR" statement section, a featured/campaign section), `--brand-primary`
+as an occasional CTA emphasis on dark surfaces, and as active/selected
+state color. It does **not** become the color of every button, link, or
+icon. Primary UI controls stay black-on-white/cream.
 
 **Category icons**: monochrome, `--brand-black` (or `--text-secondary` at
 rest, `--brand-black` on hover/active) on transparent or `--surface-muted`
@@ -217,12 +223,21 @@ Concretely:
 
 | Token | Max-width | Use |
 |---|---|---|
-| `content` | 1280px | Default reading/UI width — nav, search results grid, business profile body. |
-| `wide` | 1440px | Homepage discovery sections that want more breathing room (business grid, category row) on very large screens. |
+| `content` | 1440px | Homepage grid — nav (on the homepage), hero, discovery, category/business headings. Sitewide `.container` (search results, business profile body, admin) stays 1280px, unchanged — see note below. |
+| `wide` | 1520px | Homepage sections that want slightly more breathing room at very large screens (business grid, zone grid, full-bleed brand/dark sections' inner content). |
 | `full` | none (100vw) | Brand statement sections, hero background, full-bleed color-blocked sections. Inner content still respects `content`/`wide` via padding, but the background/color extends edge to edge. |
 
-Gutter: 24px mobile, 32px tablet, 40px+ desktop (matches the spacing scale
-in §10, not an arbitrary one-off value).
+Gutter: `clamp(24px, 3vw, 48px)` — scales continuously with viewport
+instead of jumping at breakpoints, so the same left/right axis holds at
+1440px, 1600px and 1920px alike (matches the spacing scale in §10 at its
+endpoints, not an arbitrary one-off value).
+
+**Important**: `content`/`wide` above are the *homepage's own* grid,
+applied only there (and to the header when the homepage is the active
+route, so nav and hero share one axis). The sitewide `.container`
+(1280px, used by search results, business profile, admin) is a separate,
+narrower system and is intentionally not widened by this correction —
+changing it is a larger decision than a homepage palette/grid pass.
 
 This directly fixes a concrete, already-identified bug: the live site's
 Tailwind `container` was only configured with a `2xl: 1280px` override,
@@ -480,10 +495,14 @@ which actions are visible all change intentionally per the table above.
 
 ```css
 :root {
-  /* Color */
-  --brand-pink: #ff2d78;
-  --brand-pink-foreground: #ffffff;
-  --accent-pink-soft: #ffe3ec;
+  /* Color -- corrected pass, derived from the Phantom reference. The
+   * earlier --brand-pink (#ff2d78, and an even earlier #f45fa0) is
+   * deprecated; do not reintroduce it on the homepage. */
+  --brand-primary: #8b7ff0;
+  --brand-primary-foreground: #ffffff;
+  --brand-primary-soft: #f2effc;
+  --brand-surface-strong: #c7bef5;
+  --brand-dark: #15121b;
   --brand-black: #15121b;
   --background: #faf8f6;
   --surface: #ffffff;
@@ -524,9 +543,10 @@ which actions are visible all change intentionally per the table above.
   --radius-large: 28px;
   --radius-pill: 9999px;
 
-  /* Containers */
-  --container-content: 1280px;
-  --container-wide: 1440px;
+  /* Containers -- homepage grid (see §8 correction). Sitewide .container
+   * (search, PDP, admin) stays 1280px, a separate system. */
+  --container-content: 1440px;
+  --container-wide: 1520px;
 
   /* Motion */
   --motion-fast: 150ms;
@@ -551,19 +571,23 @@ that same pattern rather than introducing a second convention:
 --muted: 30 12% 93%;           /* #F1EEEA, "surface-muted" */
 --muted-foreground: 267 5% 43%;/* #6B6470, "text-secondary" */
 --border: 30 15% 89%;          /* #E7E2DD, "border-subtle" */
---brand-pink: 337 100% 60%;    /* #FF2D78 */
---brand-pink-foreground: 0 0% 100%;
---accent-pink-soft: 340 100% 94%; /* #FFE3EC */
+--brand-primary: 245 80% 71%;       /* #8B7FF0 */
+--brand-primary-foreground: 0 0% 100%;
+--brand-primary-soft: 255 70% 97%;  /* #F2EFFC */
+--brand-surface-strong: 250 73% 85%; /* #C7BEF5 */
+--brand-dark: 262 13% 10%;          /* #15121B */
 ```
 
 ```ts
 // tailwind.config.ts (theme.extend, additive to the existing token setup)
 colors: {
   brand: {
-    pink: "hsl(var(--brand-pink))",
-    "pink-foreground": "hsl(var(--brand-pink-foreground))",
+    primary: "hsl(var(--brand-primary))",
+    "primary-foreground": "hsl(var(--brand-primary-foreground))",
+    "primary-soft": "hsl(var(--brand-primary-soft))",
+    "surface-strong": "hsl(var(--brand-surface-strong))",
+    dark: "hsl(var(--brand-dark))",
   },
-  "accent-soft": "hsl(var(--accent-pink-soft))",
   // background/foreground/card/muted/border already exist and keep their
   // current names — only their underlying values change per §25.
 },
