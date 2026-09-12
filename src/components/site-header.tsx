@@ -11,10 +11,18 @@ import { cn } from "@/lib/utils";
 import type { Location } from "@/lib/types/database";
 
 const LINKS = [
-  { label: "Explorar", href: "/buscar" },
+  { label: "Explorar", href: "/buscar", chevron: true },
   { label: "Categorías", href: "/buscar" },
+  { label: "Zonas", href: "/buscar" },
   { label: "Para negocios", href: "/admin/login" },
 ];
+
+// Premium, restrained glass -- pale lavender surface + blur + a barely
+// visible border, not heavy glassmorphism (frosted blobs, glow, neon).
+// Shared by the center nav pill and the search button so both read as
+// one material.
+const GLASS =
+  "border border-white/50 bg-[rgba(242,239,252,0.65)] backdrop-blur-[18px] shadow-[0_1px_2px_rgba(0,0,0,0.04)]";
 
 /** Zone/location picker -- product context, not part of the brand. Sits
  * next to the logo, not inside it (see PUBLIQUE_PRODUCT_PRINCIPLES.md).
@@ -42,7 +50,7 @@ function LocationSelector({ localities }: { localities: Location[] }) {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="flex items-center gap-0.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        className="flex items-center gap-0.5 text-sm text-muted-foreground transition-opacity hover:opacity-70"
       >
         {current}
         <ChevronDown className="h-3.5 w-3.5" />
@@ -87,48 +95,63 @@ export function SiteHeader({ localities = [] }: { localities?: Location[] }) {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      <div className={cn("flex h-16 items-center justify-between", isHome ? WIDE : "container")}>
-        <div className="flex items-center gap-4">
+    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md">
+      <div className={cn("flex h-20 items-center justify-between", isHome ? WIDE : "container")}>
+        <div className="flex items-center gap-3">
           <Link href="/" className="font-serif text-xl font-bold tracking-tight" onClick={() => setOpen(false)}>
             Publiqué
           </Link>
           <LocationSelector localities={localities} />
         </div>
 
-        <nav className="hidden items-center gap-1 rounded-full bg-muted p-1.5 text-sm font-medium sm:flex">
+        <nav className={cn("hidden items-center gap-1 rounded-full p-1.5 text-sm font-medium lg:flex", GLASS)}>
           {LINKS.map((link) => (
             <Link
               key={link.label}
               href={link.href}
-              className="rounded-full px-3.5 py-1.5 transition-colors hover:bg-background"
+              className="flex items-center gap-1 rounded-full px-4 py-2 transition-colors hover:bg-white/60"
             >
               {link.label}
+              {link.chevron && <ChevronDown className="h-3.5 w-3.5 opacity-60" />}
             </Link>
           ))}
+        </nav>
+
+        <div className="hidden items-center gap-2 lg:flex">
           <Link
             href="/buscar"
             aria-label="Buscar"
-            className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-background"
+            className={cn("flex h-12 w-12 items-center justify-center rounded-full transition-colors hover:bg-white/70", GLASS)}
           >
             <Search className="h-4 w-4" />
           </Link>
-        </nav>
+          <Link href="/admin/login" className={buttonVariants({ variant: "brand", size: "lg" })}>
+            Publicá tu negocio
+          </Link>
+        </div>
 
-        <Button
-          size="icon"
-          variant="outline"
-          aria-label={open ? "Cerrar menú" : "Abrir menú"}
-          onClick={() => setOpen((v) => !v)}
-          className="sm:hidden"
-        >
-          <MenuToggleIcon open={open} duration={250} className="h-5 w-5" />
-        </Button>
+        <div className="flex items-center gap-2 lg:hidden">
+          <Link
+            href="/buscar"
+            aria-label="Buscar"
+            className={cn("flex h-11 w-11 items-center justify-center rounded-full", GLASS)}
+          >
+            <Search className="h-4 w-4" />
+          </Link>
+          <Button
+            size="icon"
+            variant="outline"
+            aria-label={open ? "Cerrar menú" : "Abrir menú"}
+            onClick={() => setOpen((v) => !v)}
+          >
+            <MenuToggleIcon open={open} duration={250} className="h-5 w-5" />
+          </Button>
+        </div>
       </div>
 
       <div
         className={cn(
-          "fixed inset-x-0 top-16 bottom-0 z-40 flex-col overflow-y-auto border-t border-border bg-card/95 backdrop-blur sm:hidden",
+          "fixed inset-x-0 top-20 bottom-0 z-40 flex-col overflow-y-auto border-t border-border bg-card/95 backdrop-blur lg:hidden",
           open ? "flex" : "hidden"
         )}
       >
@@ -146,12 +169,11 @@ export function SiteHeader({ localities = [] }: { localities?: Location[] }) {
             ))}
           </div>
           <Link
-            href="/buscar"
+            href="/admin/login"
             onClick={() => setOpen(false)}
-            className={buttonVariants({ variant: "dark", className: "w-full" })}
+            className={buttonVariants({ variant: "brand", className: "w-full" })}
           >
-            <Search className="h-4 w-4" />
-            Buscar
+            Publicá tu negocio
           </Link>
         </div>
       </div>
