@@ -47,6 +47,10 @@ const config: Config = {
         },
         whatsapp: "#25D366",
         card: "hsl(var(--card))",
+        brand: {
+          pink: "hsl(var(--brand-pink))",
+          "pink-foreground": "hsl(var(--brand-pink-foreground))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
