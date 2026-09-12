@@ -5,21 +5,21 @@ import { CategoryShortcut } from "@/components/category-shortcut";
 import { BusinessDiscoveryGrid } from "@/components/business-discovery-grid";
 import { ZoneTile } from "@/components/zone-tile";
 import { CommunityBanner } from "@/components/community-banner";
-import { EditorialSpotlight } from "@/components/home/editorial-spotlight";
-import { MotionReveal } from "@/components/home/motion-reveal";
+import { DiscoveryTiles } from "@/components/home/discovery-tiles";
+import { BrandStatement } from "@/components/home/brand-statement";
+import { CONTENT, WIDE } from "@/components/home/width";
 import { getCategories } from "@/lib/data/taxonomy";
 import { getLocalities } from "@/lib/data/locations";
-import { getBusinessesByIds, getFeaturedBusinesses } from "@/lib/data/businesses";
+import { getBusinessesByIds } from "@/lib/data/businesses";
 import { search } from "@/lib/search";
 
 const DISCOVERY_COUNT = 9;
 
 export default async function HomePage() {
-  const [categories, localities, { items }, [spotlightBusiness]] = await Promise.all([
+  const [categories, localities, { items }] = await Promise.all([
     getCategories(),
     getLocalities(),
     search({ page: 1, pageSize: DISCOVERY_COUNT }),
-    getFeaturedBusinesses(1),
   ]);
   const businesses = await getBusinessesByIds(items.map((i) => i.id));
 
@@ -27,35 +27,35 @@ export default async function HomePage() {
     <div>
       <HeroSearch />
 
-      {categories.length > 0 && (
-        <section className="container border-t border-border py-10 sm:py-14">
-          <h2 className="mb-6 font-serif text-xl font-bold tracking-tight sm:text-2xl">
-            Explorá por categoría
-          </h2>
-          <div className="grid grid-cols-4 gap-6 md:grid-cols-8">
-            {categories.map((category) => (
-              <CategoryShortcut key={category.id} category={category} />
-            ))}
-          </div>
-        </section>
-      )}
+      <section className={`${CONTENT} py-16 sm:py-20`}>
+        <DiscoveryTiles />
+      </section>
 
-      {localities.length > 0 && (
-        <section className="container border-t border-border py-10 sm:py-14">
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-            {localities.map((locality) => (
-              <ZoneTile key={locality.id} locality={locality} />
+      {categories.length > 0 && (
+        <section className={`${CONTENT} pb-16 sm:pb-20`}>
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="font-serif text-2xl font-bold tracking-tight">Explorá por categoría</h2>
+            <Link
+              href="/buscar"
+              className="flex shrink-0 items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground"
+            >
+              Ver todas <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+          <div className="-mx-6 flex gap-8 overflow-x-auto px-6 sm:mx-0 sm:grid sm:grid-cols-8 sm:gap-6 sm:overflow-visible sm:px-0">
+            {categories.map((category) => (
+              <div key={category.id} className="shrink-0 sm:shrink">
+                <CategoryShortcut category={category} />
+              </div>
             ))}
           </div>
         </section>
       )}
 
       {businesses.length > 0 && (
-        <section className="container border-t border-border py-10 sm:py-14">
+        <section className={`${WIDE} pb-16 sm:pb-20`}>
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="font-serif text-xl font-bold tracking-tight sm:text-2xl">
-              Negocios destacados
-            </h2>
+            <h2 className="font-serif text-2xl font-bold tracking-tight">Negocios destacados</h2>
           </div>
           <BusinessDiscoveryGrid businesses={businesses} />
           <div className="mt-10 flex justify-center">
@@ -69,11 +69,22 @@ export default async function HomePage() {
         </section>
       )}
 
-      {spotlightBusiness && <EditorialSpotlight business={spotlightBusiness} />}
+      <BrandStatement />
 
-      <MotionReveal>
-        <CommunityBanner />
-      </MotionReveal>
+      {localities.length > 0 && (
+        <section className={`${WIDE} py-16 sm:py-20`}>
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="font-serif text-2xl font-bold tracking-tight">Explorá por zona</h2>
+          </div>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+            {localities.map((locality, i) => (
+              <ZoneTile key={locality.id} locality={locality} index={i} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      <CommunityBanner />
     </div>
   );
 }

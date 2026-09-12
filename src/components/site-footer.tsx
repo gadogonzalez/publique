@@ -11,7 +11,7 @@ export function SiteFooter() {
     <footer className="border-t border-border py-12 text-sm">
       <div className="container grid grid-cols-2 gap-8 sm:grid-cols-4">
         <div className="col-span-2 sm:col-span-1">
-          <p className="font-serif text-lg text-foreground">Publique</p>
+          <p className="font-serif text-lg text-foreground">Publiqué</p>
           <p className="mt-1 text-muted-foreground">Guaymallén, Mendoza</p>
           <p className="mt-3 max-w-[22ch] text-muted-foreground">
             Conectando personas con negocios reales de tu barrio.
@@ -49,7 +49,7 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <p className="mb-3 font-medium text-foreground">Sobre Publique</p>
+          <p className="mb-3 font-medium text-foreground">Sobre Publiqué</p>
           <div className="space-y-2">
             <span className={placeholderClass}>Nosotros</span>
             <span className={placeholderClass}>Contacto</span>
@@ -58,7 +58,7 @@ export function SiteFooter() {
       </div>
 
       <div className="container mt-10 flex flex-col gap-2 border-t border-border pt-6 text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-        <p>© {new Date().getFullYear()} Publique. Todos los derechos reservados.</p>
+        <p>© {new Date().getFullYear()} Publiqué. Todos los derechos reservados.</p>
         <p>Hecho en Mendoza ❤️</p>
       </div>
     </footer>
