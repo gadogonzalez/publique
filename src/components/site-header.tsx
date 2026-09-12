@@ -2,10 +2,11 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown, Search } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
+import { WIDE } from "@/components/home/width";
 import { cn } from "@/lib/utils";
 import type { Location } from "@/lib/types/database";
 
@@ -73,6 +74,10 @@ function LocationSelector({ localities }: { localities: Location[] }) {
 
 export function SiteHeader({ localities = [] }: { localities?: Location[] }) {
   const [open, setOpen] = React.useState(false);
+  // The homepage hero uses a wider grid (see PUBLIQUE_STYLE_GUIDE.md §8);
+  // the header aligns to the same grid there so both feel like one system.
+  // Every other route keeps the sitewide `.container` (1280px) unchanged.
+  const isHome = usePathname() === "/";
 
   React.useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -83,7 +88,7 @@ export function SiteHeader({ localities = [] }: { localities?: Location[] }) {
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      <div className="container flex h-16 items-center justify-between">
+      <div className={cn("flex h-16 items-center justify-between", isHome ? WIDE : "container")}>
         <div className="flex items-center gap-4">
           <Link href="/" className="font-serif text-xl font-bold tracking-tight" onClick={() => setOpen(false)}>
             Publiqué

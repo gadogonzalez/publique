@@ -22,11 +22,16 @@
     --destructive-foreground: 0 0% 100%;
     --border: 20 15% 88%;
     --radius: 0.75rem;
-    /* Homepage accent, used sparingly. Exact value from
-     * docs/PUBLIQUE_STYLE_GUIDE.md §25 (#FF2D78) -- not invented here. */
-    --brand-pink: 337 100% 60%;
-    --brand-pink-foreground: 0 0% 100%;
-    --accent-pink-soft: 340 100% 94%;
+    /* Homepage accent palette, corrected pass -- derived from the Phantom
+     * reference (Mobbin), not the earlier vivid-pink direction (deprecated,
+     * see PUBLIQUE_STYLE_GUIDE.md §5). Values are visual estimates from
+     * Mobbin screenshots (no CSS/design-token export available), reported
+     * as such rather than invented from memory. */
+    --brand-primary: 245 80% 71%;      /* ~#8B7FF0, Phantom's mid violet/purple */
+    --brand-primary-foreground: 0 0% 100%;
+    --brand-primary-soft: 255 70% 97%; /* ~#F2EFFC, pale lavender canvas */
+    --brand-surface-strong: 250 73% 85%; /* ~#C7BEF5, saturated lavender CTA surface */
+    --brand-dark: 262 13% 10%;         /* ~#15121B, purple-tinted near-black */
   }
 }
 
