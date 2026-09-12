@@ -2,22 +2,76 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Search } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ChevronDown, Search } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
-import { useScroll } from "@/components/ui/use-scroll";
 import { cn } from "@/lib/utils";
+import type { Location } from "@/lib/types/database";
 
 const LINKS = [
+  { label: "Explorar", href: "/buscar" },
   { label: "Categorías", href: "/buscar" },
-  { label: "Zonas", href: "/buscar" },
   { label: "Para negocios", href: "/admin/login" },
 ];
 
-export function SiteHeader() {
-  const isHome = usePathname() === "/";
-  const scrolled = useScroll(10);
+/** Zone/location picker -- product context, not part of the brand. Sits
+ * next to the logo, not inside it (see PUBLIQUE_PRODUCT_PRINCIPLES.md).
+ * For now, picking a zone just scopes /buscar; it's the seam future
+ * location-aware discovery (featured/nearby/etc.) hangs off. */
+function LocationSelector({ localities }: { localities: Location[] }) {
+  const router = useRouter();
+  const [open, setOpen] = React.useState(false);
+  const [current, setCurrent] = React.useState(localities[0]?.name);
+  const ref = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    function onPointerDown(e: PointerEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, []);
+
+  if (localities.length === 0 || !current) return null;
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="flex items-center gap-0.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+      >
+        {current}
+        <ChevronDown className="h-3.5 w-3.5" />
+      </button>
+      {open && (
+        <div className="absolute left-0 top-full z-50 mt-2 min-w-40 rounded-lg border border-border bg-card py-1 shadow-md">
+          {localities.map((loc) => (
+            <button
+              key={loc.id}
+              type="button"
+              onClick={() => {
+                setCurrent(loc.name);
+                setOpen(false);
+                router.push(`/buscar?zona=${loc.id}`);
+              }}
+              className={cn(
+                "block w-full px-3 py-1.5 text-left text-sm hover:bg-secondary",
+                loc.name === current && "font-medium text-foreground"
+              )}
+            >
+              {loc.name}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function SiteHeader({ localities = [] }: { localities?: Location[] }) {
   const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -27,28 +81,16 @@ export function SiteHeader() {
     };
   }, [open]);
 
-  // On the homepage the header overlays the hero photo until the page is
-  // scrolled (or the mobile menu is open), then it picks up a solid,
-  // blurred background -- same treatment every other page always has.
-  const solid = !isHome || scrolled || open;
-
   return (
-    <header
-      className={cn(
-        "left-0 right-0 top-0 z-50 transition-colors",
-        isHome ? "fixed" : "relative border-b border-border",
-        solid
-          ? "border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80"
-          : "border-transparent bg-transparent"
-      )}
-    >
-      <div className="container flex h-16 items-center justify-between">
-        <Link href="/" className="flex items-baseline gap-2" onClick={() => setOpen(false)}>
-          <span className="font-serif text-xl font-medium">Publique</span>
-          <span className="hidden text-xs text-muted-foreground sm:inline">
-            Guaymallén, Mendoza
-          </span>
-        </Link>
+    <header className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
+
+      <div className="container flex h-14 items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Link href="/" className="font-serif text-xl font-medium" onClick={() => setOpen(false)}>
+            Publiqué
+          </Link>
+          <LocationSelector localities={localities} />
+        </div>
 
         <nav className="hidden items-center gap-6 text-sm font-medium sm:flex">
           {LINKS.map((link) => (
@@ -74,7 +116,7 @@ export function SiteHeader() {
 
       <div
         className={cn(
-          "fixed inset-x-0 top-16 bottom-0 z-40 flex-col overflow-y-auto border-t border-border bg-card/95 backdrop-blur sm:hidden",
+          "fixed inset-x-0 top-14 bottom-0 z-40 flex-col overflow-y-auto border-t border-border bg-card/95 backdrop-blur sm:hidden",
           open ? "flex" : "hidden"
         )}
       >

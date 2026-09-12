@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { getLocalities } from "@/lib/data/locations";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -20,15 +21,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const localities = await getLocalities();
+
   return (
     <html lang="es-AR">
       <body className="flex min-h-screen flex-col antialiased">
-        <SiteHeader />
+        <SiteHeader localities={localities} />
         <main className="flex-1">{children}</main>
         <SiteFooter />
       </body>
