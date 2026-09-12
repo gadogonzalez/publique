@@ -22,6 +22,9 @@
     --destructive-foreground: 0 0% 100%;
     --border: 20 15% 88%;
     --radius: 0.75rem;
+    /* Homepage accent, used sparingly (Homepage Redesign v1). */
+    --brand-pink: 334 87% 66%;
+    --brand-pink-foreground: 0 0% 100%;
   }
 }
 
