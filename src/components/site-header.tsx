@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { MapPin, MoreVertical, Search } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
-import { FULL_BLEED_GUTTER } from "@/components/home/width";
+import { HERO_GRID } from "@/components/home/width";
 import { cn } from "@/lib/utils";
 
 const LINKS = [
@@ -52,11 +52,11 @@ export function SiteHeader() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50">
+    <header className={cn("z-50", isHome ? "absolute inset-x-0 top-0" : "sticky top-0")}>
       <div
         className={cn(
           "flex items-center justify-between",
-          isHome ? `${FULL_BLEED_GUTTER} pt-7 sm:pt-8` : "container h-20"
+          isHome ? `${HERO_GRID} pt-7 sm:pt-8` : "container h-20"
         )}
       >
         <div className={cn("flex items-center gap-1 rounded-full p-1.5 text-sm font-medium", GLASS)}>
