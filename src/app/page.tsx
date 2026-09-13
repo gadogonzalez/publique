@@ -5,9 +5,8 @@ import { CategoryShortcut } from "@/components/category-shortcut";
 import { BusinessDiscoveryGrid } from "@/components/business-discovery-grid";
 import { ZoneTile } from "@/components/zone-tile";
 import { CommunityBanner } from "@/components/community-banner";
-import { DiscoveryTiles } from "@/components/home/discovery-tiles";
 import { BrandStatement } from "@/components/home/brand-statement";
-import { CONTENT, WIDE } from "@/components/home/width";
+import { HERO_GRID } from "@/components/home/width";
 import { getCategories } from "@/lib/data/taxonomy";
 import { getLocalities } from "@/lib/data/locations";
 import { getBusinessesByIds } from "@/lib/data/businesses";
@@ -27,12 +26,8 @@ export default async function HomePage() {
     <div>
       <HeroSearch localities={localities} />
 
-      <section className={`${CONTENT} py-16 sm:py-20`}>
-        <DiscoveryTiles />
-      </section>
-
       {categories.length > 0 && (
-        <section className={`${CONTENT} pb-16 sm:pb-20`}>
+        <section className={`${HERO_GRID} pb-16 pt-16 sm:pb-20 sm:pt-20`}>
           <div className="mb-6 flex items-center justify-between">
             <h2 className="font-serif text-2xl font-bold tracking-tight">Explorá por categoría</h2>
             <Link
@@ -53,7 +48,7 @@ export default async function HomePage() {
       )}
 
       {businesses.length > 0 && (
-        <section className={`${WIDE} pb-16 sm:pb-20`}>
+        <section className={`${HERO_GRID} pb-16 sm:pb-20`}>
           <div className="mb-6 flex items-center justify-between">
             <h2 className="font-serif text-2xl font-bold tracking-tight">Negocios destacados</h2>
           </div>
@@ -72,7 +67,7 @@ export default async function HomePage() {
       <BrandStatement />
 
       {localities.length > 0 && (
-        <section className={`${WIDE} py-16 sm:py-20`}>
+        <section className={`${HERO_GRID} py-16 sm:py-20`}>
           <div className="mb-6 flex items-center justify-between">
             <h2 className="font-serif text-2xl font-bold tracking-tight">Explorá por zona</h2>
           </div>
