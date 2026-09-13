@@ -25,7 +25,7 @@ export default async function HomePage() {
 
   return (
     <div>
-      <HeroSearch />
+      <HeroSearch localities={localities} />
 
       <section className={`${CONTENT} py-16 sm:py-20`}>
         <DiscoveryTiles />

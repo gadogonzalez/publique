@@ -2,89 +2,46 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { ChevronDown, Search } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { MapPin, MoreVertical, Search } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
-import { WIDE } from "@/components/home/width";
+import { FULL_BLEED_GUTTER } from "@/components/home/width";
 import { cn } from "@/lib/utils";
-import type { Location } from "@/lib/types/database";
 
 const LINKS = [
-  { label: "Explorar", href: "/buscar", chevron: true },
   { label: "Categorías", href: "/buscar" },
+  { label: "Servicios", href: "/buscar" },
   { label: "Zonas", href: "/buscar" },
-  { label: "Para negocios", href: "/admin/login" },
 ];
 
 // Premium, restrained glass -- pale lavender surface + blur + a barely
 // visible border, not heavy glassmorphism (frosted blobs, glow, neon).
-// Shared by the center nav pill and the search button so both read as
-// one material.
+// Shared by the left nav pill and the right action group so the whole
+// floating navigation reads as one material.
 const GLASS =
-  "border border-white/50 bg-[rgba(242,239,252,0.65)] backdrop-blur-[18px] shadow-[0_1px_2px_rgba(0,0,0,0.04)]";
+  "border border-white/35 bg-[rgba(248,247,252,0.78)] backdrop-blur-[18px] shadow-[0_1px_2px_rgba(0,0,0,0.04)]";
 
-/** Zone/location picker -- product context, not part of the brand. Sits
- * next to the logo, not inside it (see PUBLIQUE_PRODUCT_PRINCIPLES.md).
- * For now, picking a zone just scopes /buscar; it's the seam future
- * location-aware discovery (featured/nearby/etc.) hangs off. */
-function LocationSelector({ localities }: { localities: Location[] }) {
-  const router = useRouter();
-  const [open, setOpen] = React.useState(false);
-  const [current, setCurrent] = React.useState(localities[0]?.name);
-  const ref = React.useRef<HTMLDivElement>(null);
-
-  React.useEffect(() => {
-    function onPointerDown(e: PointerEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    }
-    document.addEventListener("pointerdown", onPointerDown);
-    return () => document.removeEventListener("pointerdown", onPointerDown);
-  }, []);
-
-  if (localities.length === 0 || !current) return null;
-
+function Logo({ onClick }: { onClick?: () => void }) {
   return (
-    <div ref={ref} className="relative">
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        className="flex items-center gap-0.5 text-sm text-muted-foreground transition-opacity hover:opacity-70"
-      >
-        {current}
-        <ChevronDown className="h-3.5 w-3.5" />
-      </button>
-      {open && (
-        <div className="absolute left-0 top-full z-50 mt-2 min-w-40 rounded-lg border border-border bg-card py-1 shadow-md">
-          {localities.map((loc) => (
-            <button
-              key={loc.id}
-              type="button"
-              onClick={() => {
-                setCurrent(loc.name);
-                setOpen(false);
-                router.push(`/buscar?zona=${loc.id}`);
-              }}
-              className={cn(
-                "block w-full px-3 py-1.5 text-left text-sm hover:bg-secondary",
-                loc.name === current && "font-medium text-foreground"
-              )}
-            >
-              {loc.name}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
+    <Link
+      href="/"
+      onClick={onClick}
+      className="flex items-center gap-2 rounded-full px-3 py-2 font-serif text-base font-bold tracking-tight"
+    >
+      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-primary text-brand-primary-foreground">
+        <MapPin className="h-3.5 w-3.5" strokeWidth={2} />
+      </span>
+      Publiqué
+    </Link>
   );
 }
 
-export function SiteHeader({ localities = [] }: { localities?: Location[] }) {
+export function SiteHeader() {
   const [open, setOpen] = React.useState(false);
-  // The homepage hero uses a wider grid (see PUBLIQUE_STYLE_GUIDE.md §8);
-  // the header aligns to the same grid there so both feel like one system.
-  // Every other route keeps the sitewide `.container` (1280px) unchanged.
+  // Navigation floats over the full-bleed hero on the homepage (generous
+  // top/side spacing, no max-width); every other route keeps the
+  // sitewide `.container` (1280px) and a fixed-height bar, unchanged.
   const isHome = usePathname() === "/";
 
   React.useEffect(() => {
@@ -96,36 +53,43 @@ export function SiteHeader({ localities = [] }: { localities?: Location[] }) {
 
   return (
     <header className="sticky top-0 z-50">
-      <div className={cn("flex h-20 items-center justify-between", isHome ? WIDE : "container")}>
-        <div className="flex items-center gap-3">
-          <Link href="/" className="font-serif text-xl font-bold tracking-tight" onClick={() => setOpen(false)}>
-            Publiqué
-          </Link>
-          <LocationSelector localities={localities} />
+      <div
+        className={cn(
+          "flex items-center justify-between",
+          isHome ? `${FULL_BLEED_GUTTER} pt-7 sm:pt-8` : "container h-20"
+        )}
+      >
+        <div className={cn("flex items-center gap-1 rounded-full p-1.5 text-sm font-medium", GLASS)}>
+          <Logo onClick={() => setOpen(false)} />
+          <div className="hidden items-center gap-1 lg:flex">
+            {LINKS.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="rounded-full px-3.5 py-2 transition-colors hover:bg-white/60"
+              >
+                {link.label}
+              </Link>
+            ))}
+            <Link
+              href="/buscar"
+              aria-label="Más"
+              className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-white/60"
+            >
+              <MoreVertical className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
 
-        <nav className={cn("hidden items-center gap-1 rounded-full p-1.5 text-sm font-medium lg:flex", GLASS)}>
-          {LINKS.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className="flex items-center gap-1 rounded-full px-4 py-2 transition-colors hover:bg-white/60"
-            >
-              {link.label}
-              {link.chevron && <ChevronDown className="h-3.5 w-3.5 opacity-60" />}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className={cn("hidden items-center gap-1.5 rounded-full p-1.5 lg:flex", GLASS)}>
           <Link
             href="/buscar"
             aria-label="Buscar"
-            className={cn("flex h-12 w-12 items-center justify-center rounded-full transition-colors hover:bg-white/70", GLASS)}
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-white/80 transition-colors hover:bg-white"
           >
             <Search className="h-4 w-4" />
           </Link>
-          <Link href="/admin/login" className={buttonVariants({ variant: "brand", size: "lg" })}>
+          <Link href="/admin/login" className={buttonVariants({ variant: "brand" })}>
             Publicá tu negocio
           </Link>
         </div>
@@ -151,7 +115,8 @@ export function SiteHeader({ localities = [] }: { localities?: Location[] }) {
 
       <div
         className={cn(
-          "fixed inset-x-0 top-20 bottom-0 z-40 flex-col overflow-y-auto border-t border-border bg-card/95 backdrop-blur lg:hidden",
+          "fixed inset-x-0 bottom-0 z-40 flex-col overflow-y-auto border-t border-border bg-card/95 backdrop-blur lg:hidden",
+          isHome ? "top-24" : "top-20",
           open ? "flex" : "hidden"
         )}
       >
