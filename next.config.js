@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    // Demo business logos (scripts/seed.ts, public/demo-logos/*.svg) are
+    // our own trusted assets, not user-uploaded content -- safe to allow
+    // through next/image's optimizer, unlike arbitrary remote SVGs.
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "attachment",
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       {
         protocol: "https",
