@@ -8,11 +8,10 @@ const POPULAR_SEARCHES = ["Veterinaria", "Plomero", "Comida", "Electricista", "G
 
 /** One photographic hero canvas -- the Mendoza photo is the entire hero,
  * full-bleed, not a card or a right-side column. Nav floats on top of it
- * (see SiteHeader, positioned absolute over this section), so hero
- * content gets extra top padding to clear it instead of the page adding
- * a spacer above the hero. Content shares the same HERO_GRID as the nav
- * so their left edges align, and is capped well below the full-bleed
- * image width so it doesn't stretch on large desktops. */
+ * (see SiteHeader, positioned fixed over this section). Content is a
+ * centered composition (eyebrow/headline/description/search/popular)
+ * directly over the photo, inside the same HERO_GRID the nav uses so
+ * it never expands past that grid on large desktops. */
 export function HeroSearch({ localities = [] }: { localities?: Location[] }) {
   return (
     <section className="relative h-[75vh] w-full overflow-hidden">
@@ -33,22 +32,22 @@ export function HeroSearch({ localities = [] }: { localities?: Location[] }) {
       />
 
       <div className={`relative z-10 flex h-full items-center ${HERO_GRID}`}>
-        <div className="w-full max-w-3xl lg:max-w-5xl">
+        <div className="mx-auto mt-6 flex w-full max-w-[1000px] flex-col items-center text-center sm:mt-10">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-background/75">
             Comercio local, gente real
           </p>
-          <h1 className="mt-4 font-serif font-bold leading-[1.08] tracking-tight text-background text-4xl sm:text-5xl lg:text-6xl 2xl:text-7xl">
+          <h1 className="mt-4 max-w-4xl font-serif font-bold leading-[1.08] tracking-tight text-background text-4xl sm:text-5xl lg:text-6xl 2xl:text-7xl">
             Encontrá lo que necesitás, cerca tuyo.
           </h1>
-          <p className="mt-4 text-base text-background/85 sm:text-lg">
+          <p className="mt-4 max-w-2xl text-base text-background/85 sm:text-lg">
             Descubrí negocios y servicios de tu barrio. Todo en un solo lugar.
           </p>
 
-          <div className="mt-7 max-w-2xl lg:max-w-3xl">
+          <div className="mt-7 w-full max-w-4xl">
             <HeroSearchBar localities={localities} />
           </div>
 
-          <p className="mt-4 flex flex-wrap items-center gap-2 text-sm text-background/85">
+          <p className="mt-4 flex flex-wrap items-center justify-center gap-2 text-sm text-background/85">
             <span className="mr-0.5">Búsquedas populares:</span>
             {POPULAR_SEARCHES.map((q) => (
               <Link
