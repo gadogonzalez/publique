@@ -1,18 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import { HeroSearchBar } from "@/components/home/hero-search-bar";
-import { FULL_BLEED_GUTTER } from "@/components/home/width";
+import { HERO_GRID } from "@/components/home/width";
 import type { Location } from "@/lib/types/database";
 
 const POPULAR_SEARCHES = ["Veterinaria", "Plomero", "Comida", "Electricista", "Gimnasio"];
 
 /** One photographic hero canvas -- the Mendoza photo is the entire hero,
  * full-bleed, not a card or a right-side column. Nav floats on top of it
- * (see SiteHeader); content here sits over the same photo on a gradient
- * scrim, left-anchored to the same page gutter as the nav. */
+ * (see SiteHeader, positioned absolute over this section), so hero
+ * content gets extra top padding to clear it instead of the page adding
+ * a spacer above the hero. Content shares the same HERO_GRID as the nav
+ * so their left edges align, and is capped well below the full-bleed
+ * image width so it doesn't stretch on large desktops. */
 export function HeroSearch({ localities = [] }: { localities?: Location[] }) {
   return (
-    <section className="relative h-[560px] w-full overflow-hidden sm:h-[640px] lg:h-[760px]">
+    <section className="relative min-h-[680px] w-full overflow-hidden md:min-h-[700px] lg:min-h-[720px] xl:min-h-[760px]">
       <Image
         src="/hero-guaymallen.jpg"
         alt="Vista de Guaymallén, Mendoza, con la cordillera de fondo"
@@ -29,12 +32,12 @@ export function HeroSearch({ localities = [] }: { localities?: Location[] }) {
         className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-transparent"
       />
 
-      <div className={`relative z-10 flex h-full items-center ${FULL_BLEED_GUTTER}`}>
-        <div className="max-w-[700px] pt-24 sm:max-w-[800px] lg:pt-16">
+      <div className={`relative z-10 flex h-full items-start ${HERO_GRID}`}>
+        <div className="w-full max-w-2xl pt-32 lg:max-w-3xl lg:pt-40">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-background/75">
             Comercio local, gente real
           </p>
-          <h1 className="mt-4 font-serif font-bold leading-[1.08] tracking-tight text-background text-[clamp(2.5rem,6vw,4.5rem)]">
+          <h1 className="mt-4 font-serif font-bold leading-[1.08] tracking-tight text-background text-4xl sm:text-5xl lg:text-6xl 2xl:text-7xl">
             Encontrá lo que necesitás,
             <br />
             cerca tuyo.
@@ -44,7 +47,7 @@ export function HeroSearch({ localities = [] }: { localities?: Location[] }) {
             lugar.
           </p>
 
-          <div className="mt-7 max-w-2xl">
+          <div className="mt-7 max-w-2xl lg:max-w-3xl">
             <HeroSearchBar localities={localities} />
           </div>
 

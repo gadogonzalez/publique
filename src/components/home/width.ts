@@ -8,7 +8,9 @@ const GUTTER = "px-[clamp(24px,3vw,48px)]";
 export const CONTENT = `mx-auto w-full max-w-[1440px] ${GUTTER}`;
 export const WIDE = `mx-auto w-full max-w-[1520px] ${GUTTER}`;
 
-/** Gutter-only, no max-width -- for the full-bleed hero and the nav that
- * floats over it, where content should spread to the true viewport edges
- * (minus the gutter) rather than center inside a capped box. */
-export const FULL_BLEED_GUTTER = "px-6 sm:px-8 lg:px-12 xl:px-16";
+/** Shared inner grid for the nav + hero content that float over the
+ * full-bleed hero image. The hero BACKGROUND stays 100% width; this is
+ * the max-width that controls the nav and hero content so they don't
+ * stretch indefinitely on large desktops. Tailwind's own breakpoints
+ * only (max-w-screen-2xl = 1536px), no arbitrary custom breakpoints. */
+export const HERO_GRID = "mx-auto w-full max-w-screen-2xl px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12";
