@@ -15,7 +15,7 @@ const POPULAR_SEARCHES = ["Veterinaria", "Plomero", "Comida", "Electricista", "G
  * image width so it doesn't stretch on large desktops. */
 export function HeroSearch({ localities = [] }: { localities?: Location[] }) {
   return (
-    <section className="relative min-h-[680px] w-full overflow-hidden md:min-h-[700px] lg:min-h-[720px] xl:min-h-[760px]">
+    <section className="relative h-[75vh] w-full overflow-hidden">
       <Image
         src="/hero-guaymallen.jpg"
         alt="Vista de Guaymallén, Mendoza, con la cordillera de fondo"
@@ -32,8 +32,8 @@ export function HeroSearch({ localities = [] }: { localities?: Location[] }) {
         className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-transparent"
       />
 
-      <div className={`relative z-10 flex h-full items-start ${HERO_GRID}`}>
-        <div className="w-full max-w-3xl pt-32 lg:max-w-5xl lg:pt-40">
+      <div className={`relative z-10 flex h-full items-center ${HERO_GRID}`}>
+        <div className="w-full max-w-3xl lg:max-w-5xl">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-background/75">
             Comercio local, gente real
           </p>
