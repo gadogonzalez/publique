@@ -33,18 +33,15 @@ export function HeroSearch({ localities = [] }: { localities?: Location[] }) {
       />
 
       <div className={`relative z-10 flex h-full items-start ${HERO_GRID}`}>
-        <div className="w-full max-w-2xl pt-32 lg:max-w-3xl lg:pt-40">
+        <div className="w-full max-w-3xl pt-32 lg:max-w-5xl lg:pt-40">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-background/75">
             Comercio local, gente real
           </p>
           <h1 className="mt-4 font-serif font-bold leading-[1.08] tracking-tight text-background text-4xl sm:text-5xl lg:text-6xl 2xl:text-7xl">
-            Encontrá lo que necesitás,
-            <br />
-            cerca tuyo.
+            Encontrá lo que necesitás, cerca tuyo.
           </h1>
-          <p className="mt-4 max-w-md text-base text-background/85 sm:text-lg">
-            Descubrí negocios y servicios de tu barrio. Todo en un solo
-            lugar.
+          <p className="mt-4 text-base text-background/85 sm:text-lg">
+            Descubrí negocios y servicios de tu barrio. Todo en un solo lugar.
           </p>
 
           <div className="mt-7 max-w-2xl lg:max-w-3xl">
