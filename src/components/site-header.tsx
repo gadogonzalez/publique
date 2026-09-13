@@ -40,8 +40,10 @@ function Logo({ onClick }: { onClick?: () => void }) {
 export function SiteHeader() {
   const [open, setOpen] = React.useState(false);
   // Navigation floats over the full-bleed hero on the homepage (generous
-  // top/side spacing, no max-width); every other route keeps the
-  // sitewide `.container` (1280px) and a fixed-height bar, unchanged.
+  // top/side spacing, no max-width) and stays pinned while scrolling via
+  // position:fixed (out of flow, so it never reserves layout space above
+  // the hero, unlike `sticky`); every other route keeps the sitewide
+  // `.container` (1280px) and a fixed-height sticky bar, unchanged.
   const isHome = usePathname() === "/";
 
   React.useEffect(() => {
@@ -52,7 +54,7 @@ export function SiteHeader() {
   }, [open]);
 
   return (
-    <header className={cn("z-50", isHome ? "absolute inset-x-0 top-0" : "sticky top-0")}>
+    <header className={cn("z-50", isHome ? "fixed inset-x-0 top-0" : "sticky top-0")}>
       <div
         className={cn(
           "flex items-center justify-between",
