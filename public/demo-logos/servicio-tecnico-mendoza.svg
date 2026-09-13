@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+  <defs>
+    <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8FA3B8"/>
+      <stop offset="45%" stop-color="#3F5468"/>
+      <stop offset="100%" stop-color="#1C2733"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" fill="#101820"/>
+  <rect x="70" y="70" width="660" height="660" rx="20" fill="url(#metal)" stroke="#0A0F14" stroke-width="8"/>
+  <g transform="translate(400,320)" stroke="#E8EEF2" stroke-width="16" fill="none" stroke-linecap="round">
+    <path d="M-90,-40 L-30,20 L-60,50 L-120,-10 Z" fill="#E8EEF2" stroke="none"/>
+    <path d="M40,-70 A50,50 0 1 1 30,20 L90,80" />
+  </g>
+  <text x="400" y="540" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="42" font-weight="bold" fill="#E8EEF2" letter-spacing="1">SERVICIO TÉCNICO</text>
+  <text x="400" y="588" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="34" fill="#7FD1D9" letter-spacing="4">MENDOZA</text>
+</svg>

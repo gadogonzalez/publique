@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+  <rect width="800" height="800" fill="#FDF8F0"/>
+  <circle cx="300" cy="360" r="150" fill="#0F9B8E"/>
+  <circle cx="470" cy="360" r="150" fill="#E8672C" opacity="0.9"/>
+  <text x="400" y="400" text-anchor="middle" font-family="Comic Sans MS, Trebuchet MS, sans-serif" font-size="150" font-weight="bold" fill="#FFFFFF">PSJ</text>
+  <text x="400" y="590" text-anchor="middle" font-family="Trebuchet MS, sans-serif" font-size="42" font-weight="bold" fill="#0F9B8E">Plomería</text>
+  <text x="400" y="638" text-anchor="middle" font-family="Trebuchet MS, sans-serif" font-size="30" fill="#E8672C">San José</text>
+</svg>

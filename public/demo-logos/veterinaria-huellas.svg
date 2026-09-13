@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+  <rect width="800" height="800" fill="#FBEEDD"/>
+  <circle cx="400" cy="400" r="340" fill="#F3C97C"/>
+  <g fill="#7A4A2B">
+    <ellipse cx="400" cy="420" rx="90" ry="70"/>
+    <ellipse cx="300" cy="310" rx="42" ry="52"/>
+    <ellipse cx="500" cy="310" rx="42" ry="52"/>
+    <ellipse cx="330" cy="230" rx="34" ry="42"/>
+    <ellipse cx="470" cy="230" rx="34" ry="42"/>
+  </g>
+  <text x="400" y="580" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="66" font-style="italic" fill="#7A4A2B">Huellas</text>
+  <text x="400" y="628" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#7A4A2B" letter-spacing="5">VETERINARIA</text>
+</svg>

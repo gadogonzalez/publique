@@ -125,14 +125,17 @@ async function main() {
     { name: "Cerrajeros", category: "Servicios para el hogar" },
     { name: "Jardineros", category: "Servicios para el hogar" },
     { name: "Climatización", category: "Servicios para el hogar" },
+    { name: "Refrigeración", category: "Servicios para el hogar" },
     { name: "Reparación de celulares y PC", category: "Servicios para el hogar" },
     { name: "Pintores", category: "Construcción" },
     { name: "Albañiles", category: "Construcción" },
     { name: "Carpintería", category: "Construcción" },
+    { name: "Ferretería", category: "Construcción" },
     { name: "Viandas", category: "Gastronomía" },
     { name: "Mecánica general", category: "Automotor" },
     { name: "Gomería", category: "Automotor" },
     { name: "Kinesiología", category: "Salud" },
+    { name: "Gimnasios", category: "Salud" },
     { name: "Peluquería y estética", category: "Belleza" },
     { name: "Gestoría y trámites", category: "Profesionales" },
     { name: "Veterinaria", category: "Mascotas" },
@@ -217,6 +220,10 @@ async function main() {
     name: string;
     short_description: string;
     long_description: string;
+    // Demo brand asset (public/demo-logos/*.svg) -- deliberately varied
+    // per business (see PUBLIQUE_STYLE_GUIDE.md note on realistic demo
+    // content), never Publiqué's own design system.
+    cover_image_url?: string;
     whatsapp: string;
     phone: string;
     address: string;
@@ -261,6 +268,7 @@ async function main() {
       short_description: "Electricista matriculado para hogares y comercios.",
       long_description:
         "Instalaciones eléctricas, tableros, cortocircuitos y emergencias las 24hs. Trabajo prolijo y con presupuesto previo.",
+      cover_image_url: "/demo-logos/electricidad-perez.svg",
       whatsapp: "5492615551002",
       phone: "2615551002",
       address: "Av. Boulogne Sur Mer 320, San José",
@@ -285,6 +293,7 @@ async function main() {
       short_description: "Viandas caseras diarias, entrega a domicilio.",
       long_description:
         "Comida casera de lunes a viernes con menú semanal. Opciones sin sal y vegetarianas. Pedidos por WhatsApp con 1 día de anticipación.",
+      cover_image_url: "/demo-logos/viandas-dona-rosa.svg",
       whatsapp: "5492615551003",
       phone: "2615551003",
       address: "Calle Argentina 875, Villa Nueva",
@@ -308,6 +317,7 @@ async function main() {
       short_description: "Gomería, mecánica general y auxilio.",
       long_description:
         "Reparación de pinchaduras, alineación, balanceo y mecánica general para autos y camionetas. Auxilio en zona El Sauce.",
+      cover_image_url: "/demo-logos/gomeria-mecanica-el-sauce.svg",
       whatsapp: "5492615551004",
       phone: "2615551004",
       address: "Ruta Provincial 50 Km 8, El Sauce",
@@ -348,6 +358,7 @@ async function main() {
       short_description: "Destapaciones, pérdidas de agua e instalaciones sanitarias.",
       long_description:
         "Plomero matriculado con más de 10 años de experiencia. Destapaciones, reparación de pérdidas, instalación de sanitarios y termotanques. Presupuesto sin cargo.",
+      cover_image_url: "/demo-logos/plomeria-san-jose.svg",
       whatsapp: "5492615551006",
       phone: "2615551006",
       address: "Calle Rivadavia 640, San José",
@@ -372,6 +383,7 @@ async function main() {
       short_description: "Cerrajero urgente las 24 horas, copias de llaves.",
       long_description:
         "Aperturas de puertas, cambio de cerraduras, copias de llaves y cerrajería para autos. Atención urgente los 365 días del año en Guaymallén.",
+      cover_image_url: "/demo-logos/cerrajeria-dorrego.svg",
       whatsapp: "5492615551007",
       phone: "2615551007",
       address: "Calle San Martín 980, Dorrego",
@@ -412,6 +424,7 @@ async function main() {
       short_description: "Reparación de celulares, PC y notebooks.",
       long_description:
         "Cambio de pantallas, baterías y reparación de placas para celulares, PC y notebooks de todas las marcas. Diagnóstico sin cargo y entrega en 24-48hs.",
+      cover_image_url: "/demo-logos/servicio-tecnico-mendoza.svg",
       whatsapp: "5492615551009",
       phone: "2615551009",
       address: "Calle Costa Rica 455, Buena Nueva",
@@ -468,6 +481,7 @@ async function main() {
       short_description: "Gomería, mecánica general y auxilio.",
       long_description:
         "Reparación de pinchaduras, alineación, balanceo y mecánica general para autos y camionetas. Auxilio en zona El Sauce.",
+      cover_image_url: "/demo-logos/gomeria-mecanica-el-sauce.svg",
       whatsapp: "5492615551004",
       phone: "2615551004",
       address: "Ruta Provincial 50 Km 8, El Sauce",
@@ -492,6 +506,7 @@ async function main() {
       short_description: "Consultas, vacunación y peluquería canina y felina.",
       long_description:
         "Atención veterinaria integral: consultas clínicas, vacunación, desparasitación, cirugías de rutina y peluquería para perros y gatos.",
+      cover_image_url: "/demo-logos/veterinaria-huellas.svg",
       whatsapp: "5492615551012",
       phone: "2615551012",
       address: "Calle Bandera de los Andes 560, Bermejo",
@@ -516,6 +531,7 @@ async function main() {
       short_description: "Peluquería, manicura y tratamientos de belleza.",
       long_description:
         "Salón de belleza integral: corte y color, manicura, pedicura y tratamientos faciales. Turnos por WhatsApp de martes a sábado.",
+      cover_image_url: "/demo-logos/estetica-magnolia.svg",
       whatsapp: "5492615551013",
       phone: "2615551013",
       address: "Calle Chile 145, San José",
@@ -539,6 +555,7 @@ async function main() {
       short_description: "Rehabilitación, kinesiología deportiva y a domicilio.",
       long_description:
         "Tratamiento de lesiones, rehabilitación post-quirúrgica y kinesiología deportiva. Atención en consultorio y a domicilio en Guaymallén.",
+      cover_image_url: "/demo-logos/kinesiologia-bermejo.svg",
       whatsapp: "5492615551014",
       phone: "2615551014",
       address: "Calle Emilio Civit 90, Bermejo",
@@ -566,6 +583,73 @@ async function main() {
       featured: false,
       plan: "Básico",
     },
+    {
+      name: "Frío Sur Refrigeración",
+      short_description: "Instalación y reparación de heladeras y freezers comerciales.",
+      long_description:
+        "Service técnico especializado en heladeras, freezers y cámaras frigoríficas para comercios y hogares. Repuestos originales y garantía escrita.",
+      cover_image_url: "/demo-logos/frio-sur-refrigeracion.svg",
+      whatsapp: "5492615551016",
+      phone: "2615551016",
+      address: "Calle Roca 780, Nueva Ciudad",
+      location: "Nueva Ciudad",
+      serviceAreas: ["Nueva Ciudad", "Buena Nueva"],
+      categories: ["Servicios para el hogar"],
+      services: ["Refrigeración"],
+      status: "active",
+      featured: false,
+      plan: "Básico",
+    },
+    {
+      name: "Ferretería Cuyo",
+      short_description: "Herramientas, materiales de construcción y artículos para el hogar.",
+      long_description:
+        "Ferretería de barrio con más de 20 años en Guaymallén: herramientas, tornillería, pinturas y materiales de construcción. Asesoramiento para changas y obra.",
+      cover_image_url: "/demo-logos/ferreteria-cuyo.svg",
+      whatsapp: "5492615551017",
+      phone: "2615551017",
+      address: "Calle San Martín 2100, Dorrego",
+      location: "Dorrego",
+      serviceAreas: ["Dorrego", "Villa Nueva"],
+      categories: ["Construcción"],
+      services: ["Ferretería"],
+      status: "active",
+      featured: false,
+      plan: "Básico",
+      hours: [
+        { day: 1, opens: "08:30", closes: "13:00" },
+        { day: 2, opens: "08:30", closes: "13:00" },
+        { day: 3, opens: "08:30", closes: "13:00" },
+        { day: 4, opens: "08:30", closes: "13:00" },
+        { day: 5, opens: "08:30", closes: "13:00" },
+        { day: 6, opens: "09:00", closes: "13:00" },
+      ],
+    },
+    {
+      name: "PowerZone Gimnasio",
+      short_description: "Musculación, funcional y clases grupales.",
+      long_description:
+        "Gimnasio equipado con musculación, zona funcional y clases grupales (spinning, HIIT, yoga). Planes mensuales y trimestrales, primera clase sin cargo.",
+      cover_image_url: "/demo-logos/powerzone-gimnasio.svg",
+      whatsapp: "5492615551018",
+      phone: "2615551018",
+      address: "Av. Champagnat 640, Villa Nueva",
+      location: "Villa Nueva",
+      serviceAreas: ["Villa Nueva", "San José"],
+      categories: ["Salud"],
+      services: ["Gimnasios"],
+      status: "active",
+      featured: true,
+      plan: "Destacado",
+      hours: [
+        { day: 1, opens: "07:00", closes: "22:00" },
+        { day: 2, opens: "07:00", closes: "22:00" },
+        { day: 3, opens: "07:00", closes: "22:00" },
+        { day: 4, opens: "07:00", closes: "22:00" },
+        { day: 5, opens: "07:00", closes: "22:00" },
+        { day: 6, opens: "09:00", closes: "14:00" },
+      ],
+    },
   ];
 
   for (const b of businessSeeds) {
@@ -585,9 +669,11 @@ async function main() {
           status: b.status,
           featured: b.featured,
           plan_id: planId(b.plan),
-          // No logo/cover: the UI falls back to a category-colored icon
-          // tile (src/components/business-thumb.tsx) rather than a
-          // hotlinked placeholder image. Add real photos via /admin.
+          // Demo brand asset if set (public/demo-logos/*.svg); otherwise
+          // the UI falls back to a category-colored icon tile
+          // (src/components/business-thumb.tsx) rather than a hotlinked
+          // placeholder image. Add real photos via /admin.
+          cover_image_url: b.cover_image_url ?? null,
         },
         { onConflict: "slug" }
       )
