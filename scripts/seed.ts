@@ -132,10 +132,13 @@ async function main() {
     { name: "Carpintería", category: "Construcción" },
     { name: "Ferretería", category: "Construcción" },
     { name: "Viandas", category: "Gastronomía" },
+    { name: "Panadería y cafetería", category: "Gastronomía" },
+    { name: "Hamburguesas y comida rápida", category: "Gastronomía" },
     { name: "Mecánica general", category: "Automotor" },
     { name: "Gomería", category: "Automotor" },
     { name: "Kinesiología", category: "Salud" },
     { name: "Gimnasios", category: "Salud" },
+    { name: "Farmacia", category: "Salud" },
     { name: "Peluquería y estética", category: "Belleza" },
     { name: "Gestoría y trámites", category: "Profesionales" },
     { name: "Veterinaria", category: "Mascotas" },
@@ -220,9 +223,10 @@ async function main() {
     name: string;
     short_description: string;
     long_description: string;
-    // Demo brand asset (public/demo-logos/*.svg) -- deliberately varied
-    // per business (see PUBLIQUE_STYLE_GUIDE.md note on realistic demo
-    // content), never Publiqué's own design system.
+    // Demo brand asset (public/demo-logos/*.jpg or *.svg) -- deliberately
+    // varied per business (real-world logo photography for most, a
+    // couple of plainer flat marks for the rest), never Publiqué's own
+    // design system.
     cover_image_url?: string;
     whatsapp: string;
     phone: string;
@@ -264,11 +268,11 @@ async function main() {
       extraKeywords: ["urgencias", "atención los 7 días"],
     },
     {
-      name: "Electricidad Pérez",
+      name: "Nexo Electricidad",
       short_description: "Electricista matriculado para hogares y comercios.",
       long_description:
         "Instalaciones eléctricas, tableros, cortocircuitos y emergencias las 24hs. Trabajo prolijo y con presupuesto previo.",
-      cover_image_url: "/demo-logos/electricidad-perez.svg",
+      cover_image_url: "/demo-logos/nexo-electricidad.jpg",
       whatsapp: "5492615551002",
       phone: "2615551002",
       address: "Av. Boulogne Sur Mer 320, San José",
@@ -289,18 +293,18 @@ async function main() {
       ],
     },
     {
-      name: "Viandas Doña Rosa",
-      short_description: "Viandas caseras diarias, entrega a domicilio.",
+      name: "La Dulce Panadería & Cafetería",
+      short_description: "Panadería y cafetería de barrio con productos caseros.",
       long_description:
-        "Comida casera de lunes a viernes con menú semanal. Opciones sin sal y vegetarianas. Pedidos por WhatsApp con 1 día de anticipación.",
-      cover_image_url: "/demo-logos/viandas-dona-rosa.svg",
+        "Pan casero, facturas y repostería horneada todos los días. Cafetería con desayunos y meriendas. También hacemos viandas por encargo.",
+      cover_image_url: "/demo-logos/la-dulce-panaderia.jpg",
       whatsapp: "5492615551003",
       phone: "2615551003",
       address: "Calle Argentina 875, Villa Nueva",
       location: "Villa Nueva",
       serviceAreas: ["Villa Nueva", "Bermejo"],
       categories: ["Gastronomía"],
-      services: ["Viandas"],
+      services: ["Panadería y cafetería", "Viandas"],
       status: "active",
       featured: true,
       plan: "Destacado",
@@ -313,11 +317,11 @@ async function main() {
       ],
     },
     {
-      name: "Gomería y Mecánica El Sauce",
+      name: "DM Automotores",
       short_description: "Gomería, mecánica general y auxilio.",
       long_description:
         "Reparación de pinchaduras, alineación, balanceo y mecánica general para autos y camionetas. Auxilio en zona El Sauce.",
-      cover_image_url: "/demo-logos/gomeria-mecanica-el-sauce.svg",
+      cover_image_url: "/demo-logos/dm-automotores.jpg",
       whatsapp: "5492615551004",
       phone: "2615551004",
       address: "Ruta Provincial 50 Km 8, El Sauce",
@@ -379,11 +383,11 @@ async function main() {
       extraKeywords: ["pérdida de agua urgente"],
     },
     {
-      name: "Cerrajería Dorrego",
+      name: "AW Cerrajería",
       short_description: "Cerrajero urgente las 24 horas, copias de llaves.",
       long_description:
         "Aperturas de puertas, cambio de cerraduras, copias de llaves y cerrajería para autos. Atención urgente los 365 días del año en Guaymallén.",
-      cover_image_url: "/demo-logos/cerrajeria-dorrego.svg",
+      cover_image_url: "/demo-logos/aw-cerrajeria.jpg",
       whatsapp: "5492615551007",
       phone: "2615551007",
       address: "Calle San Martín 980, Dorrego",
@@ -477,11 +481,11 @@ async function main() {
       plan: "Básico",
     },
     {
-      name: "Gomería y Mecánica El Sauce",
+      name: "DM Automotores",
       short_description: "Gomería, mecánica general y auxilio.",
       long_description:
         "Reparación de pinchaduras, alineación, balanceo y mecánica general para autos y camionetas. Auxilio en zona El Sauce.",
-      cover_image_url: "/demo-logos/gomeria-mecanica-el-sauce.svg",
+      cover_image_url: "/demo-logos/dm-automotores.jpg",
       whatsapp: "5492615551004",
       phone: "2615551004",
       address: "Ruta Provincial 50 Km 8, El Sauce",
@@ -502,11 +506,11 @@ async function main() {
       ],
     },
     {
-      name: "Veterinaria Huellas",
+      name: "Patitas Pet Shop",
       short_description: "Consultas, vacunación y peluquería canina y felina.",
       long_description:
         "Atención veterinaria integral: consultas clínicas, vacunación, desparasitación, cirugías de rutina y peluquería para perros y gatos.",
-      cover_image_url: "/demo-logos/veterinaria-huellas.svg",
+      cover_image_url: "/demo-logos/patitas-pet-shop.jpg",
       whatsapp: "5492615551012",
       phone: "2615551012",
       address: "Calle Bandera de los Andes 560, Bermejo",
@@ -527,11 +531,11 @@ async function main() {
       ],
     },
     {
-      name: "Estética Magnolia",
+      name: "Luna Estética & Belleza",
       short_description: "Peluquería, manicura y tratamientos de belleza.",
       long_description:
         "Salón de belleza integral: corte y color, manicura, pedicura y tratamientos faciales. Turnos por WhatsApp de martes a sábado.",
-      cover_image_url: "/demo-logos/estetica-magnolia.svg",
+      cover_image_url: "/demo-logos/luna-estetica.jpg",
       whatsapp: "5492615551013",
       phone: "2615551013",
       address: "Calle Chile 145, San José",
@@ -551,27 +555,28 @@ async function main() {
       ],
     },
     {
-      name: "Kinesiología Bermejo",
-      short_description: "Rehabilitación, kinesiología deportiva y a domicilio.",
+      name: "Farmacia Vida Sana",
+      short_description: "Farmacia de barrio con perfumería y medicamentos genéricos.",
       long_description:
-        "Tratamiento de lesiones, rehabilitación post-quirúrgica y kinesiología deportiva. Atención en consultorio y a domicilio en Guaymallén.",
-      cover_image_url: "/demo-logos/kinesiologia-bermejo.svg",
+        "Farmacia de barrio con atención personalizada, medicamentos genéricos, perfumería y envíos a domicilio. Turnos de farmacéutico de guardia disponibles.",
+      cover_image_url: "/demo-logos/farmacia-vida-sana.jpg",
       whatsapp: "5492615551014",
       phone: "2615551014",
       address: "Calle Emilio Civit 90, Bermejo",
       location: "Bermejo",
       serviceAreas: ["Bermejo", "Buena Nueva"],
       categories: ["Salud"],
-      services: ["Kinesiología"],
+      services: ["Farmacia"],
       status: "active",
       featured: false,
       plan: "Básico",
     },
     {
-      name: "Gestoría Cuyo",
+      name: "Acceso Directo",
       short_description: "Trámites de autos, ANSES y habilitaciones comerciales.",
       long_description:
         "Gestoría integral: transferencias de autos, trámites previsionales, habilitaciones comerciales y liquidación de impuestos. Retiramos la documentación en tu domicilio.",
+      cover_image_url: "/demo-logos/acceso-directo.jpg",
       whatsapp: "5492615551015",
       phone: "2615551015",
       address: "Calle Ozamis 210, Buena Nueva",
@@ -584,11 +589,11 @@ async function main() {
       plan: "Básico",
     },
     {
-      name: "Frío Sur Refrigeración",
+      name: "MB Refrigeración",
       short_description: "Instalación y reparación de heladeras y freezers comerciales.",
       long_description:
         "Service técnico especializado en heladeras, freezers y cámaras frigoríficas para comercios y hogares. Repuestos originales y garantía escrita.",
-      cover_image_url: "/demo-logos/frio-sur-refrigeracion.svg",
+      cover_image_url: "/demo-logos/mb-refrigeracion.jpg",
       whatsapp: "5492615551016",
       phone: "2615551016",
       address: "Calle Roca 780, Nueva Ciudad",
@@ -601,11 +606,11 @@ async function main() {
       plan: "Básico",
     },
     {
-      name: "Ferretería Cuyo",
+      name: "El Galpón Ferretería",
       short_description: "Herramientas, materiales de construcción y artículos para el hogar.",
       long_description:
         "Ferretería de barrio con más de 20 años en Guaymallén: herramientas, tornillería, pinturas y materiales de construcción. Asesoramiento para changas y obra.",
-      cover_image_url: "/demo-logos/ferreteria-cuyo.svg",
+      cover_image_url: "/demo-logos/el-galpon-ferreteria.jpg",
       whatsapp: "5492615551017",
       phone: "2615551017",
       address: "Calle San Martín 2100, Dorrego",
@@ -626,11 +631,11 @@ async function main() {
       ],
     },
     {
-      name: "PowerZone Gimnasio",
+      name: "FitZone Gimnasio",
       short_description: "Musculación, funcional y clases grupales.",
       long_description:
         "Gimnasio equipado con musculación, zona funcional y clases grupales (spinning, HIIT, yoga). Planes mensuales y trimestrales, primera clase sin cargo.",
-      cover_image_url: "/demo-logos/powerzone-gimnasio.svg",
+      cover_image_url: "/demo-logos/fitzone-gimnasio.jpg",
       whatsapp: "5492615551018",
       phone: "2615551018",
       address: "Av. Champagnat 640, Villa Nueva",
@@ -648,6 +653,30 @@ async function main() {
         { day: 4, opens: "07:00", closes: "22:00" },
         { day: 5, opens: "07:00", closes: "22:00" },
         { day: 6, opens: "09:00", closes: "14:00" },
+      ],
+    },
+    {
+      name: "El Encuentro",
+      short_description: "Hamburguesas artesanales y comida rápida.",
+      long_description:
+        "Hamburguesas artesanales, papas y combos para comer en el local o pedir por WhatsApp. Carta de tragos sin alcohol y opciones vegetarianas.",
+      cover_image_url: "/demo-logos/el-encuentro-burgers.jpg",
+      whatsapp: "5492615551019",
+      phone: "2615551019",
+      address: "Calle Lavalle 410, Buena Nueva",
+      location: "Buena Nueva",
+      serviceAreas: ["Buena Nueva", "Nueva Ciudad"],
+      categories: ["Gastronomía"],
+      services: ["Hamburguesas y comida rápida"],
+      status: "active",
+      featured: false,
+      plan: "Básico",
+      hours: [
+        { day: 3, opens: "20:00", closes: "00:00" },
+        { day: 4, opens: "20:00", closes: "00:00" },
+        { day: 5, opens: "20:00", closes: "01:00" },
+        { day: 6, opens: "20:00", closes: "01:00" },
+        { day: 0, opens: "20:00", closes: "00:00" },
       ],
     },
   ];
@@ -669,7 +698,7 @@ async function main() {
           status: b.status,
           featured: b.featured,
           plan_id: planId(b.plan),
-          // Demo brand asset if set (public/demo-logos/*.svg); otherwise
+          // Demo brand asset if set (public/demo-logos/*); otherwise
           // the UI falls back to a category-colored icon tile
           // (src/components/business-thumb.tsx) rather than a hotlinked
           // placeholder image. Add real photos via /admin.
