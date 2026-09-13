@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-import { WIDE } from "@/components/home/width";
+import { HERO_GRID } from "@/components/home/width";
 
 /** The one substantial full-width dark section (PUBLIQUE_STYLE_GUIDE.md
  * §3, §7): near-black background, white type, one pink CTA -- a real
@@ -8,7 +8,7 @@ import { WIDE } from "@/components/home/width";
 export function CommunityBanner() {
   return (
     <section className="bg-foreground py-20 text-background sm:py-28">
-      <div className={WIDE}>
+      <div className={HERO_GRID}>
         <p className="text-xs font-semibold uppercase tracking-[0.08em] text-background/60">
           Para negocios
         </p>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { WIDE } from "@/components/home/width";
+import { HERO_GRID } from "@/components/home/width";
 
 /** The one full-bleed brand-color moment on the page. Corrected pass:
  * lavender/purple surface derived from the Phantom reference, replacing
@@ -10,7 +10,7 @@ import { WIDE } from "@/components/home/width";
 export function BrandStatement() {
   return (
     <section className="bg-brand-surface-strong py-20 text-foreground sm:py-28">
-      <div className={WIDE}>
+      <div className={HERO_GRID}>
         <p className="text-xs font-semibold uppercase tracking-[0.08em]">Tu barrio</p>
         <h2 className="mt-3 font-serif font-bold leading-[0.92] tracking-tight text-[clamp(2.75rem,9vw,7rem)]">
           En un solo
