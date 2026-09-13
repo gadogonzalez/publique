@@ -85,14 +85,17 @@ export function SiteHeader() {
 
         <div className={cn("hidden items-center gap-1.5 rounded-full p-1.5 lg:flex", GLASS)}>
           <Link
+            href="/admin/login"
+            className={cn(buttonVariants({ variant: "brand" }), "rounded-[50px]")}
+          >
+            Publicá tu negocio
+          </Link>
+          <Link
             href="/buscar"
             aria-label="Buscar"
             className="flex h-11 w-11 items-center justify-center rounded-full bg-white/80 transition-colors hover:bg-white"
           >
             <Search className="h-4 w-4" />
-          </Link>
-          <Link href="/admin/login" className={buttonVariants({ variant: "brand" })}>
-            Publicá tu negocio
           </Link>
         </div>
 
