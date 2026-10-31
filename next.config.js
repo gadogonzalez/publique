@@ -4,8 +4,11 @@ const nextConfig = {
     // Demo business logos (scripts/seed.ts, public/demo-logos/*.svg) are
     // our own trusted assets, not user-uploaded content -- safe to allow
     // through next/image's optimizer, unlike arbitrary remote SVGs.
+    // contentDispositionType explicitly "inline": Next.js's real default
+    // for SVGs is "attachment" (even with dangerouslyAllowSVG on), which
+    // made Safari/iOS try to download these instead of displaying them.
     dangerouslyAllowSVG: true,
-    contentDispositionType: "attachment",
+    contentDispositionType: "inline",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       {

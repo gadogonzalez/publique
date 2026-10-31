@@ -12,8 +12,8 @@ import type { BusinessWithRelations } from "@/lib/types/database";
 /** Homepage-only cover image: real photo -> Pexels category placeholder ->
  * monochrome category icon tile. Never a broken image. Kept separate from
  * the shared BusinessThumb (used by /buscar and the profile page) so this
- * fallback chain never affects those routes. Shared by the discovery grid
- * card and the editorial spotlight module. */
+ * fallback chain never affects those routes. Shared by the featured card
+ * and the list row. */
 export function FeaturedBusinessCoverOnly({
   business,
   className,
@@ -52,27 +52,16 @@ export function FeaturedBusinessCoverOnly({
   );
 }
 
-/** Editorial, photo-first business card for the homepage discovery grid.
- * Single interaction: open the business profile. No WhatsApp/call/quote
- * actions -- those belong on the profile page, not on discovery.
- *
- * `featured` breaks the grid (PUBLIQUE_STYLE_GUIDE.md §16): one large item
- * dominates instead of every business being squeezed into the same cell. */
-export function FeaturedBusinessCard({
-  business,
-  featured = false,
-}: {
-  business: BusinessWithRelations;
-  featured?: boolean;
-}) {
+/** Editorial, photo-first business card -- the top 3 "destacados" on the
+ * homepage. Single interaction: open the business profile. No WhatsApp/
+ * call/quote actions -- those belong on the profile page, not on
+ * discovery. */
+export function FeaturedBusinessCard({ business }: { business: BusinessWithRelations }) {
   const category = business.categories[0];
   return (
     <Link href={`/negocios/${business.slug}`} className="group block h-full overflow-hidden rounded-lg">
       <div className="relative">
-        <FeaturedBusinessCoverOnly
-          business={business}
-          className={cn("w-full", featured ? "aspect-[16/10]" : "aspect-[4/3]")}
-        />
+        <FeaturedBusinessCoverOnly business={business} className="aspect-[4/3] w-full" />
         {category && (
           <span className="absolute left-3 top-3 rounded-full bg-background/90 px-2.5 py-1 text-xs font-medium text-foreground">
             {category.name}
@@ -80,14 +69,7 @@ export function FeaturedBusinessCard({
         )}
       </div>
       <div className="mt-3">
-        <h3
-          className={cn(
-            "font-serif font-bold leading-tight tracking-tight",
-            featured ? "text-2xl sm:text-3xl" : "text-lg"
-          )}
-        >
-          {business.name}
-        </h3>
+        <h3 className="font-serif text-lg font-bold leading-tight tracking-tight">{business.name}</h3>
         {business.location && (
           <p className="mt-1 flex items-center gap-1 text-sm text-muted-foreground">
             <MapPin className="h-3.5 w-3.5" />
@@ -95,14 +77,7 @@ export function FeaturedBusinessCard({
           </p>
         )}
         {business.short_description && (
-          <p
-            className={cn(
-              "mt-1 text-sm text-muted-foreground",
-              featured ? "max-w-md line-clamp-2" : "line-clamp-1"
-            )}
-          >
-            {business.short_description}
-          </p>
+          <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">{business.short_description}</p>
         )}
       </div>
     </Link>
