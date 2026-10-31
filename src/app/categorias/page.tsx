@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CategoryCard } from "@/components/category-card";
+import { HERO_GRID } from "@/components/home/width";
 import { getCategories, getCategoryBusinessCounts } from "@/lib/data/taxonomy";
 
 export const metadata: Metadata = {
@@ -10,7 +11,7 @@ export default async function CategoriasIndexPage() {
   const [categories, counts] = await Promise.all([getCategories(), getCategoryBusinessCounts()]);
 
   return (
-    <div className="container py-8">
+    <div className={`${HERO_GRID} py-8`}>
       <h1 className="font-serif text-2xl font-bold tracking-tight sm:text-3xl">Categorías</h1>
       <p className="mt-2 max-w-2xl text-muted-foreground">
         Explorá los negocios de Guaymallén por rubro.
