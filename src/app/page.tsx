@@ -29,7 +29,7 @@ export default async function HomePage() {
           <div className="mb-6 flex items-center justify-between">
             <h2 className="font-serif text-2xl font-bold tracking-tight">Explorá por categoría</h2>
             <Link
-              href="/buscar"
+              href="/categorias"
               className="flex shrink-0 items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground"
             >
               Ver todas <ArrowRight className="h-3.5 w-3.5" />
