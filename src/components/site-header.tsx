@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
+import { Menu, X } from "lucide-react";
 import { PubliqueIsotipo } from "@/components/brand/isotipo";
 import { CategoryPictogram } from "@/components/category-icon";
 import { HERO_GRID } from "@/components/home/width";
@@ -78,7 +78,7 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
             className={cn(ACTION_BUTTON, "border border-border px-3 hover:bg-secondary sm:px-4")}
           >
-            <MenuToggleIcon open={open} duration={250} className="h-4 w-4" />
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             <span className="hidden sm:inline">Menú</span>
           </button>
         </div>
@@ -89,9 +89,12 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
           <div aria-hidden className="fixed left-0 right-0 top-20 bottom-0 z-40 bg-black/20" />
           <div
             ref={panelRef}
-            className="fixed inset-x-3 top-[5.5rem] z-50 max-h-[calc(100vh-7rem)] overflow-y-auto rounded-2xl border border-border bg-card shadow-2xl sm:inset-x-6"
+            className={cn(
+              "fixed inset-x-0 top-[5.5rem] z-50 max-h-[calc(100vh-7rem)] overflow-y-auto rounded-2xl border border-border bg-card shadow-2xl",
+              HERO_GRID
+            )}
           >
-            <div className={cn("py-8", HERO_GRID)}>
+            <div className="py-8">
               <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Categorías
               </p>
