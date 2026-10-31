@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!--
+    Hand-built recreation of the Publiqué isotype from the brand manual's
+    reference image (the vector master -- 03_Isotipo.svg per the manual's
+    checklist -- was not available). Swap this file for the real vector
+    asset when it's on hand; this is a close approximation, not the
+    official file.
+  -->
+  <defs>
+    <linearGradient id="publique-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C42EF" />
+      <stop offset="100%" stop-color="#2F8CFE" />
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="98" fill="url(#publique-gradient)" />
+  <circle cx="100" cy="94" r="36" fill="#FFFFFF" />
+  <circle cx="100" cy="94" r="23" fill="url(#publique-gradient)" />
+  <rect
+    x="79.3"
+    y="126.3"
+    width="42.4"
+    height="42.4"
+    rx="9"
+    fill="#FFFFFF"
+    transform="rotate(45 100 147.5)"
+  />
+</svg>

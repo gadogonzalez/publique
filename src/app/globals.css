@@ -4,9 +4,11 @@
 
 @layer base {
   :root {
-    --font-serif:
-      -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
-      "Helvetica Neue", Arial, sans-serif;
+    /* Brand manual §05: Poppins (ExtraBold/SemiBold/Regular), Montserrat
+     * as the documented fallback. Loaded via next/font in layout.tsx
+     * (--font-poppins); key kept as --font-serif so the font-serif
+     * utility used across every component doesn't need a rename. */
+    --font-serif: var(--font-poppins), Montserrat, ui-sans-serif, system-ui, sans-serif;
     --background: 40 33% 98%;
     --foreground: 20 14% 12%;
     --card: 0 0% 100%;

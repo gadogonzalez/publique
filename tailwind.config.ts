@@ -62,7 +62,7 @@ const config: Config = {
       },
       fontFamily: {
         // Key kept as "serif" to avoid renaming font-serif across every
-        // component -- it now loads a display grotesque, not a serif.
+        // component -- it loads Poppins (brand manual §05), not a serif.
         serif: ["var(--font-serif)", "ui-sans-serif", "system-ui", "sans-serif"],
       },
     },

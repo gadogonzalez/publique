@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Instagram, Facebook } from "lucide-react";
 
@@ -11,7 +12,10 @@ export function SiteFooter() {
     <footer className="border-t border-border py-12 text-sm">
       <div className="container grid grid-cols-2 gap-8 sm:grid-cols-4">
         <div className="col-span-2 sm:col-span-1">
-          <p className="font-serif text-lg text-foreground">Publiqué</p>
+          <p className="flex items-center gap-2 font-serif text-lg font-bold text-foreground">
+            <Image src="/brand/isotipo.svg" alt="" width={22} height={22} className="h-[22px] w-[22px]" />
+            Publiqué
+          </p>
           <p className="mt-1 text-muted-foreground">Guaymallén, Mendoza</p>
           <p className="mt-3 max-w-[22ch] text-muted-foreground">
             Conectando personas con negocios reales de tu barrio.
