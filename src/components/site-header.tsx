@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MapPin, MoreVertical, Search } from "lucide-react";
+import { MoreVertical, Search } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
 import { HERO_GRID } from "@/components/home/width";
@@ -29,9 +30,7 @@ function Logo({ onClick }: { onClick?: () => void }) {
       onClick={onClick}
       className="flex items-center gap-2 rounded-full px-3 py-2 font-serif text-base font-bold tracking-tight"
     >
-      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-primary text-brand-primary-foreground">
-        <MapPin className="h-3.5 w-3.5" strokeWidth={2} />
-      </span>
+      <Image src="/brand/isotipo.svg" alt="" width={24} height={24} className="h-6 w-6" />
       Publiqué
     </Link>
   );

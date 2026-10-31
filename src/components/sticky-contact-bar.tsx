@@ -39,7 +39,7 @@ export function StickyContactBar({
           <a
             href={formatWhatsAppLink(
               whatsapp,
-              `Hola ${businessName}, te encontré en Publique.`
+              `Hola ${businessName}, te encontré en Publiqué.`
             )}
             target="_blank"
             rel="noopener noreferrer"

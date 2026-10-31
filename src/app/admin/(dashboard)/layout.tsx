@@ -22,7 +22,7 @@ export default async function AdminLayout({
       <aside className="hidden w-56 shrink-0 border-r border-border bg-card sm:block">
         <div className="p-4">
           <Link href="/admin" className="text-lg font-bold text-primary">
-            Publique Admin
+            Publiqué Admin
           </Link>
         </div>
         <nav className="space-y-1 px-2">
@@ -42,7 +42,7 @@ export default async function AdminLayout({
       <div className="flex-1">
         <header className="flex h-14 items-center justify-between border-b border-border bg-card px-4">
           <span className="text-sm text-muted-foreground sm:hidden font-semibold text-foreground">
-            Publique Admin
+            Publiqué Admin
           </span>
           <span className="hidden text-sm text-muted-foreground sm:inline">{email}</span>
           <LogoutButton />

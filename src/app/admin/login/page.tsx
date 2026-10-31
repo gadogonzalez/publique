@@ -43,9 +43,9 @@ function LoginForm() {
   return (
     <div className="flex min-h-[70vh] items-center justify-center px-4">
       <div className="w-full max-w-sm rounded-xl border border-border bg-card p-6 shadow-sm">
-        <h1 className="mb-1 text-lg font-bold">Publique Admin</h1>
+        <h1 className="mb-1 text-lg font-bold">Publiqué Admin</h1>
         <p className="mb-6 text-sm text-muted-foreground">
-          Acceso solo para equipo de Publique.
+          Acceso solo para equipo de Publiqué.
         </p>
         {resetSuccess && (
           <p className="mb-4 rounded-lg bg-primary/10 px-3 py-2 text-sm text-primary">
