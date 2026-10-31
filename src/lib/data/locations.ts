@@ -29,6 +29,14 @@ export async function getDepartments(): Promise<Location[]> {
   return data ?? [];
 }
 
+/** The one market this MVP serves, used to scope featured-placement cupos
+ * (see docs/PRODUCT.md "More departments/provinces"). Phase 2 swaps this
+ * for a real per-request market lookup without touching call sites. */
+export async function getPrimaryMarket(): Promise<Location | null> {
+  const departments = await getDepartments();
+  return departments[0] ?? null;
+}
+
 export async function getAllLocations(): Promise<Location[]> {
   const supabase = await createClient();
   const { data, error } = await supabase.from("locations").select("*").order("name");

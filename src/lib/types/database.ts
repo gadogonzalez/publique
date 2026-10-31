@@ -29,6 +29,7 @@ export interface Category {
   name: string;
   slug: string;
   icon: string | null;
+  description: string | null;
   sort_order: number;
   created_at: string;
   updated_at: string;
@@ -59,7 +60,24 @@ export interface Plan {
   price_ars: number | null;
   features: string[];
   is_active: boolean;
+  is_free: boolean;
   sort_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export type FeaturedPlacementType = "primary" | "secondary";
+
+export interface FeaturedPlacement {
+  id: string;
+  business_id: string;
+  category_id: string;
+  market_id: string;
+  type: FeaturedPlacementType;
+  priority: number;
+  starts_at: string;
+  ends_at: string | null;
+  is_active: boolean;
   created_at: string;
   updated_at: string;
 }

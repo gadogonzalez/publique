@@ -5,9 +5,11 @@ import { notFound } from "next/navigation";
 import { Instagram, Clock, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { BusinessThumb } from "@/components/business-thumb";
+import { CategoryIcon } from "@/components/category-icon";
 import { CtaButtons } from "@/components/cta-buttons";
 import { StickyContactBar } from "@/components/sticky-contact-bar";
 import { getBusinessBySlug } from "@/lib/data/businesses";
+import { getPlanCapabilities } from "@/lib/plans";
 import { trackServer } from "@/lib/analytics/server";
 
 const DAY_NAMES = [
@@ -52,6 +54,10 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
   if (!business) notFound();
 
   await trackServer({ type: "business_profile_view", businessId: business.id });
+
+  const capabilities = getPlanCapabilities(business.plan);
+  const showLogo = capabilities.canUploadLogo && !!business.logo_url;
+  const showGallery = capabilities.canUploadGallery && business.images.length > 0;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -108,13 +114,19 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
 
         <div className="mt-2 flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex items-start gap-4">
-            {business.logo_url && (
+            {showLogo ? (
               <Image
-                src={business.logo_url}
+                src={business.logo_url!}
                 alt=""
                 width={56}
                 height={56}
                 className="h-14 w-14 shrink-0 rounded-full border border-border object-cover"
+              />
+            ) : (
+              <CategoryIcon
+                icon={business.categories[0]?.icon}
+                className="h-14 w-14 shrink-0 rounded-full"
+                iconClassName="h-6 w-6"
               />
             )}
             <div>
@@ -182,7 +194,7 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
               </section>
             )}
 
-            {business.images.length > 0 && (
+            {showGallery && (
               <section className="border-t border-border pt-8">
                 <h2 className="mb-3 font-serif text-xl font-bold tracking-tight">Galería</h2>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">

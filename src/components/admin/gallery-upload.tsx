@@ -10,10 +10,12 @@ export function GalleryUpload({
   pathPrefix,
   value,
   onChange,
+  max,
 }: {
   pathPrefix: string;
   value: string[];
   onChange: (urls: string[]) => void;
+  max?: number;
 }) {
   const [uploading, setUploading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -76,12 +78,17 @@ export function GalleryUpload({
         variant="outline"
         size="sm"
         className="mt-3"
-        disabled={uploading}
+        disabled={uploading || (max !== undefined && value.length >= max)}
         onClick={() => inputRef.current?.click()}
       >
         <Upload className="h-3.5 w-3.5" />
         {uploading ? "Subiendo..." : "Agregar fotos"}
       </Button>
+      {max !== undefined && (
+        <p className="mt-1 text-xs text-muted-foreground">
+          {value.length}/{max} fotos
+        </p>
+      )}
     </div>
   );
 }

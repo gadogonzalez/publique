@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import {
   createCategory,
@@ -13,8 +14,37 @@ import {
   deleteCategory,
   deleteKeyword,
   deleteService,
+  updateCategoryDescription,
 } from "@/app/admin/(dashboard)/categorias/actions";
 import type { Category, Keyword, Service } from "@/lib/types/database";
+
+/** Tagline shown under the category's H1 on /categorias/[slug]. Saves on
+ * blur -- no separate "save" button, matching the rest of this page's
+ * inline-edit style. */
+function CategoryDescriptionEditor({ category, onChanged }: { category: Category; onChanged: () => void }) {
+  const [value, setValue] = useState(category.description ?? "");
+  const [isPending, startTransition] = useTransition();
+
+  function save() {
+    if (value === (category.description ?? "")) return;
+    startTransition(async () => {
+      await updateCategoryDescription(category.id, value);
+      onChanged();
+    });
+  }
+
+  return (
+    <Textarea
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      onBlur={save}
+      disabled={isPending}
+      placeholder="Bajada para la página de categoría (opcional)"
+      rows={2}
+      className="mb-3 text-xs"
+    />
+  );
+}
 
 /** Inline "add/remove alias" chips, reused for both a service's and a
  * category's keywords. Keywords are what let a natural phrase like "no sale
@@ -147,6 +177,8 @@ export function CategoryManager({
                   Borrar categoría
                 </button>
               </div>
+
+              <CategoryDescriptionEditor category={c} onChanged={refresh} />
 
               <div className="mb-3 border-b border-border pb-3">
                 <p className="text-xs font-medium text-muted-foreground">
