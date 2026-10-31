@@ -9,12 +9,12 @@ export function CategoryCard({ category, count }: { category: Category; count?: 
   return (
     <Link
       href={`/categorias/${category.slug}`}
-      className="group flex flex-col items-center gap-3 rounded-2xl border border-border bg-card p-6 text-center transition-colors hover:border-primary hover:bg-secondary/40"
+      className="group flex flex-col items-center gap-3 rounded-2xl border border-border bg-card p-6 text-center transition-colors hover:border-brand-primary"
     >
-      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-primary-soft transition-colors duration-300 group-hover:bg-brand-primary">
         <CategoryPictogram
           icon={category.icon}
-          className="h-7 w-7 text-primary transition-transform group-hover:scale-110"
+          className="h-7 w-7 text-brand-primary transition-all duration-300 group-hover:scale-110 group-hover:text-brand-primary-foreground"
         />
       </span>
       <span className="font-serif text-base font-bold leading-tight tracking-tight">
