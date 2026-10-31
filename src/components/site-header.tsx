@@ -23,13 +23,6 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
   const panelRef = React.useRef<HTMLDivElement>(null);
   const toggleRef = React.useRef<HTMLButtonElement>(null);
 
-  React.useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
-
   // Click anywhere outside the open panel (or its own toggle button)
   // closes it -- checked on the actual click target against both refs
   // rather than a z-indexed overlay, so it can't be fooled by stacking.
