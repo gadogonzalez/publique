@@ -9,7 +9,7 @@ import { BrandStatement } from "@/components/home/brand-statement";
 import { HERO_GRID } from "@/components/home/width";
 import { getCategories, getCategoryBusinessCounts } from "@/lib/data/taxonomy";
 import { getLocalities } from "@/lib/data/locations";
-import { getBusinessesByIds } from "@/lib/data/businesses";
+import { getBusinessesByIds, getBusinessBySlug } from "@/lib/data/businesses";
 import { search } from "@/lib/search";
 import { getPlanCapabilities } from "@/lib/plans";
 
@@ -20,11 +20,12 @@ const DISCOVERY_COUNT = 4;
 const DISCOVERY_POOL_SIZE = 24;
 
 export default async function HomePage() {
-  const [categories, categoryCounts, localities, { items }] = await Promise.all([
+  const [categories, categoryCounts, localities, { items }, promoBusiness] = await Promise.all([
     getCategories(),
     getCategoryBusinessCounts(),
     getLocalities(),
     search({ page: 1, pageSize: DISCOVERY_POOL_SIZE }),
+    getBusinessBySlug("patitas-pet-shop"),
   ]);
   const pool = await getBusinessesByIds(items.map((i) => i.id));
 
@@ -34,7 +35,6 @@ export default async function HomePage() {
   const featuredBusinesses = pool
     .filter((b) => getPlanCapabilities(b.plan).canBeFeatured && !!b.logo_url)
     .slice(0, DISCOVERY_COUNT);
-  const promoBusinesses = pool.filter((b) => !featuredBusinesses.includes(b)).slice(0, 4);
 
   return (
     <div>
@@ -84,7 +84,7 @@ export default async function HomePage() {
       )}
 
       <section className={`${HERO_GRID} pb-16 sm:pb-20`}>
-        <PromoBanner businesses={promoBusinesses} />
+        <PromoBanner business={promoBusiness} />
       </section>
 
       <BrandStatement />
