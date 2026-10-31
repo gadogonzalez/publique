@@ -2,13 +2,15 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
 import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
 import { PubliqueIsotipo } from "@/components/brand/isotipo";
 import { CategoryPictogram } from "@/components/category-icon";
 import { HERO_GRID } from "@/components/home/width";
 import { cn } from "@/lib/utils";
 import type { Category } from "@/lib/types/database";
+
+const ACTION_BUTTON =
+  "inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 text-sm font-medium transition-colors";
 
 /** Fixed, full-width, solid (not the old floating glass pill) -- same on
  * every route, so `<main>` carries a matching top padding (see layout.tsx)
@@ -18,12 +20,29 @@ import type { Category } from "@/lib/types/database";
  * be top-level nav links moved in there. */
 export function SiteHeader({ categories }: { categories: Category[] }) {
   const [open, setOpen] = React.useState(false);
+  const panelRef = React.useRef<HTMLDivElement>(null);
+  const toggleRef = React.useRef<HTMLButtonElement>(null);
 
   React.useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
+  }, [open]);
+
+  // Click anywhere outside the open panel (or its own toggle button)
+  // closes it -- checked on the actual click target against both refs
+  // rather than a z-indexed overlay, so it can't be fooled by stacking.
+  React.useEffect(() => {
+    if (!open) return;
+    function handlePointerDown(e: PointerEvent) {
+      const target = e.target as Node;
+      if (panelRef.current?.contains(target)) return;
+      if (toggleRef.current?.contains(target)) return;
+      setOpen(false);
+    }
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
   }, [open]);
 
   function close() {
@@ -38,7 +57,7 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
           onClick={close}
           className="flex items-center gap-2 font-serif text-lg font-bold tracking-tight"
         >
-          <PubliqueIsotipo className="h-7 w-7 shrink-0" />
+          <PubliqueIsotipo className="h-9 w-9 shrink-0" />
           Publiqué
         </Link>
 
@@ -46,17 +65,18 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
           <Link
             href="/admin/login"
             onClick={close}
-            className={cn(buttonVariants({ variant: "brand" }), "rounded-full px-3 sm:px-4")}
+            className={cn(ACTION_BUTTON, "bg-brand-primary text-brand-primary-foreground hover:bg-brand-primary/90")}
           >
             <span className="sm:hidden">Publicá</span>
             <span className="hidden sm:inline">Publicá tu negocio</span>
           </Link>
           <button
+            ref={toggleRef}
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
-            className="flex h-11 items-center gap-2 rounded-full border border-border px-3 text-sm font-medium transition-colors hover:bg-secondary sm:px-4"
+            className={cn(ACTION_BUTTON, "border border-border px-3 hover:bg-secondary sm:px-4")}
           >
             <MenuToggleIcon open={open} duration={250} className="h-4 w-4" />
             <span className="hidden sm:inline">Menú</span>
@@ -66,13 +86,11 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
 
       {open && (
         <>
-          <button
-            type="button"
-            aria-label="Cerrar menú"
-            onClick={close}
-            className="fixed inset-0 top-20 z-40 bg-black/20"
-          />
-          <div className="absolute inset-x-0 top-full z-50 max-h-[calc(100vh-5rem)] overflow-y-auto border-t border-border bg-card shadow-lg">
+          <div aria-hidden className="fixed left-0 right-0 top-20 bottom-0 z-40 bg-black/20" />
+          <div
+            ref={panelRef}
+            className="fixed inset-x-3 top-[5.5rem] z-50 max-h-[calc(100vh-7rem)] overflow-y-auto rounded-2xl border border-border bg-card shadow-2xl sm:inset-x-6"
+          >
             <div className={cn("py-8", HERO_GRID)}>
               <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Categorías
