@@ -11,6 +11,24 @@ export async function getCategories(): Promise<Category[]> {
   return data ?? [];
 }
 
+/** Count of active businesses per category, for the category grid tiles
+ * (home + /categorias). One query, counted client-side -- small dataset,
+ * no need for a dedicated RPC. */
+export async function getCategoryBusinessCounts(): Promise<Record<string, number>> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("business_categories")
+    .select("category_id, businesses!inner(status)")
+    .eq("businesses.status", "active");
+  if (error) throw error;
+
+  const counts: Record<string, number> = {};
+  for (const row of (data as unknown as { category_id: string }[] | null) ?? []) {
+    counts[row.category_id] = (counts[row.category_id] ?? 0) + 1;
+  }
+  return counts;
+}
+
 export async function getServices(): Promise<Service[]> {
   const supabase = await createClient();
   const { data, error } = await supabase.from("services").select("*").order("name");

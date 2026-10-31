@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { CategoryCard } from "@/components/category-card";
-import { getCategories } from "@/lib/data/taxonomy";
+import { getCategories, getCategoryBusinessCounts } from "@/lib/data/taxonomy";
 
 export const metadata: Metadata = {
   title: "Categorías",
 };
 
 export default async function CategoriasIndexPage() {
-  const categories = await getCategories();
+  const [categories, counts] = await Promise.all([getCategories(), getCategoryBusinessCounts()]);
 
   return (
     <div className="container py-8">
@@ -17,9 +17,9 @@ export default async function CategoriasIndexPage() {
       </p>
 
       {categories.length > 0 ? (
-        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {categories.map((category) => (
-            <CategoryCard key={category.id} category={category} />
+            <CategoryCard key={category.id} category={category} count={counts[category.id] ?? 0} />
           ))}
         </div>
       ) : (

@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { HeroSearch } from "@/components/hero-search";
-import { CategoryShortcut } from "@/components/category-shortcut";
+import { CategoryCard } from "@/components/category-card";
 import { BusinessDiscoveryGrid } from "@/components/business-discovery-grid";
 import { BrandStatement } from "@/components/home/brand-statement";
 import { HERO_GRID } from "@/components/home/width";
-import { getCategories } from "@/lib/data/taxonomy";
+import { getCategories, getCategoryBusinessCounts } from "@/lib/data/taxonomy";
 import { getLocalities } from "@/lib/data/locations";
 import { getBusinessesByIds } from "@/lib/data/businesses";
 import { search } from "@/lib/search";
@@ -13,8 +13,9 @@ import { search } from "@/lib/search";
 const DISCOVERY_COUNT = 9;
 
 export default async function HomePage() {
-  const [categories, localities, { items }] = await Promise.all([
+  const [categories, categoryCounts, localities, { items }] = await Promise.all([
     getCategories(),
+    getCategoryBusinessCounts(),
     getLocalities(),
     search({ page: 1, pageSize: DISCOVERY_COUNT }),
   ]);
@@ -26,21 +27,22 @@ export default async function HomePage() {
 
       {categories.length > 0 && (
         <section className={`${HERO_GRID} pb-16 pt-16 sm:pb-20 sm:pt-20`}>
-          <div className="mb-6 flex items-center justify-between">
-            <h2 className="font-serif text-2xl font-bold tracking-tight">Explorá por categoría</h2>
+          <h2 className="mb-6 font-serif text-2xl font-bold tracking-tight">Explorá por categoría</h2>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            {categories.map((category) => (
+              <CategoryCard
+                key={category.id}
+                category={category}
+                count={categoryCounts[category.id] ?? 0}
+              />
+            ))}
             <Link
               href="/categorias"
-              className="flex shrink-0 items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground"
+              className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-primary/40 bg-primary/5 p-6 text-center text-primary transition-colors hover:bg-primary/10"
             >
-              Ver todas <ArrowRight className="h-3.5 w-3.5" />
+              <ArrowRight className="h-6 w-6 transition-transform group-hover:translate-x-1" />
+              <span className="font-serif text-base font-bold tracking-tight">Explorar todo</span>
             </Link>
-          </div>
-          <div className="-mx-6 flex gap-8 overflow-x-auto px-6 sm:mx-0 sm:grid sm:grid-cols-8 sm:gap-6 sm:overflow-visible sm:px-0">
-            {categories.map((category) => (
-              <div key={category.id} className="shrink-0 sm:shrink">
-                <CategoryShortcut category={category} />
-              </div>
-            ))}
           </div>
         </section>
       )}
