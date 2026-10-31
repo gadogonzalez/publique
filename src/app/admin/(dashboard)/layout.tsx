@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LayoutDashboard, Building2, Tags, MapPinned } from "lucide-react";
+import { LayoutDashboard, Building2, Tags, MapPinned, Sparkles } from "lucide-react";
 import { requireAdmin } from "@/lib/admin-auth";
 import { LogoutButton } from "@/components/admin/logout-button";
 
@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { href: "/admin/negocios", label: "Negocios", icon: Building2 },
   { href: "/admin/categorias", label: "Categorías", icon: Tags },
   { href: "/admin/ubicaciones", label: "Ubicaciones", icon: MapPinned },
+  { href: "/admin/destacados", label: "Destacados", icon: Sparkles },
 ];
 
 export default async function AdminLayout({

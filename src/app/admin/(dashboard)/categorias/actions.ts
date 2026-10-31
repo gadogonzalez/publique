@@ -22,6 +22,25 @@ export async function createCategory(name: string): Promise<ActionResult> {
   return { ok: true };
 }
 
+/** Short tagline shown under the H1 on /categorias/[slug] (section
+ * "Introducción" of the product brief). Optional -- the page falls back
+ * to a generic, computed line when this is empty. */
+export async function updateCategoryDescription(
+  id: string,
+  description: string
+): Promise<ActionResult> {
+  await requireAdmin();
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("categories")
+    .update({ description: description.trim() || null })
+    .eq("id", id);
+  if (error) return { ok: false, error: error.message };
+  revalidatePath("/admin/categorias");
+  revalidatePath("/categorias/[slug]", "page");
+  return { ok: true };
+}
+
 export async function deleteCategory(id: string): Promise<ActionResult> {
   await requireAdmin();
   const supabase = await createClient();

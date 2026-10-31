@@ -13,6 +13,7 @@ import { GalleryUpload } from "@/components/admin/gallery-upload";
 import { saveBusiness } from "@/app/admin/(dashboard)/negocios/actions";
 import { businessFormSchema } from "@/lib/validations/business";
 import { slugify } from "@/lib/utils";
+import { getPlanCapabilities } from "@/lib/plans";
 import type {
   BusinessWithRelations,
   Category,
@@ -119,6 +120,9 @@ export function BusinessForm({
     () => [...(department ? [department] : []), ...localities],
     [department, localities]
   );
+
+  const selectedPlan = useMemo(() => plans.find((p) => p.id === planId) ?? null, [plans, planId]);
+  const capabilities = getPlanCapabilities(selectedPlan);
 
   function toggle(list: string[], value: string, setList: (v: string[]) => void) {
     setList(list.includes(value) ? list.filter((v) => v !== value) : [...list, value]);
@@ -232,14 +236,21 @@ export function BusinessForm({
           />
         </div>
         <div className="flex gap-4">
-          <ImageUpload
-            bucket="business-logos"
-            pathPrefix={businessId}
-            value={logoUrl}
-            onChange={setLogoUrl}
-            label="Logo"
-            aspect="square"
-          />
+          {capabilities.canUploadLogo ? (
+            <ImageUpload
+              bucket="business-logos"
+              pathPrefix={businessId}
+              value={logoUrl}
+              onChange={setLogoUrl}
+              label="Logo"
+              aspect="square"
+            />
+          ) : (
+            <div className="w-24 text-xs text-muted-foreground">
+              <Label>Logo</Label>
+              <p className="mt-1">Disponible en el plan Básico. Se muestra el ícono de la categoría.</p>
+            </div>
+          )}
           <div className="flex-1">
             <ImageUpload
               bucket="business-covers"
@@ -425,7 +436,18 @@ export function BusinessForm({
       {/* Media */}
       <section className="space-y-4">
         <h2 className="text-sm font-semibold text-muted-foreground">Fotos del negocio</h2>
-        <GalleryUpload pathPrefix={businessId} value={galleryUrls} onChange={setGalleryUrls} />
+        {capabilities.canUploadGallery ? (
+          <GalleryUpload
+            pathPrefix={businessId}
+            value={galleryUrls}
+            onChange={setGalleryUrls}
+            max={capabilities.maxGalleryImages}
+          />
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            La galería de fotos está disponible en el plan Básico.
+          </p>
+        )}
       </section>
 
       {/* Hours */}

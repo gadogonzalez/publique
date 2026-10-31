@@ -7,6 +7,7 @@ import { MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CategoryIcon } from "@/components/category-icon";
 import { getPexelsPlaceholder } from "@/lib/pexels-placeholders";
+import { getPlanCapabilities } from "@/lib/plans";
 import type { BusinessWithRelations } from "@/lib/types/database";
 
 /** Homepage-only cover image: real photo -> Pexels category placeholder ->
@@ -58,6 +59,8 @@ export function FeaturedBusinessCoverOnly({
  * discovery. */
 export function FeaturedBusinessCard({ business }: { business: BusinessWithRelations }) {
   const category = business.categories[0];
+  const { canUploadLogo } = getPlanCapabilities(business.plan);
+  const showLogo = canUploadLogo && !!business.logo_url;
   return (
     <Link href={`/negocios/${business.slug}`} className="group block h-full overflow-hidden rounded-lg">
       <div className="relative">
@@ -66,6 +69,15 @@ export function FeaturedBusinessCard({ business }: { business: BusinessWithRelat
           <span className="absolute left-3 top-3 rounded-full bg-background/90 px-2.5 py-1 text-xs font-medium text-foreground">
             {category.name}
           </span>
+        )}
+        {showLogo && (
+          <Image
+            src={business.logo_url!}
+            alt=""
+            width={40}
+            height={40}
+            className="absolute bottom-3 left-3 h-10 w-10 rounded-full border-2 border-background object-cover shadow"
+          />
         )}
       </div>
       <div className="mt-3">
