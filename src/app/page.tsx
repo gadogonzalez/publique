@@ -3,8 +3,6 @@ import { ArrowRight } from "lucide-react";
 import { HeroSearch } from "@/components/hero-search";
 import { CategoryShortcut } from "@/components/category-shortcut";
 import { BusinessDiscoveryGrid } from "@/components/business-discovery-grid";
-import { ZoneTile } from "@/components/zone-tile";
-import { CommunityBanner } from "@/components/community-banner";
 import { BrandStatement } from "@/components/home/brand-statement";
 import { HERO_GRID } from "@/components/home/width";
 import { getCategories } from "@/lib/data/taxonomy";
@@ -65,21 +63,6 @@ export default async function HomePage() {
       )}
 
       <BrandStatement />
-
-      {localities.length > 0 && (
-        <section className={`${HERO_GRID} py-16 sm:py-20`}>
-          <div className="mb-6 flex items-center justify-between">
-            <h2 className="font-serif text-2xl font-bold tracking-tight">Explorá por zona</h2>
-          </div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-            {localities.map((locality, i) => (
-              <ZoneTile key={locality.id} locality={locality} index={i} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      <CommunityBanner />
     </div>
   );
 }

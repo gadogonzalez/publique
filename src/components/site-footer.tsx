@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Instagram, Facebook } from "lucide-react";
+import { PubliqueIsotipo } from "@/components/brand/isotipo";
 
 const linkClass = "block text-muted-foreground hover:text-foreground";
 // No corresponding pages exist yet for these -- rendered as inert labels
@@ -13,7 +13,7 @@ export function SiteFooter() {
       <div className="container grid grid-cols-2 gap-8 sm:grid-cols-4">
         <div className="col-span-2 sm:col-span-1">
           <p className="flex items-center gap-2 font-serif text-lg font-bold text-foreground">
-            <Image src="/brand/isotipo.svg" alt="" width={22} height={22} className="h-[22px] w-[22px]" />
+            <PubliqueIsotipo className="h-[22px] w-[22px] shrink-0" />
             Publiqué
           </p>
           <p className="mt-1 text-muted-foreground">Guaymallén, Mendoza</p>

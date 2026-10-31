@@ -1,12 +1,12 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MoreVertical, Search } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
+import { PubliqueIsotipo } from "@/components/brand/isotipo";
 import { HERO_GRID } from "@/components/home/width";
 import { cn } from "@/lib/utils";
 
@@ -30,7 +30,7 @@ function Logo({ onClick }: { onClick?: () => void }) {
       onClick={onClick}
       className="flex items-center gap-2 rounded-full px-3 py-2 font-serif text-base font-bold tracking-tight"
     >
-      <Image src="/brand/isotipo.svg" alt="" width={24} height={24} className="h-6 w-6" />
+      <PubliqueIsotipo className="h-6 w-6 shrink-0" />
       Publiqué
     </Link>
   );

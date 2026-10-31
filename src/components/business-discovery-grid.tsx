@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { FeaturedBusinessCard } from "@/components/home/featured-business-card";
+import { BusinessListRow } from "@/components/home/business-list-row";
 import { MotionReveal } from "@/components/home/motion-reveal";
 import { cn } from "@/lib/utils";
 import type { BusinessWithRelations } from "@/lib/types/database";
@@ -14,8 +15,12 @@ const TABS = [
 
 type SortKey = (typeof TABS)[number]["key"];
 
+const FEATURED_COUNT = 3;
+
 /** Re-sorts the already-fetched, already-relevance-ranked page of
- * businesses client-side -- no extra query, no backend sort added. */
+ * businesses client-side -- no extra query, no backend sort added. The
+ * first 3 render as photo cards ("destacados"); the rest render as a
+ * compact, booking-style horizontal list below them. */
 export function BusinessDiscoveryGrid({
   businesses,
 }: {
@@ -31,6 +36,9 @@ export function BusinessDiscoveryGrid({
     }
     return businesses;
   }, [businesses, sort]);
+
+  const featured = sorted.slice(0, FEATURED_COUNT);
+  const rest = sorted.slice(FEATURED_COUNT);
 
   return (
     <div>
@@ -50,20 +58,23 @@ export function BusinessDiscoveryGrid({
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-        {sorted.map((business, i) => {
-          const featured = sort === "todos" && i === 0;
-          return (
-            <MotionReveal
-              key={business.id}
-              delay={(i % 3) * 80}
-              className={featured ? "sm:col-span-2 sm:row-span-2" : undefined}
-            >
-              <FeaturedBusinessCard business={business} featured={featured} />
+      {featured.length > 0 && (
+        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-3">
+          {featured.map((business, i) => (
+            <MotionReveal key={business.id} delay={i * 80}>
+              <FeaturedBusinessCard business={business} />
             </MotionReveal>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
+
+      {rest.length > 0 && (
+        <div className={cn(featured.length > 0 && "mt-10")}>
+          {rest.map((business) => (
+            <BusinessListRow key={business.id} business={business} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
