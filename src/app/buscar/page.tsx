@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SearchBar } from "@/components/search-bar";
 import { SearchFilters } from "@/components/search-filters";
-import { BusinessCard } from "@/components/business-card";
+import { BusinessFeaturedAndList } from "@/components/business-discovery-grid";
 import { search } from "@/lib/search";
 import { getBusinessesByIds } from "@/lib/data/businesses";
 import { getCategories, getCategoryBySlug } from "@/lib/data/taxonomy";
@@ -84,10 +84,8 @@ export default async function BuscarPage({ searchParams }: BuscarPageProps) {
           Probá con otra palabra, o explorá por categoría y zona.
         </p>
       ) : (
-        <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {businesses.map((business) => (
-            <BusinessCard key={business.id} business={business} />
-          ))}
+        <div className="mt-8">
+          <BusinessFeaturedAndList businesses={businesses} />
         </div>
       )}
 

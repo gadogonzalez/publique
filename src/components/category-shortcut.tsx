@@ -5,7 +5,7 @@ import type { Category } from "@/lib/types/database";
 export function CategoryShortcut({ category }: { category: Category }) {
   return (
     <Link
-      href={`/buscar?categoria=${category.slug}`}
+      href={`/categorias/${category.slug}`}
       className="group flex flex-col items-center gap-2 text-center"
     >
       <CategoryPictogram

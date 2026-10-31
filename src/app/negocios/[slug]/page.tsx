@@ -99,7 +99,7 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
       <div className="container pt-6">
         {business.categories[0] && (
           <Link
-            href={`/buscar?categoria=${business.categories[0].slug}`}
+            href={`/categorias/${business.categories[0].slug}`}
             className="text-sm text-muted-foreground hover:text-primary"
           >
             {business.categories[0].name}
