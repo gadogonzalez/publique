@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { getCategories } from "@/lib/data/taxonomy";
 
 // Brand manual §05: Poppins (ExtraBold/SemiBold/Regular). Self-hosted via
 // next/font (no runtime Google Fonts request), exposed as --font-poppins
@@ -32,16 +33,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const categories = await getCategories();
+
   return (
     <html lang="es-AR" className={poppins.variable}>
       <body className="flex min-h-screen flex-col antialiased">
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
+        <SiteHeader categories={categories} />
+        <main className="flex-1 pt-20">{children}</main>
         <SiteFooter />
       </body>
     </html>
