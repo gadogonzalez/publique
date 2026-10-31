@@ -11,17 +11,30 @@ import { getCategories, getCategoryBusinessCounts } from "@/lib/data/taxonomy";
 import { getLocalities } from "@/lib/data/locations";
 import { getBusinessesByIds } from "@/lib/data/businesses";
 import { search } from "@/lib/search";
+import { getPlanCapabilities } from "@/lib/plans";
 
-const DISCOVERY_COUNT = 8;
+const DISCOVERY_COUNT = 4;
+// Fetched wider than DISCOVERY_COUNT because "destacados" only shows
+// paid-plan businesses with a logo (canBeFeatured + logo_url) -- a
+// shallow pool would often come up short after that filter.
+const DISCOVERY_POOL_SIZE = 24;
 
 export default async function HomePage() {
   const [categories, categoryCounts, localities, { items }] = await Promise.all([
     getCategories(),
     getCategoryBusinessCounts(),
     getLocalities(),
-    search({ page: 1, pageSize: DISCOVERY_COUNT }),
+    search({ page: 1, pageSize: DISCOVERY_POOL_SIZE }),
   ]);
-  const businesses = await getBusinessesByIds(items.map((i) => i.id));
+  const pool = await getBusinessesByIds(items.map((i) => i.id));
+
+  // Only plan-pago businesses with a logo are eligible to be shown as
+  // "destacados" -- free-plan businesses (no custom logo allowed) never
+  // belong in this section, see src/lib/plans.ts.
+  const featuredBusinesses = pool
+    .filter((b) => getPlanCapabilities(b.plan).canBeFeatured && !!b.logo_url)
+    .slice(0, DISCOVERY_COUNT);
+  const promoBusinesses = pool.filter((b) => !featuredBusinesses.includes(b)).slice(0, 4);
 
   return (
     <div>
@@ -49,11 +62,11 @@ export default async function HomePage() {
         </section>
       )}
 
-      {businesses.length > 0 && (
+      {featuredBusinesses.length > 0 && (
         <section className={`${HERO_GRID} pb-16 sm:pb-20`}>
           <h2 className="mb-6 font-serif text-2xl font-bold tracking-tight">Negocios destacados</h2>
-          <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
-            {businesses.map((business, i) => (
+          <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">
+            {featuredBusinesses.map((business, i) => (
               <MotionReveal key={business.id} delay={i * 60}>
                 <FeaturedBusinessCard business={business} />
               </MotionReveal>
@@ -71,7 +84,7 @@ export default async function HomePage() {
       )}
 
       <section className={`${HERO_GRID} pb-16 sm:pb-20`}>
-        <PromoBanner businesses={businesses.slice(4)} />
+        <PromoBanner businesses={promoBusinesses} />
       </section>
 
       <BrandStatement />
