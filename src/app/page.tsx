@@ -2,7 +2,9 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { HeroSearch } from "@/components/hero-search";
 import { CategoryCard } from "@/components/category-card";
-import { BusinessDiscoveryGrid } from "@/components/business-discovery-grid";
+import { FeaturedBusinessCard } from "@/components/home/featured-business-card";
+import { MotionReveal } from "@/components/home/motion-reveal";
+import { PromoBanner } from "@/components/home/promo-banner";
 import { BrandStatement } from "@/components/home/brand-statement";
 import { HERO_GRID } from "@/components/home/width";
 import { getCategories, getCategoryBusinessCounts } from "@/lib/data/taxonomy";
@@ -10,7 +12,7 @@ import { getLocalities } from "@/lib/data/locations";
 import { getBusinessesByIds } from "@/lib/data/businesses";
 import { search } from "@/lib/search";
 
-const DISCOVERY_COUNT = 9;
+const DISCOVERY_COUNT = 8;
 
 export default async function HomePage() {
   const [categories, categoryCounts, localities, { items }] = await Promise.all([
@@ -49,10 +51,14 @@ export default async function HomePage() {
 
       {businesses.length > 0 && (
         <section className={`${HERO_GRID} pb-16 sm:pb-20`}>
-          <div className="mb-6 flex items-center justify-between">
-            <h2 className="font-serif text-2xl font-bold tracking-tight">Negocios destacados</h2>
+          <h2 className="mb-6 font-serif text-2xl font-bold tracking-tight">Negocios destacados</h2>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
+            {businesses.map((business, i) => (
+              <MotionReveal key={business.id} delay={i * 60}>
+                <FeaturedBusinessCard business={business} />
+              </MotionReveal>
+            ))}
           </div>
-          <BusinessDiscoveryGrid businesses={businesses} />
           <div className="mt-10 flex justify-center">
             <Link
               href="/buscar"
@@ -63,6 +69,10 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      <section className={`${HERO_GRID} pb-16 sm:pb-20`}>
+        <PromoBanner businesses={businesses.slice(4)} />
+      </section>
 
       <BrandStatement />
     </div>
