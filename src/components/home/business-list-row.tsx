@@ -3,20 +3,36 @@ import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { FeaturedBusinessCoverOnly } from "@/components/home/featured-business-card";
 import { getPlanCapabilities } from "@/lib/plans";
+import { cn } from "@/lib/utils";
 import type { BusinessWithRelations } from "@/lib/types/database";
 
 /** Compact horizontal listing row (photo left, details right) for every
  * business after the first 3 "destacados" cards -- denser, scannable,
  * closer to a classic booking-style results list than another photo
- * card. Same single interaction as the cards: open the profile. */
-export function BusinessListRow({ business }: { business: BusinessWithRelations }) {
+ * card. Same single interaction as the cards: open the profile.
+ *
+ * `variant="card"` is the same row content boxed as a standalone card
+ * instead of a border-bottom list item, for layouts that put several per
+ * row in a grid (e.g. category pages on desktop) rather than stacking
+ * full-width. */
+export function BusinessListRow({
+  business,
+  variant = "list",
+}: {
+  business: BusinessWithRelations;
+  variant?: "list" | "card";
+}) {
   const category = business.categories[0];
   const { canUploadLogo } = getPlanCapabilities(business.plan);
   const showLogo = canUploadLogo && !!business.logo_url;
   return (
     <Link
       href={`/negocios/${business.slug}`}
-      className="group flex items-center gap-4 border-b border-border py-4 first:pt-0 last:border-b-0 hover:bg-muted/40 sm:gap-5"
+      className={cn(
+        "group flex items-center gap-4 hover:bg-muted/40 sm:gap-5",
+        variant === "list" && "border-b border-border py-4 first:pt-0 last:border-b-0",
+        variant === "card" && "rounded-xl border border-border p-3"
+      )}
     >
       <div className="relative shrink-0">
         <FeaturedBusinessCoverOnly business={business} className="aspect-square w-20 sm:w-28" />

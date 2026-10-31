@@ -11,7 +11,7 @@ import { HERO_GRID } from "@/components/home/width";
 import { cn } from "@/lib/utils";
 
 const LINKS = [
-  { label: "Categorías", href: "/buscar" },
+  { label: "Categorías", href: "/categorias" },
   { label: "Servicios", href: "/buscar" },
   { label: "Zonas", href: "/buscar" },
 ];

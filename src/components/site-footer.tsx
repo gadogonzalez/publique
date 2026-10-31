@@ -29,7 +29,7 @@ export function SiteFooter() {
         <div>
           <p className="mb-3 font-medium text-foreground">Explorar</p>
           <div className="space-y-2">
-            <Link href="/buscar" className={linkClass}>
+            <Link href="/categorias" className={linkClass}>
               Categorías
             </Link>
             <Link href="/buscar" className={linkClass}>

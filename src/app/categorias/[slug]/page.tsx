@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { ArrowRight, MapPin } from "lucide-react";
 import { FeaturedBusinessCard, FeaturedBusinessCoverOnly } from "@/components/home/featured-business-card";
 import { BusinessListRow } from "@/components/home/business-list-row";
-import { HERO_GRID } from "@/components/home/width";
 import { getCategoryBySlug } from "@/lib/data/taxonomy";
 import { getPrimaryMarket } from "@/lib/data/locations";
 import { getBusinessesByIds } from "@/lib/data/businesses";
@@ -43,7 +42,12 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     ...(primary ? [primary.id] : []),
     ...secondary.map((b) => b.id),
   ]);
-  const listBusinesses = allBusinesses.filter((b) => !featuredIds.has(b.id));
+  // Paid-plan businesses (not already shown as destacados) before free-plan
+  // ones -- same relevance order within each group, just grouped. No
+  // "Gratis"/"Básico" label shown to the consumer, this is ordering only.
+  const listBusinesses = allBusinesses
+    .filter((b) => !featuredIds.has(b.id))
+    .sort((a, b) => Number(a.plan?.is_free ?? true) - Number(b.plan?.is_free ?? true));
   const totalShown = listBusinesses.length + featuredIds.size;
 
   await trackServer({
@@ -53,7 +57,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   });
 
   return (
-    <div className={`${HERO_GRID} py-8`}>
+    <div className="container py-8">
       <h1 className="font-serif text-2xl font-bold tracking-tight sm:text-3xl">{category.name}</h1>
       <p className="mt-2 max-w-2xl text-muted-foreground">
         {category.description ?? `Descubrí ${category.name.toLowerCase()} en Guaymallén.`}
@@ -109,9 +113,17 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       {listBusinesses.length > 0 ? (
         <section className="mt-10 border-t border-border pt-10">
           <h2 className="mb-5 font-serif text-xl font-bold tracking-tight">Todos los negocios</h2>
-          <div>
+          {/* Mobile: plain stacked list. Desktop: boxed cards, up to 3 per
+              row, wrapping to further rows -- a single column reads as
+              too sparse at that width. */}
+          <div className="sm:hidden">
             {listBusinesses.map((business) => (
               <BusinessListRow key={business.id} business={business} />
+            ))}
+          </div>
+          <div className="hidden sm:grid sm:grid-cols-2 sm:gap-3 lg:grid-cols-3">
+            {listBusinesses.map((business) => (
+              <BusinessListRow key={business.id} business={business} variant="card" />
             ))}
           </div>
         </section>
