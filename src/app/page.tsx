@@ -38,7 +38,7 @@ export default async function HomePage() {
             ))}
             <Link
               href="/categorias"
-              className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-primary/40 bg-primary/5 p-6 text-center text-primary transition-colors hover:bg-primary/10"
+              className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-brand-primary/40 bg-brand-primary-soft p-6 text-center text-brand-primary transition-colors hover:bg-brand-primary hover:text-brand-primary-foreground"
             >
               <ArrowRight className="h-6 w-6 transition-transform group-hover:translate-x-1" />
               <span className="font-serif text-base font-bold tracking-tight">Explorar todo</span>
