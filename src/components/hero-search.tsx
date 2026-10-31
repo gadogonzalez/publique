@@ -7,11 +7,12 @@ import type { Location } from "@/lib/types/database";
 const POPULAR_SEARCHES = ["Veterinaria", "Plomero", "Comida", "Electricista", "Gimnasio"];
 
 /** One photographic hero canvas -- the Mendoza photo is the entire hero,
- * full-bleed, not a card or a right-side column. Nav floats on top of it
- * (see SiteHeader, positioned fixed over this section). Content is a
- * centered composition (eyebrow/headline/description/search/popular)
- * directly over the photo, inside the same HERO_GRID the nav uses so
- * it never expands past that grid on large desktops. */
+ * full-bleed, not a card or a right-side column (the fixed SiteHeader
+ * sits above it; `<main>`'s top padding in layout.tsx already accounts
+ * for that, same as every other page). Content is a centered composition
+ * (eyebrow/headline/description/search/popular) directly over the photo,
+ * inside the same HERO_GRID the nav uses so it never expands past that
+ * grid on large desktops. */
 export function HeroSearch({ localities = [] }: { localities?: Location[] }) {
   return (
     <section className="relative h-[75vh] w-full overflow-hidden">
