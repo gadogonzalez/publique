@@ -17,10 +17,43 @@ type SortKey = (typeof TABS)[number]["key"];
 
 const FEATURED_COUNT = 3;
 
+/** Shared "3 destacados + list" rendering, used by the homepage, /buscar
+ * and category pages: first 3 as photo cards, the rest as a compact,
+ * booking-style horizontal list below them. No sort state of its own --
+ * callers pass businesses already in the order they want. */
+export function BusinessFeaturedAndList({
+  businesses,
+}: {
+  businesses: BusinessWithRelations[];
+}) {
+  const featured = businesses.slice(0, FEATURED_COUNT);
+  const rest = businesses.slice(FEATURED_COUNT);
+
+  return (
+    <div>
+      {featured.length > 0 && (
+        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-3">
+          {featured.map((business, i) => (
+            <MotionReveal key={business.id} delay={i * 80}>
+              <FeaturedBusinessCard business={business} />
+            </MotionReveal>
+          ))}
+        </div>
+      )}
+
+      {rest.length > 0 && (
+        <div className={cn(featured.length > 0 && "mt-10")}>
+          {rest.map((business) => (
+            <BusinessListRow key={business.id} business={business} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /** Re-sorts the already-fetched, already-relevance-ranked page of
- * businesses client-side -- no extra query, no backend sort added. The
- * first 3 render as photo cards ("destacados"); the rest render as a
- * compact, booking-style horizontal list below them. */
+ * businesses client-side -- no extra query, no backend sort added. */
 export function BusinessDiscoveryGrid({
   businesses,
 }: {
@@ -36,9 +69,6 @@ export function BusinessDiscoveryGrid({
     }
     return businesses;
   }, [businesses, sort]);
-
-  const featured = sorted.slice(0, FEATURED_COUNT);
-  const rest = sorted.slice(FEATURED_COUNT);
 
   return (
     <div>
@@ -58,23 +88,7 @@ export function BusinessDiscoveryGrid({
         ))}
       </div>
 
-      {featured.length > 0 && (
-        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-3">
-          {featured.map((business, i) => (
-            <MotionReveal key={business.id} delay={i * 80}>
-              <FeaturedBusinessCard business={business} />
-            </MotionReveal>
-          ))}
-        </div>
-      )}
-
-      {rest.length > 0 && (
-        <div className={cn(featured.length > 0 && "mt-10")}>
-          {rest.map((business) => (
-            <BusinessListRow key={business.id} business={business} />
-          ))}
-        </div>
-      )}
+      <BusinessFeaturedAndList businesses={sorted} />
     </div>
   );
 }
