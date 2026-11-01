@@ -50,3 +50,17 @@
     @apply bg-primary/20;
   }
 }
+
+@layer utilities {
+  /* Hides the native scrollbar on an otherwise-scrollable element --
+   * used by horizontal carousels that have their own dot/arrow nav, so
+   * the browser's own scrollbar track isn't a second, redundant affordance
+   * sitting under the cards. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
