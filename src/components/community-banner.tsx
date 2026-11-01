@@ -20,7 +20,7 @@ export function CommunityBanner() {
           Visibilidad local, resultados que podés medir.
         </p>
         <Link
-          href="/admin/login"
+          href="/para-negocios"
           className={buttonVariants({ variant: "brand", size: "lg", className: "mt-8" })}
         >
           Conocé nuestros planes

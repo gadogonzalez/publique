@@ -13,6 +13,18 @@ import { getLocalities, getLocationById } from "@/lib/data/locations";
 import { trackServer } from "@/lib/analytics/server";
 
 const PAGE_SIZE = 12;
+const PAGE_LINK =
+  "inline-flex h-11 min-w-11 items-center justify-center rounded-full px-3 font-medium text-muted-foreground hover:bg-secondary hover:text-foreground";
+
+/** First, last, and the current page ±1, with null marking a gap. */
+function pageWindow(page: number, total: number): (number | null)[] {
+  const pages: (number | null)[] = [];
+  for (let p = 1; p <= total; p++) {
+    if (p === 1 || p === total || Math.abs(p - page) <= 1) pages.push(p);
+    else if (pages[pages.length - 1] !== null) pages.push(null);
+  }
+  return pages;
+}
 
 export const metadata: Metadata = {
   title: "Resultados de búsqueda",
@@ -54,6 +66,13 @@ export default async function BuscarPage({ searchParams }: BuscarPageProps) {
   ]);
 
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
+  const pageHref = (p: number) =>
+    `/buscar?${new URLSearchParams({
+      ...(query ? { q: query } : {}),
+      ...(categorySlug ? { categoria: categorySlug } : {}),
+      ...(locationId ? { zona: locationId } : {}),
+      ...(p > 1 ? { page: String(p) } : {}),
+    }).toString()}`;
 
   return (
     <div className="container py-8">
@@ -115,25 +134,37 @@ export default async function BuscarPage({ searchParams }: BuscarPageProps) {
       )}
 
       {totalPages > 1 && (
-        <nav className="mt-10 flex justify-center gap-4 border-t border-border pt-6 text-sm">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-            <a
-              key={p}
-              href={`/buscar?${new URLSearchParams({
-                ...(query ? { q: query } : {}),
-                ...(categorySlug ? { categoria: categorySlug } : {}),
-                ...(locationId ? { zona: locationId } : {}),
-                page: String(p),
-              }).toString()}`}
-              className={
-                p === page
-                  ? "font-semibold text-primary underline underline-offset-4"
-                  : "text-muted-foreground hover:text-foreground"
-              }
-            >
-              {p}
-            </a>
-          ))}
+        <nav
+          aria-label="Paginación"
+          className="mt-10 flex flex-wrap items-center justify-center gap-1 border-t border-border pt-6 text-sm"
+        >
+          {page > 1 && (
+            <Link href={pageHref(page - 1)} className={PAGE_LINK}>
+              Anterior
+            </Link>
+          )}
+          {pageWindow(page, totalPages).map((p, i) =>
+            p === null ? (
+              <span key={`gap-${i}`} aria-hidden className="px-2 text-muted-foreground">
+                …
+              </span>
+            ) : (
+              <Link
+                key={p}
+                href={pageHref(p)}
+                aria-current={p === page ? "page" : undefined}
+                aria-label={`Página ${p}`}
+                className={cn(PAGE_LINK, p === page && "bg-foreground text-background hover:bg-foreground")}
+              >
+                {p}
+              </Link>
+            )
+          )}
+          {page < totalPages && (
+            <Link href={pageHref(page + 1)} className={PAGE_LINK}>
+              Siguiente
+            </Link>
+          )}
         </nav>
       )}
     </div>
