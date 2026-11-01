@@ -106,7 +106,7 @@ export function FeaturedDestacadosCarousel({
 
       <div
         ref={trackRef}
-        className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-1 motion-safe:scroll-smooth sm:mx-0 sm:gap-6 sm:px-0"
+        className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 motion-safe:scroll-smooth sm:mx-0 sm:gap-6 sm:px-0"
       >
         {businesses.map((business) => (
           <div key={business.id} className="w-[85%] shrink-0 snap-start sm:w-[46%] lg:w-[calc(25%-18px)]">
