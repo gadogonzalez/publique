@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Instagram, Clock, MapPin } from "lucide-react";
+import { ArrowLeft, Globe, Instagram, Clock, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { BusinessThumb } from "@/components/business-thumb";
 import { CategoryIcon } from "@/components/category-icon";
-import { CtaButtons, DirectionsLink, ShareButton } from "@/components/cta-buttons";
+import { CtaButtons, ShareButton, TrackedLink } from "@/components/cta-buttons";
 import { StickyContactBar } from "@/components/sticky-contact-bar";
 import { HERO_GRID } from "@/components/home/width";
 import { getBusinessBySlug } from "@/lib/data/businesses";
@@ -266,13 +266,14 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
                   <MapPin className="h-4 w-4" /> Dirección
                 </h2>
                 {mapsUrl ? (
-                  <DirectionsLink
+                  <TrackedLink
                     businessId={business.id}
+                    event="directions_click"
                     href={mapsUrl}
                     className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground"
                   >
                     {business.address}
-                  </DirectionsLink>
+                  </TrackedLink>
                 ) : (
                   <p className="text-sm text-muted-foreground">{business.address}</p>
                 )}
@@ -311,6 +312,17 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
                   ))}
                 </ul>
               </section>
+            )}
+
+            {business.website && (
+              <TrackedLink
+                businessId={business.id}
+                event="website_click"
+                href={business.website}
+                className="flex items-center gap-2 text-sm font-medium hover:text-brand-primary"
+              >
+                <Globe className="h-4 w-4" /> Sitio web
+              </TrackedLink>
             )}
 
             {business.instagram && (

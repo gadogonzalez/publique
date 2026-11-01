@@ -28,6 +28,8 @@ export function SearchBar({ defaultValue = "" }: { defaultValue?: string }) {
     >
       <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
       <input
+        type="search"
+        enterKeyHint="search"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Ej: veterinaria, plomero, comida, gimnasio..."
