@@ -16,17 +16,34 @@ import type { Location } from "@/lib/types/database";
 export function HeroSearchBar({ localities }: { localities: Location[] }) {
   const router = useRouter();
   const [value, setValue] = React.useState("");
-  const [zona, setZona] = React.useState<Location | undefined>(localities[0]);
+  const [zona, setZona] = React.useState<Location | undefined>(undefined);
   const [open, setOpen] = React.useState(false);
   const ref = React.useRef<HTMLDivElement>(null);
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
 
   React.useEffect(() => {
+    if (!open) return;
     function onPointerDown(e: PointerEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     }
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      triggerRef.current?.focus();
+    }
     document.addEventListener("pointerdown", onPointerDown);
-    return () => document.removeEventListener("pointerdown", onPointerDown);
-  }, []);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  function pick(loc: Location | undefined) {
+    setZona(loc);
+    setOpen(false);
+    triggerRef.current?.focus();
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -39,7 +56,7 @@ export function HeroSearchBar({ localities }: { localities: Location[] }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex h-16 w-full items-center gap-1 rounded-full bg-white pl-5 pr-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.12)] sm:h-[68px]"
+      className="flex h-16 w-full items-center gap-1 rounded-full bg-white pl-5 pr-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.12)] focus-within:ring-2 focus-within:ring-brand-primary focus-within:ring-offset-2 sm:h-[68px]"
     >
       <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
       <input
@@ -50,33 +67,33 @@ export function HeroSearchBar({ localities }: { localities: Location[] }) {
         className="h-full min-w-0 flex-1 bg-transparent px-3 text-sm text-foreground outline-none placeholder:text-muted-foreground sm:text-base"
       />
 
-      {localities.length > 0 && zona && (
+      {localities.length > 0 && (
         <div ref={ref} className="relative hidden shrink-0 border-l border-border pl-3 sm:block">
           <button
+            ref={triggerRef}
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
-            className="flex items-center gap-1 whitespace-nowrap px-1 text-sm text-muted-foreground transition-opacity hover:opacity-70"
+            aria-label={`Zona: ${zona?.name ?? "Todas las zonas"}`}
+            className="flex items-center gap-1 whitespace-nowrap rounded px-1 text-sm text-muted-foreground transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
           >
-            {zona.name}
+            {zona?.name ?? "Todas las zonas"}
             <ChevronDown className="h-3.5 w-3.5" />
           </button>
           {open && (
             <div className="absolute right-0 top-full z-50 mt-2 min-w-40 rounded-lg border border-border bg-card py-1 shadow-md">
-              {localities.map((loc) => (
+              {[undefined, ...localities].map((loc) => (
                 <button
-                  key={loc.id}
+                  key={loc?.id ?? "all"}
                   type="button"
-                  onClick={() => {
-                    setZona(loc);
-                    setOpen(false);
-                  }}
+                  onClick={() => pick(loc)}
+                  aria-pressed={loc?.id === zona?.id}
                   className={cn(
-                    "block w-full px-3 py-1.5 text-left text-sm hover:bg-secondary",
-                    loc.id === zona.id && "font-medium text-foreground"
+                    "block w-full px-3 py-2 text-left text-sm hover:bg-secondary focus-visible:bg-secondary focus-visible:outline-none",
+                    loc?.id === zona?.id && "font-medium text-foreground"
                   )}
                 >
-                  {loc.name}
+                  {loc?.name ?? "Todas las zonas"}
                 </button>
               ))}
             </div>
@@ -86,7 +103,7 @@ export function HeroSearchBar({ localities }: { localities: Location[] }) {
 
       <button
         type="submit"
-        className="ml-1 flex h-12 shrink-0 items-center rounded-full bg-brand-primary px-6 text-sm font-medium text-brand-primary-foreground transition-colors hover:bg-brand-primary/90 sm:h-[52px]"
+        className="ml-1 flex h-12 shrink-0 items-center rounded-full bg-brand-primary px-6 text-sm font-medium text-brand-primary-foreground transition-colors hover:bg-brand-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground sm:h-[52px]"
       >
         Buscar
       </button>

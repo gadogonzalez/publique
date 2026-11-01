@@ -147,7 +147,7 @@ as estimates rather than invented from memory.
 
 | Token | Value (estimate) | Role |
 |---|---|---|
-| `--brand-primary` | `#8B7FF0` | Mid violet/purple. CTA emphasis on dark surfaces, active/selected state. Never a large background by itself. |
+| `--brand-primary` | `#5E51EC` | Violet (darkened from #8B7FF0 for WCAG AA 4.5:1 with white text). CTA emphasis on dark surfaces, active/selected state. Never a large background by itself. |
 | `--brand-primary-soft` | `#F2EFFC` | Pale lavender canvas — an alternative to `--background` for a homepage section that wants Phantom's light-lavender feel. |
 | `--brand-surface-strong` | `#C7BEF5` | Saturated lavender/purple, full-bleed brand-statement surface (replaces the old hot-pink section). Dark text on top, per Phantom's own light-purple CTA modules. |
 | `--brand-dark` | `#15121B` | Purple-tinted near-black, for hero overlays/dark accents distinct from the site's neutral `--foreground`. |
@@ -498,7 +498,7 @@ which actions are visible all change intentionally per the table above.
   /* Color -- corrected pass, derived from the Phantom reference. The
    * earlier --brand-pink (#ff2d78, and an even earlier #f45fa0) is
    * deprecated; do not reintroduce it on the homepage. */
-  --brand-primary: #8b7ff0;
+  --brand-primary: #5e51ec;
   --brand-primary-foreground: #ffffff;
   --brand-primary-soft: #f2effc;
   --brand-surface-strong: #c7bef5;
@@ -571,7 +571,7 @@ that same pattern rather than introducing a second convention:
 --muted: 30 12% 93%;           /* #F1EEEA, "surface-muted" */
 --muted-foreground: 267 5% 43%;/* #6B6470, "text-secondary" */
 --border: 30 15% 89%;          /* #E7E2DD, "border-subtle" */
---brand-primary: 245 80% 71%;       /* #8B7FF0 */
+--brand-primary: 245 80% 62%;       /* #5E51EC */
 --brand-primary-foreground: 0 0% 100%;
 --brand-primary-soft: 255 70% 97%;  /* #F2EFFC */
 --brand-surface-strong: 250 73% 85%; /* #C7BEF5 */

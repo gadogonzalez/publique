@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import type { Category } from "@/lib/types/database";
 
 const ACTION_BUTTON =
-  "inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 text-sm font-medium transition-colors";
+  "inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2";
 
 /** Fixed, full-width, solid (not the old floating glass pill) -- same on
  * every route, so `<main>` carries a matching top padding (see layout.tsx)
@@ -34,8 +34,19 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
       if (toggleRef.current?.contains(target)) return;
       setOpen(false);
     }
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      toggleRef.current?.focus();
+    }
+    // Move focus into the panel so keyboard users land on the links.
+    panelRef.current?.querySelector<HTMLElement>("a[href]")?.focus();
     document.addEventListener("pointerdown", handlePointerDown);
-    return () => document.removeEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
   }, [open]);
 
   function close() {
@@ -68,6 +79,7 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
+            aria-controls="site-menu"
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
             className={cn(ACTION_BUTTON, "border border-border px-3 hover:bg-secondary sm:px-4")}
           >
@@ -82,6 +94,9 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
           <div aria-hidden className="fixed left-0 right-0 top-20 bottom-0 z-40 bg-black/20" />
           <div
             ref={panelRef}
+            id="site-menu"
+            role="dialog"
+            aria-label="Menú"
             className={cn(
               "fixed inset-x-0 top-[5.5rem] z-50 max-h-[calc(100vh-7rem)] overflow-y-auto rounded-2xl border border-border bg-card shadow-2xl",
               HERO_GRID

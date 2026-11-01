@@ -29,7 +29,7 @@
      * see PUBLIQUE_STYLE_GUIDE.md §5). Values are visual estimates from
      * Mobbin screenshots (no CSS/design-token export available), reported
      * as such rather than invented from memory. */
-    --brand-primary: 245 80% 71%;      /* ~#8B7FF0, Phantom's mid violet/purple */
+    --brand-primary: 245 80% 62%;      /* ~#5E51EC, AA contrast (5.4:1) with white text */
     --brand-primary-foreground: 0 0% 100%;
     --brand-primary-soft: 255 70% 97%; /* ~#F2EFFC, pale lavender canvas */
     --brand-surface-strong: 250 73% 85%; /* ~#C7BEF5, saturated lavender CTA surface */
