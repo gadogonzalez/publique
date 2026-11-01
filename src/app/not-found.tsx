@@ -7,16 +7,16 @@ export default function NotFound() {
   return (
     <div className={`${HERO_GRID} py-20`}>
       <div className="max-w-xl">
-        <h1 className="font-serif text-3xl font-bold tracking-tight">No encontramos esta página</h1>
+        <h1 className="font-serif text-3xl font-bold tracking-tight sm:text-4xl">No encontramos esta página</h1>
         <p className="mt-3 text-muted-foreground">
           Puede que el negocio ya no esté publicado o que el link tenga un error. Buscá lo que necesitás o
           explorá por categoría.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
-          <Link href="/buscar" className={cn(buttonVariants({ variant: "brand" }), "rounded-full")}>
+          <Link href="/buscar" className={cn(buttonVariants({ variant: "brand" }))}>
             Buscar negocios
           </Link>
-          <Link href="/categorias" className={cn(buttonVariants({ variant: "outline" }), "rounded-full")}>
+          <Link href="/categorias" className={cn(buttonVariants({ variant: "outline" }))}>
             Ver categorías
           </Link>
         </div>

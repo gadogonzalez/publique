@@ -29,13 +29,13 @@ export function BusinessListRow({
     <Link
       href={`/negocios/${business.slug}`}
       className={cn(
-        "group flex items-center gap-4 hover:bg-muted/40 sm:gap-5",
+        "group flex items-center gap-4 sm:gap-5",
         variant === "list" && "border-b border-border py-4 first:pt-0 last:border-b-0",
-        variant === "card" && "rounded-xl border border-border p-3"
+        variant === "card" && "rounded-2xl border border-border bg-card p-3 transition-colors hover:border-brand-primary"
       )}
     >
       <div className="relative shrink-0">
-        <FeaturedBusinessCoverOnly business={business} className="aspect-square w-20 sm:w-28" />
+        <FeaturedBusinessCoverOnly business={business} className="aspect-square w-20 rounded-xl sm:w-28" />
         {showLogo && (
           <Image
             src={business.logo_url!}

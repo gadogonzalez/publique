@@ -139,6 +139,19 @@ export interface AdminUser {
 }
 
 /** Row shape returned by the search_businesses() RPC. */
+export type ContactReason = "consulta" | "negocio" | "error";
+
+export interface ContactMessage {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  reason: ContactReason;
+  message: string;
+  status: "new" | "read";
+  created_at: string;
+}
+
 export interface SearchResultRow {
   id: string;
   name: string;

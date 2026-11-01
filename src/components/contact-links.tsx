@@ -23,14 +23,14 @@ export function ContactLinks({ className }: { className?: string }) {
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className={cn(buttonVariants({ variant: "whatsapp" }), "rounded-full")}
+          className={cn(buttonVariants({ variant: "whatsapp" }))}
         >
           <MessageCircle className="h-4 w-4" />
           Escribinos por WhatsApp
         </a>
       )}
       {email && (
-        <a href={`mailto:${email}`} className={cn(buttonVariants({ variant: "outline" }), "rounded-full")}>
+        <a href={`mailto:${email}`} className={cn(buttonVariants({ variant: "outline" }))}>
           <Mail className="h-4 w-4" />
           {email}
         </a>
@@ -40,7 +40,7 @@ export function ContactLinks({ className }: { className?: string }) {
           href={instagramUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className={cn(buttonVariants({ variant: "outline" }), "rounded-full")}
+          className={cn(buttonVariants({ variant: "outline" }))}
         >
           <Instagram className="h-4 w-4" />
           Instagram
