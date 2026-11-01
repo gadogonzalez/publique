@@ -60,11 +60,13 @@ export function HeroSearchBar({ localities }: { localities: Location[] }) {
     >
       <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
       <input
+        type="search"
+        enterKeyHint="search"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Ej: veterinaria, plomero, comida, gimnasio..."
         aria-label="¿Qué necesitás?"
-        className="h-full min-w-0 flex-1 bg-transparent px-3 text-sm text-foreground outline-none placeholder:text-muted-foreground sm:text-base"
+        className="h-full min-w-0 flex-1 bg-transparent px-3 text-base text-foreground outline-none placeholder:text-muted-foreground"
       />
 
       {localities.length > 0 && (

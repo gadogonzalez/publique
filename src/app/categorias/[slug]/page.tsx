@@ -33,7 +33,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const category = await getCategoryBySlug(slug);
   if (!category) notFound();
 
-  const { items } = await search({ categorySlug: slug, page: 1, pageSize: PAGE_SIZE });
+  const { items, totalCount } = await search({ categorySlug: slug, page: 1, pageSize: PAGE_SIZE });
   const allBusinesses = await getBusinessesByIds(items.map((i) => i.id));
 
   // Same destacado rule as the homepage: paid plan + logo + a real cover
@@ -55,6 +55,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     .filter((b) => !featuredIds.has(b.id))
     .sort((a, b) => Number(a.plan?.is_free ?? true) - Number(b.plan?.is_free ?? true));
   const totalShown = listBusinesses.length + featuredIds.size;
+  const hasMore = totalCount > allBusinesses.length;
 
   await trackServer({
     type: "search_performed",
@@ -69,7 +70,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         {category.description ?? `Descubrí ${category.name.toLowerCase()} en Guaymallén.`}
       </p>
       <p className="mt-1 text-sm text-muted-foreground">
-        {totalShown} {totalShown === 1 ? "resultado" : "resultados"}
+        {totalCount} {totalCount === 1 ? "negocio" : "negocios"}
       </p>
 
       {hero && (
@@ -145,6 +146,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               <BusinessListRow key={business.id} business={business} variant="card" />
             ))}
           </div>
+          {hasMore && (
+            <Link
+              href={`/buscar?categoria=${category.slug}`}
+              className={cn(buttonVariants({ variant: "outline" }), "mt-8 rounded-full")}
+            >
+              Ver todos los negocios de {category.name}
+            </Link>
+          )}
         </section>
       ) : (
         !hero &&
