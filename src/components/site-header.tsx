@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 import { PubliqueIsotipo } from "@/components/brand/isotipo";
 import { CategoryPictogram } from "@/components/category-icon";
 import { HERO_GRID } from "@/components/home/width";
@@ -103,7 +103,7 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
             )}
           >
             <div className="py-8">
-              <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <p className="mb-4 text-sm font-semibold text-muted-foreground">
                 Categorías
               </p>
               {categories.length > 0 ? (
@@ -126,9 +126,9 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
               <Link
                 href="/categorias"
                 onClick={close}
-                className="mt-4 inline-block text-sm font-medium text-brand-primary hover:underline"
+                className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-primary hover:underline"
               >
-                Ver todas las categorías →
+                Ver todas las categorías <ArrowRight className="h-3.5 w-3.5" />
               </Link>
 
               <div className="mt-8 flex flex-wrap gap-x-8 gap-y-2 border-t border-border pt-6 text-sm">

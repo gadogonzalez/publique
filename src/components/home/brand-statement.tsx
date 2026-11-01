@@ -11,7 +11,7 @@ export function BrandStatement() {
   return (
     <section className="bg-brand-surface-strong py-20 text-foreground sm:py-28">
       <div className={HERO_GRID}>
-        <p className="text-xs font-semibold uppercase tracking-[0.08em]">Tu barrio</p>
+        <p className="text-sm font-semibold">Tu barrio</p>
         <h2 className="mt-3 font-serif font-bold leading-[0.92] tracking-tight text-[clamp(2.75rem,9vw,7rem)]">
           En un solo
           <br />

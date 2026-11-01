@@ -1,6 +1,5 @@
 import { FeaturedBusinessCard } from "@/components/home/featured-business-card";
 import { BusinessListRow } from "@/components/home/business-list-row";
-import { MotionReveal } from "@/components/home/motion-reveal";
 import { cn } from "@/lib/utils";
 import type { BusinessWithRelations } from "@/lib/types/database";
 
@@ -22,10 +21,8 @@ export function BusinessFeaturedAndList({
     <div>
       {featured.length > 0 && (
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-3">
-          {featured.map((business, i) => (
-            <MotionReveal key={business.id} delay={i * 80}>
-              <FeaturedBusinessCard business={business} />
-            </MotionReveal>
+          {featured.map((business) => (
+            <FeaturedBusinessCard key={business.id} business={business} />
           ))}
         </div>
       )}

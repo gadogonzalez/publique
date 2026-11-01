@@ -80,7 +80,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           <FeaturedBusinessCoverOnly business={hero} className="aspect-[4/3] w-full sm:aspect-[21/9]" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-10">
-            <p className="text-xs font-medium uppercase tracking-wider text-white/80">
+            <p className="text-sm font-medium text-white/85">
               Lo más destacado en {category.name}
             </p>
             <h2 className="mt-1 font-serif text-2xl font-bold tracking-tight sm:text-4xl">{hero.name}</h2>

@@ -48,7 +48,7 @@ export function BusinessListRow({
       </div>
       <div className="min-w-0 flex-1">
         {category && (
-          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-medium text-muted-foreground">
             {category.name}
           </p>
         )}

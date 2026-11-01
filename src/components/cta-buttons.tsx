@@ -1,6 +1,7 @@
 "use client";
 
-import { MapPin, MessageCircle, Phone, Globe } from "lucide-react";
+import { useState } from "react";
+import { Check, MapPin, MessageCircle, Phone, Globe, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { trackClient } from "@/lib/analytics/client";
 import { cn, formatTelLink, formatWhatsAppLink, getMapsUrl } from "@/lib/utils";
@@ -160,5 +161,39 @@ export function DirectionsLink({
     >
       {children}
     </a>
+  );
+}
+
+/** Share the current profile: native share sheet on phones, copy-link
+ * fallback elsewhere. Tracked as share_click with the method used. */
+export function ShareButton({ businessId, businessName }: { businessId: string; businessName: string }) {
+  const [copied, setCopied] = useState(false);
+
+  async function handleShare() {
+    const url = window.location.href;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: businessName, text: `${businessName} en Publiqué`, url });
+        trackClient({ type: "share_click", businessId, metadata: { method: "native" } });
+      } catch {
+        // user dismissed the share sheet -- nothing to do
+      }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+      trackClient({ type: "share_click", businessId, metadata: { method: "copy" } });
+    } catch {
+      // clipboard blocked -- nothing sensible to fall back to
+    }
+  }
+
+  return (
+    <Button type="button" variant="outline" onClick={handleShare} className="rounded-full" aria-live="polite">
+      {copied ? <Check className="h-4 w-4" /> : <Share2 className="h-4 w-4" />}
+      {copied ? "Link copiado" : "Compartir"}
+    </Button>
   );
 }

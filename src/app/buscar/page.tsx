@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { SearchBar } from "@/components/search-bar";
 import { SearchFilters } from "@/components/search-filters";
 import { BusinessFeaturedAndList } from "@/components/business-discovery-grid";
+import { HERO_GRID } from "@/components/home/width";
 import { search } from "@/lib/search";
 import { getBusinessesByIds } from "@/lib/data/businesses";
 import { getCategories, getCategoryBySlug } from "@/lib/data/taxonomy";
@@ -75,9 +76,9 @@ export default async function BuscarPage({ searchParams }: BuscarPageProps) {
     }).toString()}`;
 
   return (
-    <div className="container py-8">
+    <div className={`${HERO_GRID} py-8`}>
       <div className="max-w-xl">
-        <SearchBar defaultValue={query} size="default" />
+        <SearchBar key={query ?? ""} defaultValue={query} />
       </div>
 
       <div className="mt-6 flex flex-col gap-4 border-t border-border pt-6 sm:flex-row sm:items-end sm:justify-between">
