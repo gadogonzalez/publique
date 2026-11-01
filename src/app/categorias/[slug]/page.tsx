@@ -3,8 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, MapPin } from "lucide-react";
 import { FeaturedBusinessCoverOnly } from "@/components/home/featured-business-card";
-import { FeaturedCarouselCard } from "@/components/home/featured-carousel-card";
-import { BusinessListRow } from "@/components/home/business-list-row";
+import { FeaturedDestacadosCarousel } from "@/components/home/featured-carousel";
+import { BusinessList } from "@/components/business-discovery-grid";
 import { buttonVariants } from "@/components/ui/button";
 import { HERO_GRID } from "@/components/home/width";
 import { getCategoryBySlug } from "@/lib/data/taxonomy";
@@ -15,7 +15,8 @@ import { trackServer } from "@/lib/analytics/server";
 import { cn } from "@/lib/utils";
 
 const PAGE_SIZE = 25;
-const SECONDARY_COUNT = 4;
+// Same cap as the homepage carousel (3 pages of 4).
+const SECONDARY_COUNT = 12;
 
 interface CategoryPageProps {
   params: Promise<{ slug: string }>;
@@ -65,7 +66,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <div className={`${HERO_GRID} py-8`}>
-      <h1 className="font-serif text-2xl font-bold tracking-tight sm:text-3xl">{category.name}</h1>
+      <h1 className="font-serif text-3xl font-bold tracking-tight sm:text-4xl">{category.name}</h1>
       <p className="mt-2 max-w-2xl text-muted-foreground">
         {category.description ?? `Descubrí ${category.name.toLowerCase()} en Guaymallén.`}
       </p>
@@ -76,27 +77,30 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       {hero && (
         <Link
           href={`/negocios/${hero.slug}`}
-          className="group relative mt-8 block overflow-hidden rounded-2xl"
+          className="group relative mt-8 block overflow-hidden rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
         >
-          <FeaturedBusinessCoverOnly business={hero} className="aspect-[4/3] w-full sm:aspect-[21/9]" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-10">
-            <p className="text-sm font-medium text-white/85">
-              Lo más destacado en {category.name}
-            </p>
-            <h2 className="mt-1 font-serif text-2xl font-bold tracking-tight sm:text-4xl">{hero.name}</h2>
+          <FeaturedBusinessCoverOnly
+            business={hero}
+            className="aspect-[4/5] w-full rounded-2xl sm:aspect-[16/9] lg:aspect-[2/1]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-10 lg:p-12">
+            <p className="text-sm font-medium text-white/85">Lo más destacado en {category.name}</p>
+            <h2 className="mt-2 font-serif text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
+              {hero.name}
+            </h2>
             {hero.location && (
-              <p className="mt-1 flex items-center gap-1 text-sm text-white/90">
-                <MapPin className="h-3.5 w-3.5" />
+              <p className="mt-2 flex items-center gap-1 text-sm text-white/90 sm:text-base">
+                <MapPin className="h-4 w-4" />
                 {hero.location.name}
               </p>
             )}
             {hero.short_description && (
-              <p className="mt-1 line-clamp-2 max-w-xl text-sm text-white/90">
+              <p className="mt-2 line-clamp-2 max-w-xl text-sm text-white/85 sm:text-base">
                 {hero.short_description}
               </p>
             )}
-            <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium">
+            <span className="mt-5 inline-flex h-11 items-center gap-2 rounded-full bg-white px-5 text-sm font-medium text-foreground">
               Conocer negocio
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </span>
@@ -104,53 +108,36 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         </Link>
       )}
 
-      <section className="mt-10">
-        <h2 className="mb-5 font-serif text-xl font-bold tracking-tight">Negocios destacados</h2>
+      <section className="mt-16 sm:mt-20">
         {secondary.length > 0 ? (
-          <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
-            {secondary.map((business) => (
-              <FeaturedCarouselCard key={business.id} business={business} />
-            ))}
-          </div>
+          <FeaturedDestacadosCarousel
+            businesses={secondary}
+            description={`Una selección de ${category.name.toLowerCase()} destacados de Guaymallén.`}
+            moreHref={`/buscar?categoria=${category.slug}`}
+            moreLabel={`Ver todos los negocios de ${category.name}`}
+          />
         ) : (
-          <div className="rounded-2xl border border-dashed border-brand-primary/40 bg-brand-primary-soft p-8 text-center">
-            <h3 className="font-serif text-lg font-bold tracking-tight text-brand-primary">
-              ¿Querés aparecer como destacado?
-            </h3>
-            <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-              Consultá por nuestras promociones para destacar tu negocio en {category.name}.
-            </p>
-            <Link
-              href="/para-negocios#planes"
-              className={cn(buttonVariants({ variant: "brand" }), "mt-4 rounded-full")}
-            >
-              Consultar promociones
-            </Link>
-          </div>
+          <>
+            <h2 className="font-serif text-2xl font-bold tracking-tight">Negocios destacados</h2>
+            <div className="mt-6 rounded-2xl bg-brand-primary-soft p-6 sm:p-8">
+              <h3 className="font-serif text-lg font-bold tracking-tight">¿Querés aparecer acá?</h3>
+              <p className="mt-2 max-w-md text-sm text-muted-foreground">
+                Destacá tu negocio en {category.name} y aparecé primero cuando la gente busca.
+              </p>
+              <Link href="/para-negocios#planes" className={cn(buttonVariants({ variant: "brand" }), "mt-5")}>
+                Ver planes
+              </Link>
+            </div>
+          </>
         )}
       </section>
 
       {listBusinesses.length > 0 ? (
-        <section className="mt-10 border-t border-border pt-10">
-          <h2 className="mb-5 font-serif text-xl font-bold tracking-tight">Todos los negocios</h2>
-          {/* Mobile: plain stacked list. Desktop: boxed cards, up to 3 per
-              row, wrapping to further rows -- a single column reads as
-              too sparse at that width. */}
-          <div className="sm:hidden">
-            {listBusinesses.map((business) => (
-              <BusinessListRow key={business.id} business={business} />
-            ))}
-          </div>
-          <div className="hidden sm:grid sm:grid-cols-2 sm:gap-3 lg:grid-cols-3">
-            {listBusinesses.map((business) => (
-              <BusinessListRow key={business.id} business={business} variant="card" />
-            ))}
-          </div>
+        <section className="mt-16 border-t border-border pt-16 sm:mt-20 sm:pt-20">
+          <h2 className="mb-6 font-serif text-2xl font-bold tracking-tight">Todos los negocios</h2>
+          <BusinessList businesses={listBusinesses} />
           {hasMore && (
-            <Link
-              href={`/buscar?categoria=${category.slug}`}
-              className={cn(buttonVariants({ variant: "outline" }), "mt-8 rounded-full")}
-            >
+            <Link href={`/buscar?categoria=${category.slug}`} className={cn(buttonVariants({ variant: "outline" }), "mt-8")}>
               Ver todos los negocios de {category.name}
             </Link>
           )}
@@ -158,11 +145,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       ) : (
         !hero &&
         secondary.length === 0 && (
-          <p className="mt-10 text-muted-foreground">
-            <span className="font-medium text-foreground">
-              Todavía no hay negocios en esta categoría.
-            </span>{" "}
-            Volvé pronto o explorá otras categorías.
+          <p className="mt-16 text-muted-foreground">
+            <span className="font-medium text-foreground">Todavía no hay negocios en esta categoría.</span>{" "}
+            <Link href="/categorias" className="font-medium text-brand-primary hover:underline">
+              Explorá otras categorías
+            </Link>
           </p>
         )
       )}

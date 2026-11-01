@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Check } from "lucide-react";
-import { ContactLinks } from "@/components/contact-links";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { HERO_GRID } from "@/components/home/width";
 import { getPlans } from "@/lib/data/plans";
 
@@ -46,7 +48,7 @@ export default async function ParaNegociosPage() {
   return (
     <div className={`${HERO_GRID} py-8`}>
       <div className="max-w-2xl">
-        <h1 className="font-serif text-2xl font-bold tracking-tight sm:text-3xl">Sumá tu negocio a Publiqué</h1>
+        <h1 className="font-serif text-3xl font-bold tracking-tight sm:text-4xl">Sumá tu negocio a Publiqué</h1>
         <p className="mt-2 text-muted-foreground">
           Que los vecinos de tu zona te encuentren cuando buscan lo que hacés, y te escriban directo por WhatsApp.
         </p>
@@ -58,16 +60,16 @@ export default async function ParaNegociosPage() {
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-primary-soft text-sm font-bold text-brand-primary">
               {i + 1}
             </span>
-            <h2 className="mt-3 font-serif text-base font-bold tracking-tight">{step.title}</h2>
+            <h2 className="mt-3 font-serif text-lg font-bold tracking-tight">{step.title}</h2>
             <p className="mt-1 text-sm text-muted-foreground">{step.body}</p>
           </li>
         ))}
       </ol>
 
       {plans.length > 0 && (
-        <section id="planes" className="mt-14 scroll-mt-28">
-          <h2 className="font-serif text-xl font-bold tracking-tight">Planes y precios</h2>
-          <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <section id="planes" className="mt-16 scroll-mt-28 sm:mt-20">
+          <h2 className="font-serif text-2xl font-bold tracking-tight">Planes y precios</h2>
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {plans.map((plan) => (
               <div key={plan.id} className="flex flex-col rounded-2xl border border-border bg-card p-6">
                 <h3 className="font-serif text-lg font-bold tracking-tight">{plan.name}</h3>
@@ -91,8 +93,8 @@ export default async function ParaNegociosPage() {
         </section>
       )}
 
-      <section id="preguntas" className="mt-14 max-w-2xl scroll-mt-28">
-        <h2 className="font-serif text-xl font-bold tracking-tight">Preguntas frecuentes</h2>
+      <section id="preguntas" className="mt-16 max-w-2xl scroll-mt-28 sm:mt-20">
+        <h2 className="font-serif text-2xl font-bold tracking-tight">Preguntas frecuentes</h2>
         <div className="mt-4 divide-y divide-border border-y border-border">
           {FAQ.map(({ q, a }) => (
             <details key={q} className="group py-4">
@@ -108,10 +110,12 @@ export default async function ParaNegociosPage() {
         </div>
       </section>
 
-      <section className="mt-14 max-w-2xl rounded-2xl bg-brand-primary-soft p-6 sm:p-8">
-        <h2 className="font-serif text-xl font-bold tracking-tight">¿Querés sumar tu negocio?</h2>
+      <section className="mt-16 max-w-2xl rounded-2xl bg-brand-primary-soft p-6 sm:mt-20 sm:p-8">
+        <h2 className="font-serif text-2xl font-bold tracking-tight">¿Querés sumar tu negocio?</h2>
         <p className="mt-2 text-muted-foreground">Escribinos y te ayudamos a armar tu perfil.</p>
-        <ContactLinks className="mt-5" />
+        <Link href="/contacto?motivo=negocio" className={cn(buttonVariants({ variant: "brand" }), "mt-5")}>
+          Escribinos
+        </Link>
       </section>
     </div>
   );

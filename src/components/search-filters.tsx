@@ -64,7 +64,7 @@ export function SearchFilters({
         <button
           type="button"
           onClick={() => router.replace("/buscar", { scroll: false })}
-          className="h-11 rounded-lg px-3 text-sm font-medium text-brand-primary hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+          className="h-11 rounded-full px-4 text-sm font-medium text-brand-primary hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
         >
           Limpiar filtros
         </button>

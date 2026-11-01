@@ -26,8 +26,16 @@ function reducedMotionPreferred() {
  * and the existing "Ver todos los negocios" link. No autoplay, no loop. */
 export function FeaturedDestacadosCarousel({
   businesses,
+  title = "Negocios destacados",
+  description = "Conocé una selección de negocios destacados de Guaymallén.",
+  moreHref = "/buscar",
+  moreLabel = "Ver todos los negocios",
 }: {
   businesses: BusinessWithRelations[];
+  title?: string;
+  description?: string;
+  moreHref?: string;
+  moreLabel?: string;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(0);
@@ -85,7 +93,7 @@ export function FeaturedDestacadosCarousel({
   return (
     <div>
       <div className="mb-1 flex items-center justify-between gap-4">
-        <h2 className="font-serif text-2xl font-bold tracking-tight">Negocios destacados</h2>
+        <h2 className="font-serif text-2xl font-bold tracking-tight">{title}</h2>
         {businesses.length > 1 && !(atStart && atEnd) && (
           <div className="flex shrink-0 items-center gap-2">
             <button type="button" aria-label="Anteriores" disabled={atStart} onClick={() => step(-1)} className={arrowClass}>
@@ -97,13 +105,11 @@ export function FeaturedDestacadosCarousel({
           </div>
         )}
       </div>
-      <p className="mb-6 text-muted-foreground">
-        Conocé una selección de negocios destacados de Guaymallén.
-      </p>
+      <p className="mb-6 text-muted-foreground">{description}</p>
 
       <div
         ref={trackRef}
-        className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 motion-safe:scroll-smooth sm:mx-0 sm:gap-6 sm:px-0"
+        className="no-scrollbar -mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 py-1 motion-safe:scroll-smooth sm:-mx-6 sm:scroll-px-6 sm:gap-6 sm:px-6 lg:-mx-8 lg:scroll-px-8 lg:px-8 xl:-mx-10 xl:scroll-px-10 xl:px-10 2xl:-mx-12 2xl:scroll-px-12 2xl:px-12"
       >
         {businesses.map((business) => (
           <div key={business.id} className="w-[85%] shrink-0 snap-start sm:w-[46%] lg:w-[calc(25%-18px)]">
@@ -136,10 +142,10 @@ export function FeaturedDestacadosCarousel({
 
       <div className="mt-8 flex justify-center">
         <Link
-          href="/buscar"
+          href={moreHref}
           className="flex items-center gap-1 text-sm font-medium hover:text-brand-primary"
         >
-          Ver todos los negocios <ArrowRight className="h-3.5 w-3.5" />
+          {moreLabel} <ArrowRight className="h-3.5 w-3.5" />
         </Link>
       </div>
     </div>

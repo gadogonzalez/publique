@@ -12,7 +12,8 @@ export type AnalyticsEventType =
   | "phone_click"
   | "directions_click"
   | "website_click"
-  | "share_click";
+  | "share_click"
+  | "contact_form_submit";
 
 export interface AnalyticsEvent {
   type: AnalyticsEventType;

@@ -10,7 +10,7 @@ const socialClass = "flex h-11 w-11 items-center justify-center rounded-full hov
 export function SiteFooter() {
   return (
     <footer className="border-t border-border py-12 text-sm">
-      <div className={`${HERO_GRID} grid grid-cols-2 gap-8 sm:grid-cols-4`}>
+      <div className={`${HERO_GRID} grid grid-cols-2 gap-8 sm:grid-cols-3`}>
         <div className="col-span-2 sm:col-span-1">
           <p className="flex items-center gap-2 font-serif text-lg font-bold text-foreground">
             <PubliqueIsotipo className="h-[22px] w-[22px] shrink-0" />
@@ -52,27 +52,15 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <p className="mb-3 font-medium text-foreground">Para negocios</p>
-          <div className="space-y-1">
-            <Link href="/para-negocios" className={linkClass}>
-              Publicar mi negocio
-            </Link>
-            <Link href="/para-negocios#planes" className={linkClass}>
-              Planes y precios
-            </Link>
-            <Link href="/para-negocios#preguntas" className={linkClass}>
-              Preguntas frecuentes
-            </Link>
-          </div>
-        </div>
-
-        <div>
-          <p className="mb-3 font-medium text-foreground">Sobre Publiqué</p>
+          <p className="mb-3 font-medium text-foreground">Publiqué</p>
           <div className="space-y-1">
             <Link href="/nosotros" className={linkClass}>
-              Nosotros
+              Quiénes somos
             </Link>
-            <Link href="/nosotros#contacto" className={linkClass}>
+            <Link href="/para-negocios" className={linkClass}>
+              Sumá tu negocio
+            </Link>
+            <Link href="/contacto" className={linkClass}>
               Contacto
             </Link>
           </div>

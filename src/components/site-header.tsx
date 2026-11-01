@@ -154,7 +154,7 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
                   Quiénes somos
                 </Link>
                 <Link
-                  href="/nosotros#contacto"
+                  href="/contacto"
                   onClick={close}
                   className="font-medium transition-colors hover:text-brand-primary"
                 >

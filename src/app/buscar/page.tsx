@@ -5,7 +5,7 @@ import { CategoryPictogram } from "@/components/category-icon";
 import { cn } from "@/lib/utils";
 import { SearchBar } from "@/components/search-bar";
 import { SearchFilters } from "@/components/search-filters";
-import { BusinessFeaturedAndList } from "@/components/business-discovery-grid";
+import { BusinessList } from "@/components/business-discovery-grid";
 import { HERO_GRID } from "@/components/home/width";
 import { search } from "@/lib/search";
 import { getBusinessesByIds } from "@/lib/data/businesses";
@@ -84,11 +84,11 @@ export default async function BuscarPage({ searchParams }: BuscarPageProps) {
       <div className="mt-6 flex flex-col gap-4 border-t border-border pt-6 sm:flex-row sm:items-end sm:justify-between">
         <div>
           {query ? (
-            <h1 className="font-serif text-2xl font-bold tracking-tight sm:text-3xl">
+            <h1 className="font-serif text-3xl font-bold tracking-tight sm:text-4xl">
               Resultados para &ldquo;{query}&rdquo;
             </h1>
           ) : (
-            <h1 className="font-serif text-2xl font-bold tracking-tight sm:text-3xl">Todos los negocios</h1>
+            <h1 className="font-serif text-3xl font-bold tracking-tight sm:text-4xl">Todos los negocios</h1>
           )}
           <p className="mt-1 text-sm text-muted-foreground">
             {totalCount} {totalCount === 1 ? "resultado" : "resultados"}
@@ -109,7 +109,7 @@ export default async function BuscarPage({ searchParams }: BuscarPageProps) {
             Probá con otra palabra o elegí una categoría.
           </p>
           {(query || category || location) && (
-            <Link href="/buscar" className={cn(buttonVariants({ variant: "brand" }), "mt-5 rounded-full")}>
+            <Link href="/buscar" className={cn(buttonVariants({ variant: "brand" }), "mt-5")}>
               Ver todos los negocios
             </Link>
           )}
@@ -130,7 +130,7 @@ export default async function BuscarPage({ searchParams }: BuscarPageProps) {
         </div>
       ) : (
         <div className="mt-8">
-          <BusinessFeaturedAndList businesses={businesses} />
+          <BusinessList businesses={businesses} />
         </div>
       )}
 

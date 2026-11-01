@@ -14,7 +14,7 @@ export default async function ZonasPage() {
 
   return (
     <div className={`${HERO_GRID} py-8`}>
-      <h1 className="font-serif text-2xl font-bold tracking-tight sm:text-3xl">Zonas</h1>
+      <h1 className="font-serif text-3xl font-bold tracking-tight sm:text-4xl">Zonas</h1>
       <p className="mt-2 max-w-2xl text-muted-foreground">
         Elegí tu localidad para ver los negocios y servicios que tenés cerca.
       </p>

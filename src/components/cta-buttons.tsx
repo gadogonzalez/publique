@@ -193,7 +193,7 @@ export function ShareButton({ businessId, businessName }: { businessId: string; 
   }
 
   return (
-    <Button type="button" variant="outline" onClick={handleShare} className="rounded-full" aria-live="polite">
+    <Button type="button" variant="outline" onClick={handleShare} aria-live="polite">
       {copied ? <Check className="h-4 w-4" /> : <Share2 className="h-4 w-4" />}
       {copied ? "Link copiado" : "Compartir"}
     </Button>
