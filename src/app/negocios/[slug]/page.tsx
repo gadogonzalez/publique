@@ -6,11 +6,13 @@ import { Instagram, Clock, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { BusinessThumb } from "@/components/business-thumb";
 import { CategoryIcon } from "@/components/category-icon";
-import { CtaButtons } from "@/components/cta-buttons";
+import { CtaButtons, DirectionsLink } from "@/components/cta-buttons";
 import { StickyContactBar } from "@/components/sticky-contact-bar";
 import { getBusinessBySlug } from "@/lib/data/businesses";
 import { getPlanCapabilities } from "@/lib/plans";
 import { trackServer } from "@/lib/analytics/server";
+import { cn, getMapsUrl } from "@/lib/utils";
+import type { BusinessHours } from "@/lib/types/database";
 
 const DAY_NAMES = [
   "Domingo",
@@ -21,6 +23,36 @@ const DAY_NAMES = [
   "Viernes",
   "Sábado",
 ];
+
+const TIME_ZONE = "America/Argentina/Mendoza";
+
+/** Current weekday (0 = Sunday, matching day_of_week) and HH:MM in Mendoza. */
+function nowInMendoza() {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: TIME_ZONE,
+    weekday: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(new Date());
+  const get = (t: string) => parts.find((p) => p.type === t)?.value ?? "";
+  const day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(get("weekday"));
+  return { day, time: `${get("hour")}:${get("minute")}` };
+}
+
+/** Open right now? Handles shifts that close after midnight (closes <= opens). */
+function isOpenNow(hours: BusinessHours[], day: number, time: string) {
+  const yesterday = (day + 6) % 7;
+  return hours.some((h) => {
+    if (h.closed || !h.opens_at || !h.closes_at) return false;
+    const opens = h.opens_at.slice(0, 5);
+    const closes = h.closes_at.slice(0, 5);
+    const overnight = closes <= opens;
+    if (h.day_of_week === day) return overnight ? time >= opens : time >= opens && time < closes;
+    if (h.day_of_week === yesterday && overnight) return time < closes;
+    return false;
+  });
+}
 
 interface BusinessPageProps {
   params: Promise<{ slug: string }>;
@@ -58,6 +90,13 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
   const capabilities = getPlanCapabilities(business.plan);
   const showLogo = capabilities.canUploadLogo && !!business.logo_url;
   const showGallery = capabilities.canUploadGallery && business.images.length > 0;
+  const mapsUrl = getMapsUrl(business.address, business.latitude, business.longitude);
+  const now = nowInMendoza();
+  const openNow = isOpenNow(business.hours, now.day, now.time);
+  // Monday-first, as people in Argentina read a week.
+  const sortedHours = [...business.hours].sort(
+    (a, b) => (a.day_of_week + 6) % 7 - (b.day_of_week + 6) % 7
+  );
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -222,7 +261,17 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
                 <h2 className="mb-2 flex items-center gap-2 text-sm font-semibold">
                   <MapPin className="h-4 w-4" /> Dirección
                 </h2>
-                <p className="text-sm text-muted-foreground">{business.address}</p>
+                {mapsUrl ? (
+                  <DirectionsLink
+                    businessId={business.id}
+                    href={mapsUrl}
+                    className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground"
+                  >
+                    {business.address}
+                  </DirectionsLink>
+                ) : (
+                  <p className="text-sm text-muted-foreground">{business.address}</p>
+                )}
               </section>
             )}
 
@@ -231,9 +280,23 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
                 <h2 className="mb-2 flex items-center gap-2 text-sm font-semibold">
                   <Clock className="h-4 w-4" /> Horarios
                 </h2>
+                <p
+                  className={cn(
+                    "mb-3 text-sm font-semibold",
+                    openNow ? "text-primary" : "text-muted-foreground"
+                  )}
+                >
+                  {openNow ? "Abierto ahora" : "Cerrado ahora"}
+                </p>
                 <ul className="space-y-1 text-sm text-muted-foreground">
-                  {business.hours.map((h) => (
-                    <li key={h.id} className="flex justify-between gap-4">
+                  {sortedHours.map((h) => (
+                    <li
+                      key={h.id}
+                      className={cn(
+                        "flex justify-between gap-4",
+                        h.day_of_week === now.day && "font-semibold text-foreground"
+                      )}
+                    >
                       <span>{DAY_NAMES[h.day_of_week]}</span>
                       <span>
                         {h.closed || !h.opens_at

@@ -136,3 +136,29 @@ export function CtaButtons({
     </div>
   );
 }
+
+/** Plain-text directions link (e.g. the address on the profile), tracked
+ * the same as the "Cómo llegar" button. */
+export function DirectionsLink({
+  businessId,
+  href,
+  className,
+  children,
+}: {
+  businessId: string;
+  href: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={className}
+      onClick={() => trackClient({ type: "directions_click", businessId })}
+    >
+      {children}
+    </a>
+  );
+}

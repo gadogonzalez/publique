@@ -139,10 +139,34 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
                 >
                   Sumá tu negocio
                 </Link>
-                {/* No page behind these yet -- inert, same treatment as
-                    the footer's other placeholder labels, not a dead link. */}
-                <span className="font-medium text-muted-foreground/60">Quiénes somos</span>
-                <span className="font-medium text-muted-foreground/60">Contacto</span>
+                <Link
+                  href="/zonas"
+                  onClick={close}
+                  className="font-medium transition-colors hover:text-brand-primary"
+                >
+                  Zonas
+                </Link>
+                <Link
+                  href="/para-negocios"
+                  onClick={close}
+                  className="font-medium transition-colors hover:text-brand-primary"
+                >
+                  Planes y preguntas
+                </Link>
+                <Link
+                  href="/nosotros"
+                  onClick={close}
+                  className="font-medium transition-colors hover:text-brand-primary"
+                >
+                  Quiénes somos
+                </Link>
+                <Link
+                  href="/nosotros#contacto"
+                  onClick={close}
+                  className="font-medium transition-colors hover:text-brand-primary"
+                >
+                  Contacto
+                </Link>
               </div>
             </div>
           </div>
