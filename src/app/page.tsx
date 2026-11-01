@@ -2,8 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { HeroSearch } from "@/components/hero-search";
 import { CategoryCard } from "@/components/category-card";
-import { FeaturedBusinessCard } from "@/components/home/featured-business-card";
-import { MotionReveal } from "@/components/home/motion-reveal";
+import { FeaturedDestacadosCarousel } from "@/components/home/featured-carousel";
 import { PromoBanner } from "@/components/home/promo-banner";
 import { BrandStatement } from "@/components/home/brand-statement";
 import { HERO_GRID } from "@/components/home/width";
@@ -13,11 +12,13 @@ import { getBusinessesByIds, getBusinessBySlug } from "@/lib/data/businesses";
 import { search } from "@/lib/search";
 import { getPlanCapabilities } from "@/lib/plans";
 
-const DISCOVERY_COUNT = 4;
+// Carousel supports up to 3 pages of 4 (12 slots).
+const DISCOVERY_COUNT = 12;
 // Fetched wider than DISCOVERY_COUNT because "destacados" only shows
-// paid-plan businesses with a logo (canBeFeatured + logo_url) -- a
-// shallow pool would often come up short after that filter.
-const DISCOVERY_POOL_SIZE = 24;
+// paid-plan businesses with a logo and a cover photo (canBeFeatured +
+// logo_url + cover_image_url) -- a shallow pool would often come up
+// short after that filter.
+const DISCOVERY_POOL_SIZE = 48;
 
 export default async function HomePage() {
   const [categories, categoryCounts, localities, { items }, promoBusiness] = await Promise.all([
@@ -68,22 +69,7 @@ export default async function HomePage() {
 
       {featuredBusinesses.length > 0 && (
         <section className={`${HERO_GRID} pb-16 sm:pb-20`}>
-          <h2 className="mb-6 font-serif text-2xl font-bold tracking-tight">Negocios destacados</h2>
-          <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">
-            {featuredBusinesses.map((business, i) => (
-              <MotionReveal key={business.id} delay={i * 60}>
-                <FeaturedBusinessCard business={business} />
-              </MotionReveal>
-            ))}
-          </div>
-          <div className="mt-10 flex justify-center">
-            <Link
-              href="/buscar"
-              className="flex items-center gap-1 text-sm font-medium hover:text-brand-primary"
-            >
-              Ver todos los negocios <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
+          <FeaturedDestacadosCarousel businesses={featuredBusinesses} />
         </section>
       )}
 
