@@ -120,7 +120,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               Consultá por nuestras promociones para destacar tu negocio en {category.name}.
             </p>
             <Link
-              href="/admin/login"
+              href="/para-negocios#planes"
               className={cn(buttonVariants({ variant: "brand" }), "mt-4 rounded-full")}
             >
               Consultar promociones

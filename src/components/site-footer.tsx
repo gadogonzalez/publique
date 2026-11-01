@@ -53,7 +53,7 @@ export function SiteFooter() {
         <div>
           <p className="mb-3 font-medium text-foreground">Para negocios</p>
           <div className="space-y-1">
-            <Link href="/admin/login" className={linkClass}>
+            <Link href="/para-negocios" className={linkClass}>
               Publicar mi negocio
             </Link>
             <Link href="/para-negocios#planes" className={linkClass}>

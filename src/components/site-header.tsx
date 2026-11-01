@@ -67,7 +67,7 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
 
         <div className="flex items-center gap-2">
           <Link
-            href="/admin/login"
+            href="/para-negocios"
             onClick={close}
             className={cn(ACTION_BUTTON, "bg-brand-primary text-brand-primary-foreground hover:bg-brand-primary/90")}
           >
@@ -133,7 +133,7 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
 
               <div className="mt-8 flex flex-wrap gap-x-8 gap-y-2 border-t border-border pt-6 text-sm">
                 <Link
-                  href="/admin/login"
+                  href="/para-negocios"
                   onClick={close}
                   className="font-medium transition-colors hover:text-brand-primary"
                 >
@@ -145,13 +145,6 @@ export function SiteHeader({ categories }: { categories: Category[] }) {
                   className="font-medium transition-colors hover:text-brand-primary"
                 >
                   Zonas
-                </Link>
-                <Link
-                  href="/para-negocios"
-                  onClick={close}
-                  className="font-medium transition-colors hover:text-brand-primary"
-                >
-                  Planes y preguntas
                 </Link>
                 <Link
                   href="/nosotros"
