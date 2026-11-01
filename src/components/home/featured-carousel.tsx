@@ -31,70 +31,67 @@ export function FeaturedDestacadosCarousel({
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(0);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
   const totalPages = Math.max(1, Math.ceil(businesses.length / CARDS_PER_PAGE));
 
-  const syncPageFromScroll = useCallback(() => {
+  const syncFromScroll = useCallback(() => {
     const el = trackRef.current;
     if (!el) return;
     const maxScroll = el.scrollWidth - el.clientWidth;
-    if (maxScroll <= 1) {
-      setPage(0);
-      return;
-    }
-    const ratio = el.scrollLeft / maxScroll;
-    setPage(Math.round(ratio * (totalPages - 1)));
+    setAtStart(el.scrollLeft <= 1);
+    setAtEnd(el.scrollLeft >= maxScroll - 1);
+    setPage(maxScroll <= 1 ? 0 : Math.round((el.scrollLeft / maxScroll) * (totalPages - 1)));
   }, [totalPages]);
 
   useEffect(() => {
     const el = trackRef.current;
     if (!el) return;
+    syncFromScroll();
     let frame = 0;
     function onScroll() {
       cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(syncPageFromScroll);
+      frame = requestAnimationFrame(syncFromScroll);
     }
     el.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     return () => {
       el.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
       cancelAnimationFrame(frame);
     };
-  }, [syncPageFromScroll]);
+  }, [syncFromScroll]);
+
+  const behavior = () => (reducedMotionPreferred() ? "auto" : "smooth") as ScrollBehavior;
+
+  // Arrows move one visible width (1 card on mobile, 4 on desktop); snap
+  // settles on the next card start.
+  function step(dir: 1 | -1) {
+    const el = trackRef.current;
+    if (el) el.scrollBy({ left: dir * el.clientWidth, behavior: behavior() });
+  }
 
   function goTo(targetPage: number) {
     const el = trackRef.current;
     if (!el) return;
-    const clamped = Math.max(0, Math.min(totalPages - 1, targetPage));
     const maxScroll = el.scrollWidth - el.clientWidth;
-    const left = totalPages > 1 ? (maxScroll * clamped) / (totalPages - 1) : 0;
-    el.scrollTo({ left, behavior: reducedMotionPreferred() ? "auto" : "smooth" });
-    setPage(clamped);
+    const left = totalPages > 1 ? (maxScroll * targetPage) / (totalPages - 1) : 0;
+    el.scrollTo({ left, behavior: behavior() });
   }
 
-  const atStart = page <= 0;
-  const atEnd = page >= totalPages - 1;
+  const arrowClass =
+    "flex h-11 w-11 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-secondary disabled:pointer-events-none disabled:opacity-40";
 
   return (
     <div>
-      <div className="mb-1 flex items-center justify-between">
+      <div className="mb-1 flex items-center justify-between gap-4">
         <h2 className="font-serif text-2xl font-bold tracking-tight">Negocios destacados</h2>
-        {totalPages > 1 && (
-          <div className="hidden items-center gap-2 sm:flex">
-            <button
-              type="button"
-              aria-label="Página anterior"
-              disabled={atStart}
-              onClick={() => goTo(page - 1)}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-secondary disabled:pointer-events-none disabled:opacity-40"
-            >
+        {businesses.length > 1 && !(atStart && atEnd) && (
+          <div className="flex shrink-0 items-center gap-2">
+            <button type="button" aria-label="Anteriores" disabled={atStart} onClick={() => step(-1)} className={arrowClass}>
               <ArrowLeft className="h-4 w-4" />
             </button>
-            <button
-              type="button"
-              aria-label="Página siguiente"
-              disabled={atEnd}
-              onClick={() => goTo(page + 1)}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-secondary disabled:pointer-events-none disabled:opacity-40"
-            >
+            <button type="button" aria-label="Siguientes" disabled={atEnd} onClick={() => step(1)} className={arrowClass}>
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>
@@ -116,7 +113,7 @@ export function FeaturedDestacadosCarousel({
       </div>
 
       {totalPages > 1 && (
-        <div className="mt-6 hidden items-center justify-center gap-2 sm:flex">
+        <div className="mt-4 hidden items-center justify-center lg:flex">
           {Array.from({ length: totalPages }, (_, i) => (
             <button
               key={i}
@@ -124,16 +121,20 @@ export function FeaturedDestacadosCarousel({
               aria-label={`Ir a la página ${i + 1}`}
               aria-current={page === i}
               onClick={() => goTo(i)}
-              className={cn(
-                "h-2 rounded-full transition-all",
-                page === i ? "w-6 bg-brand-primary" : "w-2 bg-border hover:bg-muted-foreground/40"
-              )}
-            />
+              className="group flex h-11 items-center px-1.5"
+            >
+              <span
+                className={cn(
+                  "block h-2 rounded-full transition-all",
+                  page === i ? "w-6 bg-brand-primary" : "w-2 bg-border group-hover:bg-muted-foreground/40"
+                )}
+              />
+            </button>
           ))}
         </div>
       )}
 
-      <div className="mt-10 flex justify-center">
+      <div className="mt-8 flex justify-center">
         <Link
           href="/buscar"
           className="flex items-center gap-1 text-sm font-medium hover:text-brand-primary"

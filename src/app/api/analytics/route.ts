@@ -12,6 +12,7 @@ const eventSchema = z.object({
     "phone_click",
     "directions_click",
     "website_click",
+    "share_click",
   ]),
   businessId: z.string().uuid().optional(),
   categoryId: z.string().uuid().optional(),

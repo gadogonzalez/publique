@@ -9,7 +9,7 @@ export function CommunityBanner() {
   return (
     <section className="bg-foreground py-20 text-background sm:py-28">
       <div className={HERO_GRID}>
-        <p className="text-xs font-semibold uppercase tracking-[0.08em] text-background/60">
+        <p className="text-sm font-semibold text-background/70">
           Para negocios
         </p>
         <h2 className="mt-4 max-w-2xl font-serif text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">

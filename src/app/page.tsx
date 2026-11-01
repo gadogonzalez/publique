@@ -58,10 +58,13 @@ export default async function HomePage() {
             ))}
             <Link
               href="/categorias"
-              className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-brand-primary/40 bg-brand-primary-soft p-6 text-center text-brand-primary transition-colors hover:bg-brand-primary hover:text-brand-primary-foreground"
+              className="group flex flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-card p-6 text-center transition-colors hover:border-brand-primary"
             >
-              <ArrowRight className="h-6 w-6 transition-transform group-hover:translate-x-1" />
-              <span className="font-serif text-base font-bold tracking-tight">Explorar todo</span>
+              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-secondary transition-colors duration-300 group-hover:bg-brand-primary">
+                <ArrowRight className="h-6 w-6 text-foreground transition-colors duration-300 group-hover:text-brand-primary-foreground" />
+              </span>
+              <span className="font-serif text-base font-bold leading-tight tracking-tight">Ver todas</span>
+              <span className="text-xs text-muted-foreground">{categories.length} categorías</span>
             </Link>
           </div>
         </section>

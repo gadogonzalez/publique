@@ -11,7 +11,8 @@ export type AnalyticsEventType =
   | "whatsapp_click"
   | "phone_click"
   | "directions_click"
-  | "website_click";
+  | "website_click"
+  | "share_click";
 
 export interface AnalyticsEvent {
   type: AnalyticsEventType;

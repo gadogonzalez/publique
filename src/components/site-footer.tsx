@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Instagram, Facebook } from "lucide-react";
 import { PubliqueIsotipo } from "@/components/brand/isotipo";
 import { SITE_CONTACT } from "@/lib/site";
+import { HERO_GRID } from "@/components/home/width";
 
 const linkClass = "block py-1 text-muted-foreground hover:text-foreground";
 const socialClass = "flex h-11 w-11 items-center justify-center rounded-full hover:bg-secondary hover:text-foreground";
@@ -9,7 +10,7 @@ const socialClass = "flex h-11 w-11 items-center justify-center rounded-full hov
 export function SiteFooter() {
   return (
     <footer className="border-t border-border py-12 text-sm">
-      <div className="container grid grid-cols-2 gap-8 sm:grid-cols-4">
+      <div className={`${HERO_GRID} grid grid-cols-2 gap-8 sm:grid-cols-4`}>
         <div className="col-span-2 sm:col-span-1">
           <p className="flex items-center gap-2 font-serif text-lg font-bold text-foreground">
             <PubliqueIsotipo className="h-[22px] w-[22px] shrink-0" />
@@ -78,7 +79,7 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="container mt-10 flex flex-col gap-2 border-t border-border pt-6 text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+      <div className={`${HERO_GRID} mt-10 flex flex-col gap-2 border-t border-border pt-6 text-muted-foreground sm:flex-row sm:items-center sm:justify-between`}>
         <p>© {new Date().getFullYear()} Publiqué. Todos los derechos reservados.</p>
         <p>Hecho en Mendoza ❤️</p>
       </div>

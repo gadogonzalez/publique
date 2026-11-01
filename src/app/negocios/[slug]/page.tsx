@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Instagram, Clock, MapPin } from "lucide-react";
+import { ArrowLeft, Instagram, Clock, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { BusinessThumb } from "@/components/business-thumb";
 import { CategoryIcon } from "@/components/category-icon";
-import { CtaButtons, DirectionsLink } from "@/components/cta-buttons";
+import { CtaButtons, DirectionsLink, ShareButton } from "@/components/cta-buttons";
 import { StickyContactBar } from "@/components/sticky-contact-bar";
+import { HERO_GRID } from "@/components/home/width";
 import { getBusinessBySlug } from "@/lib/data/businesses";
 import { getPlanCapabilities } from "@/lib/plans";
 import { trackServer } from "@/lib/analytics/server";
@@ -141,11 +142,11 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
         priority
       />
 
-      <div className="container pt-6">
+      <div className={`${HERO_GRID} pt-6`}>
         {business.categories[0] && (
           <Link
             href={`/categorias/${business.categories[0].slug}`}
-            className="text-sm text-muted-foreground hover:text-primary"
+            className="text-sm text-muted-foreground hover:text-brand-primary"
           >
             {business.categories[0].name}
           </Link>
@@ -170,7 +171,7 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
             )}
             <div>
               {business.featured && (
-                <p className="mb-1 text-xs font-medium uppercase tracking-wider text-primary">
+                <p className="mb-1 text-sm font-semibold text-brand-primary">
                   Destacado
                 </p>
               )}
@@ -186,16 +187,19 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
             </div>
           </div>
 
-          <CtaButtons
-            businessId={business.id}
-            businessName={business.name}
-            whatsapp={business.whatsapp}
-            address={business.address}
-            latitude={business.latitude}
-            longitude={business.longitude}
-            website={business.website}
-            className="hidden sm:flex"
-          />
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <CtaButtons
+              businessId={business.id}
+              businessName={business.name}
+              whatsapp={business.whatsapp}
+              address={business.address}
+              latitude={business.latitude}
+              longitude={business.longitude}
+              website={business.website}
+              className="hidden sm:flex"
+            />
+            <ShareButton businessId={business.id} businessName={business.name} />
+          </div>
         </div>
 
         <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-3">
@@ -314,14 +318,14 @@ export default async function BusinessPage({ params }: BusinessPageProps) {
                 href={business.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm font-medium hover:text-primary"
+                className="flex items-center gap-2 text-sm font-medium hover:text-brand-primary"
               >
                 <Instagram className="h-4 w-4" /> Instagram
               </a>
             )}
 
-            <Link href="/buscar" className="block text-sm text-primary hover:underline">
-              ← Ver más negocios
+            <Link href="/buscar" className="inline-flex items-center gap-1 text-sm font-medium text-brand-primary hover:underline">
+              <ArrowLeft className="h-3.5 w-3.5" /> Ver más negocios
             </Link>
           </aside>
         </div>
