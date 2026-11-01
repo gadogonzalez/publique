@@ -36,8 +36,8 @@ export function SearchBar({
       onSubmit={handleSubmit}
       className={
         size === "lg"
-          ? "flex w-full items-center gap-1 rounded-xl border border-border bg-card p-1.5 shadow-sm"
-          : "flex w-full items-center gap-1 rounded-lg border border-border bg-card p-1"
+          ? "flex w-full items-center gap-1 rounded-xl border border-border bg-card p-1.5 shadow-sm focus-within:ring-2 focus-within:ring-brand-primary focus-within:ring-offset-2"
+          : "flex w-full items-center gap-1 rounded-lg border border-border bg-card p-1 focus-within:ring-2 focus-within:ring-brand-primary focus-within:ring-offset-2"
       }
     >
       <Search className="ml-2 h-4 w-4 shrink-0 text-muted-foreground" />
