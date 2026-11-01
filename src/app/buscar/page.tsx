@@ -1,4 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
+import { CategoryPictogram } from "@/components/category-icon";
+import { cn } from "@/lib/utils";
 import { SearchBar } from "@/components/search-bar";
 import { SearchFilters } from "@/components/search-filters";
 import { BusinessFeaturedAndList } from "@/components/business-discovery-grid";
@@ -77,12 +81,33 @@ export default async function BuscarPage({ searchParams }: BuscarPageProps) {
       </div>
 
       {businesses.length === 0 ? (
-        <p className="py-14 text-muted-foreground">
-          <span className="font-medium text-foreground">
-            No encontramos resultados todavía.
-          </span>{" "}
-          Probá con otra palabra, o explorá por categoría y zona.
-        </p>
+        <div className="py-14">
+          <p className="text-muted-foreground">
+            <span className="font-medium text-foreground">
+              No encontramos resultados{query ? <> para &ldquo;{query}&rdquo;</> : null}.
+            </span>{" "}
+            Probá con otra palabra o elegí una categoría.
+          </p>
+          {(query || category || location) && (
+            <Link href="/buscar" className={cn(buttonVariants({ variant: "brand" }), "mt-5 rounded-full")}>
+              Ver todos los negocios
+            </Link>
+          )}
+          {categories.length > 0 && (
+            <div className="mt-6 flex flex-wrap gap-2">
+              {categories.map((c) => (
+                <Link
+                  key={c.id}
+                  href={`/categorias/${c.slug}`}
+                  className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-4 text-sm font-medium hover:border-brand-primary"
+                >
+                  <CategoryPictogram icon={c.icon} className="h-4 w-4 text-brand-primary" />
+                  {c.name}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
       ) : (
         <div className="mt-8">
           <BusinessFeaturedAndList businesses={businesses} />

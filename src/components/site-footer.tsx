@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { Instagram, Facebook } from "lucide-react";
 import { PubliqueIsotipo } from "@/components/brand/isotipo";
+import { SITE_CONTACT } from "@/lib/site";
 
-const linkClass = "block text-muted-foreground hover:text-foreground";
-// No corresponding pages exist yet for these -- rendered as inert labels
-// rather than dead or misleading links (see redesign report).
-const placeholderClass = "block text-muted-foreground/60";
+const linkClass = "block py-1 text-muted-foreground hover:text-foreground";
+const socialClass = "flex h-11 w-11 items-center justify-center rounded-full hover:bg-secondary hover:text-foreground";
 
 export function SiteFooter() {
   return (
@@ -20,19 +19,29 @@ export function SiteFooter() {
           <p className="mt-3 max-w-[22ch] text-muted-foreground">
             Conectando personas con negocios reales de tu barrio.
           </p>
-          <div className="mt-4 flex items-center gap-3 text-muted-foreground">
-            <Instagram className="h-4 w-4" />
-            <Facebook className="h-4 w-4" />
-          </div>
+          {(SITE_CONTACT.instagramUrl || SITE_CONTACT.facebookUrl) && (
+            <div className="-ml-3 mt-2 flex items-center text-muted-foreground">
+              {SITE_CONTACT.instagramUrl && (
+                <a href={SITE_CONTACT.instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Publiqué en Instagram" className={socialClass}>
+                  <Instagram className="h-4 w-4" />
+                </a>
+              )}
+              {SITE_CONTACT.facebookUrl && (
+                <a href={SITE_CONTACT.facebookUrl} target="_blank" rel="noopener noreferrer" aria-label="Publiqué en Facebook" className={socialClass}>
+                  <Facebook className="h-4 w-4" />
+                </a>
+              )}
+            </div>
+          )}
         </div>
 
         <div>
           <p className="mb-3 font-medium text-foreground">Explorar</p>
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Link href="/categorias" className={linkClass}>
               Categorías
             </Link>
-            <Link href="/buscar" className={linkClass}>
+            <Link href="/zonas" className={linkClass}>
               Zonas
             </Link>
             <Link href="/buscar" className={linkClass}>
@@ -43,20 +52,28 @@ export function SiteFooter() {
 
         <div>
           <p className="mb-3 font-medium text-foreground">Para negocios</p>
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Link href="/admin/login" className={linkClass}>
               Publicar mi negocio
             </Link>
-            <span className={placeholderClass}>Planes y precios</span>
-            <span className={placeholderClass}>Preguntas frecuentes</span>
+            <Link href="/para-negocios#planes" className={linkClass}>
+              Planes y precios
+            </Link>
+            <Link href="/para-negocios#preguntas" className={linkClass}>
+              Preguntas frecuentes
+            </Link>
           </div>
         </div>
 
         <div>
           <p className="mb-3 font-medium text-foreground">Sobre Publiqué</p>
-          <div className="space-y-2">
-            <span className={placeholderClass}>Nosotros</span>
-            <span className={placeholderClass}>Contacto</span>
+          <div className="space-y-1">
+            <Link href="/nosotros" className={linkClass}>
+              Nosotros
+            </Link>
+            <Link href="/nosotros#contacto" className={linkClass}>
+              Contacto
+            </Link>
           </div>
         </div>
       </div>
