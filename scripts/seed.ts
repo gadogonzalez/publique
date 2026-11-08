@@ -210,7 +210,7 @@ async function main() {
   }
 
   console.log("Seeding plans...");
-  // Same values as supabase/migrations/0015_plan_pricing.sql.
+  // Same values as supabase/migrations/0015_plan_pricing.sql + 0016_plan_exposure.sql.
   const planRows = [
     {
       name: "Básico",
@@ -218,6 +218,8 @@ async function main() {
       price_ars: 0,
       price_6m_ars: null,
       max_gallery_images: 0,
+      home_featured: false,
+      exposure_priority: 0,
       is_free: true,
       sort_order: 1,
       features: ["Nombre del comercio o profesional.", "Dirección.", "Horarios de atención.", "Teléfono y WhatsApp."],
@@ -228,6 +230,8 @@ async function main() {
       price_ars: 14900,
       price_6m_ars: 74500,
       max_gallery_images: 5,
+      home_featured: false,
+      exposure_priority: 1,
       is_free: false,
       sort_order: 2,
       features: [
@@ -237,7 +241,6 @@ async function main() {
         "Horarios detallados de atención.",
         "Enlace directo a WhatsApp.",
         "Hasta 5 fotografías.",
-        "Enlace a redes sociales.",
       ],
     },
     {
@@ -246,6 +249,8 @@ async function main() {
       price_ars: 24900,
       price_6m_ars: 124500,
       max_gallery_images: 10,
+      home_featured: true,
+      exposure_priority: 2,
       is_free: false,
       sort_order: 3,
       features: [

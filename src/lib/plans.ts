@@ -4,6 +4,10 @@ export interface PlanCapabilities {
   canUploadLogo: boolean;
   canUploadGallery: boolean;
   canBeFeatured: boolean;
+  /** Eligible for the homepage destacados carousel. */
+  canAppearOnHome: boolean;
+  /** Higher plans are listed first; 0 for free. */
+  exposurePriority: number;
   maxGalleryImages: number;
 }
 
@@ -11,6 +15,8 @@ const FREE_CAPABILITIES: PlanCapabilities = {
   canUploadLogo: false,
   canUploadGallery: false,
   canBeFeatured: false,
+  canAppearOnHome: false,
+  exposurePriority: 0,
   maxGalleryImages: 0,
 };
 
@@ -26,6 +32,15 @@ export function getPlanCapabilities(plan: Plan | null | undefined): PlanCapabili
     canUploadLogo: true,
     canUploadGallery: maxGalleryImages > 0,
     canBeFeatured: true,
+    // `?? true` / `?? 1`: behavior before migration 0016 (any paid plan).
+    canAppearOnHome: plan.home_featured ?? true,
+    exposurePriority: plan.exposure_priority ?? 1,
     maxGalleryImages,
   };
+}
+
+/** Sort comparator: higher-exposure plans first. Array.sort is stable, so
+ * the incoming (relevance) order is kept within each plan. */
+export function byExposure<T extends { plan: Plan | null }>(a: T, b: T): number {
+  return getPlanCapabilities(b.plan).exposurePriority - getPlanCapabilities(a.plan).exposurePriority;
 }
