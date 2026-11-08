@@ -70,6 +70,7 @@ Every table has RLS enabled (`0010_rls_policies.sql`). Rule of thumb:
 - `admin_users` — admins only, both read and write.
 - `analytics_events` — anyone can `insert`, only admins can `select`.
 - `contact_messages` — anyone can `insert` (status forced to `new`), only admins can `select`/`update`/`delete` (0014).
+- `plans.price_ars` is the monthly price; `price_6m_ars` the 6-month price; `max_gallery_images` drives the gallery limit in `src/lib/plans.ts` (0015).
 
 `is_admin()` (in `0007_admin_users.sql`) is a `security definer` function
 so policies can check admin membership without RLS recursively blocking

@@ -14,17 +14,18 @@ const FREE_CAPABILITIES: PlanCapabilities = {
   maxGalleryImages: 0,
 };
 
-const PAID_CAPABILITIES: PlanCapabilities = {
-  canUploadLogo: true,
-  canUploadGallery: true,
-  canBeFeatured: true,
-  maxGalleryImages: 8,
-};
 
 /** Single source of truth for what a plan unlocks -- every component
  * checks a capability here, never a plan name/slug directly, so a future
  * plan (or renaming one) never means hunting down scattered conditions. */
 export function getPlanCapabilities(plan: Plan | null | undefined): PlanCapabilities {
   if (!plan || plan.is_free) return FREE_CAPABILITIES;
-  return PAID_CAPABILITIES;
+  // `?? 8`: previous fixed limit, used until migration 0015 adds the column.
+  const maxGalleryImages = plan.max_gallery_images ?? 8;
+  return {
+    canUploadLogo: true,
+    canUploadGallery: maxGalleryImages > 0,
+    canBeFeatured: true,
+    maxGalleryImages,
+  };
 }
