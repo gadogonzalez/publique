@@ -210,10 +210,54 @@ async function main() {
   }
 
   console.log("Seeding plans...");
+  // Same values as supabase/migrations/0015_plan_pricing.sql.
   const planRows = [
-    { name: "Básico", description: "Perfil publicado con datos de contacto y ubicación.", price_ars: 0, sort_order: 1 },
-    { name: "Destacado", description: "Prioridad en resultados de búsqueda + insignia de destacado.", price_ars: 9999, sort_order: 2 },
-    { name: "Premium", description: "Destacado + galería ampliada y estadísticas (próximamente).", price_ars: 17999, sort_order: 3 },
+    {
+      name: "Básico",
+      description: "Tu negocio forma parte de Publiqué sin pagar.",
+      price_ars: 0,
+      price_6m_ars: null,
+      max_gallery_images: 0,
+      is_free: true,
+      sort_order: 1,
+      features: ["Nombre del comercio o profesional.", "Dirección.", "Horarios de atención.", "Teléfono y WhatsApp."],
+    },
+    {
+      name: "Destacado",
+      description: "Más visibilidad para tu negocio.",
+      price_ars: 14900,
+      price_6m_ars: 74500,
+      max_gallery_images: 5,
+      is_free: false,
+      sort_order: 2,
+      features: [
+        "Perfil comercial completo.",
+        "Logo o imagen de perfil.",
+        "Dirección y ubicación en mapa.",
+        "Horarios detallados de atención.",
+        "Enlace directo a WhatsApp.",
+        "Hasta 5 fotografías.",
+        "Enlace a redes sociales.",
+      ],
+    },
+    {
+      name: "Premium",
+      description: "La máxima presencia dentro de Publiqué.",
+      price_ars: 24900,
+      price_6m_ars: 124500,
+      max_gallery_images: 10,
+      is_free: false,
+      sort_order: 3,
+      features: [
+        "Todo lo incluido en Destacado.",
+        "Hasta 10 fotografías.",
+        "Prioridad de exposición.",
+        "Espacios Premium en la página principal.",
+        "Mayor exposición en búsquedas relacionadas.",
+        "Estadísticas avanzadas.",
+        "Prioridad en campañas de Publiqué.",
+      ],
+    },
   ].map((p) => ({ ...p, slug: slugify(p.name) }));
   const plans = await upsertBySlug("plans", planRows);
   const planId = (name: string) => plans.get(slugify(name))!;

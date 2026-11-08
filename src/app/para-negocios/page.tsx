@@ -73,9 +73,21 @@ export default async function ParaNegociosPage() {
             {plans.map((plan) => (
               <div key={plan.id} className="flex flex-col rounded-2xl border border-border bg-card p-6">
                 <h3 className="font-serif text-lg font-bold tracking-tight">{plan.name}</h3>
-                <p className="mt-1 text-2xl font-bold">
-                  {plan.is_free || !plan.price_ars ? "Gratis" : ars.format(plan.price_ars)}
-                </p>
+                {plan.is_free || !plan.price_ars ? (
+                  <p className="mt-1 text-2xl font-bold">Gratis</p>
+                ) : (
+                  <>
+                    <p className="mt-1 text-2xl font-bold">
+                      {ars.format(plan.price_ars)}
+                      <span className="text-sm font-medium text-muted-foreground"> por mes</span>
+                    </p>
+                    {plan.price_6m_ars && (
+                      <p className="text-sm text-muted-foreground">
+                        o {ars.format(plan.price_6m_ars)} por 6 meses
+                      </p>
+                    )}
+                  </>
+                )}
                 {plan.description && <p className="mt-2 text-sm text-muted-foreground">{plan.description}</p>}
                 {plan.features.length > 0 && (
                   <ul className="mt-4 space-y-2 text-sm">
@@ -87,6 +99,14 @@ export default async function ParaNegociosPage() {
                     ))}
                   </ul>
                 )}
+                <div className="mt-auto pt-6">
+                  <Link
+                    href="/contacto?motivo=negocio"
+                    className={buttonVariants({ variant: plan.is_free ? "outline" : "brand" })}
+                  >
+                    {plan.is_free ? "Sumar mi negocio" : `Quiero el plan ${plan.name}`}
+                  </Link>
+                </div>
               </div>
             ))}
           </div>
