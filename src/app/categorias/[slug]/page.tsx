@@ -9,7 +9,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { HERO_GRID } from "@/components/home/width";
 import { getCategoryBySlug } from "@/lib/data/taxonomy";
 import { getBusinessesByIds } from "@/lib/data/businesses";
-import { getPlanCapabilities } from "@/lib/plans";
+import { byExposure, getPlanCapabilities } from "@/lib/plans";
 import { search } from "@/lib/search";
 import { trackServer } from "@/lib/analytics/server";
 import { cn } from "@/lib/utils";
@@ -37,24 +37,21 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const { items, totalCount } = await search({ categorySlug: slug, page: 1, pageSize: PAGE_SIZE });
   const allBusinesses = await getBusinessesByIds(items.map((i) => i.id));
 
-  // Same destacado rule as the homepage: paid plan + logo + a real cover
-  // photo (see src/lib/plans.ts) -- no separate per-category assignment
-  // step, a business just has to be plan-pago and fully set up. First
-  // eligible business (already relevance-ordered by search()) is the
-  // hero; the next few are the secondary row.
-  const eligible = allBusinesses.filter(
-    (b) => getPlanCapabilities(b.plan).canBeFeatured && !!b.logo_url && !!b.cover_image_url
-  );
+  // Destacados: any paid plan with a logo and a real cover photo, higher
+  // plans first (Premium > Destacado), relevance order within each plan.
+  // The first one is the hero; the next few go in the carousel.
+  const eligible = allBusinesses
+    .filter((b) => getPlanCapabilities(b.plan).canBeFeatured && !!b.logo_url && !!b.cover_image_url)
+    .sort(byExposure);
   const hero = eligible[0] ?? null;
   const secondary = eligible.slice(1, 1 + SECONDARY_COUNT);
 
   const featuredIds = new Set([...(hero ? [hero.id] : []), ...secondary.map((b) => b.id)]);
-  // Paid-plan businesses (not already shown as destacados) before free-plan
-  // ones -- same relevance order within each group, just grouped. No
-  // "Gratis"/"Básico" label shown to the consumer, this is ordering only.
+  // Rest of the list, also by plan (Premium > Destacado > Básico) with
+  // relevance order kept within each. Ordering only -- no plan label shown.
   const listBusinesses = allBusinesses
     .filter((b) => !featuredIds.has(b.id))
-    .sort((a, b) => Number(a.plan?.is_free ?? true) - Number(b.plan?.is_free ?? true));
+    .sort(byExposure);
   const totalShown = listBusinesses.length + featuredIds.size;
   const hasMore = totalCount > allBusinesses.length;
 

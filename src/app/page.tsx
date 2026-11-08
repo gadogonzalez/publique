@@ -30,14 +30,14 @@ export default async function HomePage() {
   ]);
   const pool = await getBusinessesByIds(items.map((i) => i.id));
 
-  // Only plan-pago businesses with both a logo and a real cover photo are
-  // eligible to be shown as "destacados" -- free-plan businesses (no
-  // custom logo allowed) never belong here, and one without its own cover
+  // Only businesses whose plan includes homepage placement (Premium, see
+  // plans.home_featured) with both a logo and a real cover photo are
+  // eligible to be shown as "destacados" here -- one without its own cover
   // photo would otherwise fall back to a shared category stock photo,
   // making unrelated businesses look identical in this section.
   const featuredBusinesses = pool
     .filter(
-      (b) => getPlanCapabilities(b.plan).canBeFeatured && !!b.logo_url && !!b.cover_image_url
+      (b) => getPlanCapabilities(b.plan).canAppearOnHome && !!b.logo_url && !!b.cover_image_url
     )
     .slice(0, DISCOVERY_COUNT);
 

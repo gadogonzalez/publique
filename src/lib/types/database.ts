@@ -62,6 +62,10 @@ export interface Plan {
   /** Price when paying 6 months up front. */
   price_6m_ars: number | null;
   max_gallery_images: number;
+  /** Plan's businesses can appear in the homepage destacados carousel. */
+  home_featured: boolean;
+  /** Listing order across plans: higher first. */
+  exposure_priority: number;
   features: string[];
   is_active: boolean;
   is_free: boolean;
