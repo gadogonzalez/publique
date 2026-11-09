@@ -28,6 +28,14 @@ combines four candidate sources and takes the max score per business:
 4. **Business keyword match** — the query matches a free-text tag an admin
    attached to that specific business (`business_keywords`).
 
+Fuzzy matching (sources 2–4) uses `fuzzy_match_score(term, query)` from
+`0018_search_fuzzy_threshold.sql`: the best of trigram similarity,
+`word_similarity(query, term)` ("bomba" inside "bombas de agua") and
+`strict_word_similarity(term, query)` ("electricista" inside "necesito un
+electricista"), and a term only counts at **>= 0.45**. The old `%`
+operator (0.3) let "carniceria" match "carpinteria" (0.35); real typos and
+variants score >= 0.5 (plomero/plomeria 0.55, pelukeria/peluqueria 0.50).
+
 Results are filtered to `status = 'active'`, optionally to a category slug
 and/or a location (matching the business's own base locality, any
 locality "under" a searched department, or a service area that covers the
