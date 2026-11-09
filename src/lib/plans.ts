@@ -4,8 +4,8 @@ export interface PlanCapabilities {
   canUploadLogo: boolean;
   canUploadGallery: boolean;
   canBeFeatured: boolean;
-  /** Eligible for the homepage destacados carousel. */
-  canAppearOnHome: boolean;
+  /** Can have a homepage banner (Premium). */
+  canHaveHomeBanner: boolean;
   /** Higher plans are listed first; 0 for free. */
   exposurePriority: number;
   maxGalleryImages: number;
@@ -15,7 +15,7 @@ const FREE_CAPABILITIES: PlanCapabilities = {
   canUploadLogo: false,
   canUploadGallery: false,
   canBeFeatured: false,
-  canAppearOnHome: false,
+  canHaveHomeBanner: false,
   exposurePriority: 0,
   maxGalleryImages: 0,
 };
@@ -33,7 +33,7 @@ export function getPlanCapabilities(plan: Plan | null | undefined): PlanCapabili
     canUploadGallery: maxGalleryImages > 0,
     canBeFeatured: true,
     // `?? true` / `?? 1`: behavior before migration 0016 (any paid plan).
-    canAppearOnHome: plan.home_featured ?? true,
+    canHaveHomeBanner: plan.home_featured ?? true,
     exposurePriority: plan.exposure_priority ?? 1,
     maxGalleryImages,
   };

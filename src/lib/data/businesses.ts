@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { getPlanCapabilities } from "@/lib/plans";
 import type {
   Business,
   BusinessHours,
@@ -48,6 +49,23 @@ export async function getFeaturedBusinesses(
     .limit(limit);
   if (error) throw error;
   return (data ?? []).map(mapBusinessRow);
+}
+
+/** Every active business eligible for destacados: paid plan, logo and a
+ * real cover photo. Small set (paid businesses only), grouped by category
+ * on the homepage. */
+export async function getDestacadoBusinesses(limit = 200): Promise<BusinessWithRelations[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("businesses")
+    .select(BUSINESS_SELECT)
+    .eq("status", "active")
+    .not("logo_url", "is", null)
+    .not("cover_image_url", "is", null)
+    .order("updated_at", { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return (data ?? []).map(mapBusinessRow).filter((b) => getPlanCapabilities(b.plan).canBeFeatured);
 }
 
 /** Fetches full display data for a set of business ids (e.g. a page of

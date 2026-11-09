@@ -2,44 +2,79 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { HeroSearch } from "@/components/hero-search";
 import { CategoryCard } from "@/components/category-card";
-import { FeaturedDestacadosCarousel } from "@/components/home/featured-carousel";
-import { PromoBanner } from "@/components/home/promo-banner";
+import { FeaturedTabs, type FeaturedTab } from "@/components/home/featured-tabs";
+import { HomeBanners } from "@/components/home/home-banners";
 import { BrandStatement } from "@/components/home/brand-statement";
 import { HERO_GRID } from "@/components/home/width";
-import { getCategories, getCategoryBusinessCounts } from "@/lib/data/taxonomy";
+import { getCategories, getCategoryBusinessCounts, getTopSearchedCategoryIds } from "@/lib/data/taxonomy";
 import { getLocalities } from "@/lib/data/locations";
-import { getBusinessesByIds, getBusinessBySlug } from "@/lib/data/businesses";
-import { search } from "@/lib/search";
-import { getPlanCapabilities } from "@/lib/plans";
+import { getDestacadoBusinesses } from "@/lib/data/businesses";
+import { getHomeBanners } from "@/lib/data/banners";
+import { byExposure } from "@/lib/plans";
 
 // Carousel supports up to 3 pages of 4 (12 slots).
-const DISCOVERY_COUNT = 12;
-// Fetched wider than DISCOVERY_COUNT because "destacados" only shows
-// paid-plan businesses with a logo and a cover photo (canBeFeatured +
-// logo_url + cover_image_url) -- a shallow pool would often come up
-// short after that filter.
-const DISCOVERY_POOL_SIZE = 48;
+const DESTACADOS_PER_TAB = 12;
+// "Todas" + up to this many category filters.
+const CATEGORY_TABS = 6;
 
 export default async function HomePage() {
-  const [categories, categoryCounts, localities, { items }, promoBusiness] = await Promise.all([
+  const [categories, categoryCounts, localities, destacados, topSearched, banners] = await Promise.all([
     getCategories(),
     getCategoryBusinessCounts(),
     getLocalities(),
-    search({ page: 1, pageSize: DISCOVERY_POOL_SIZE }),
-    getBusinessBySlug("patitas-pet-shop"),
+    getDestacadoBusinesses(),
+    getTopSearchedCategoryIds(CATEGORY_TABS * 2),
+    getHomeBanners(),
   ]);
-  const pool = await getBusinessesByIds(items.map((i) => i.id));
 
-  // Only businesses whose plan includes homepage placement (Premium, see
-  // plans.home_featured) with both a logo and a real cover photo are
-  // eligible to be shown as "destacados" here -- one without its own cover
-  // photo would otherwise fall back to a shared category stock photo,
-  // making unrelated businesses look identical in this section.
-  const featuredBusinesses = pool
-    .filter(
-      (b) => getPlanCapabilities(b.plan).canAppearOnHome && !!b.logo_url && !!b.cover_image_url
-    )
-    .slice(0, DISCOVERY_COUNT);
+  // Destacados: paid plans (Destacado + Premium) with logo and cover photo,
+  // Premium first. Category filters = most searched categories that have
+  // at least one destacado; padded with the categories with most
+  // businesses while there's little search data.
+  const ranked = [...destacados].sort(byExposure);
+  const byCount = [...categories].sort((a, b) => (categoryCounts[b.id] ?? 0) - (categoryCounts[a.id] ?? 0));
+  const candidateIds = [...new Set([...topSearched, ...byCount.map((c) => c.id)])];
+  const categoryTabs: FeaturedTab[] = [];
+  for (const id of candidateIds) {
+    if (categoryTabs.length >= CATEGORY_TABS) break;
+    const category = categories.find((c) => c.id === id);
+    const inCategory = ranked.filter((b) => b.categories.some((c) => c.id === id));
+    if (!category || inCategory.length === 0) continue;
+    categoryTabs.push({
+      id: category.id,
+      label: category.name,
+      moreHref: `/categorias/${category.slug}`,
+      moreLabel: `Ver todo en ${category.name}`,
+      businesses: inCategory.slice(0, DESTACADOS_PER_TAB),
+    });
+  }
+  const tabs: FeaturedTab[] =
+    ranked.length > 0
+      ? [
+          {
+            id: "todas",
+            label: "Todas",
+            moreHref: "/buscar",
+            moreLabel: "Ver todos los negocios",
+            businesses: ranked.slice(0, DESTACADOS_PER_TAB),
+          },
+          ...categoryTabs,
+        ]
+      : [];
+
+  const slides = banners.flatMap((b) =>
+    b.business
+      ? [
+          {
+            id: b.id,
+            href: `/negocios/${b.business.slug}`,
+            alt: b.alt_text || b.business.name,
+            desktopSrc: b.desktop_image_url,
+            mobileSrc: b.mobile_image_url,
+          },
+        ]
+      : []
+  );
 
   return (
     <div>
@@ -70,15 +105,17 @@ export default async function HomePage() {
         </section>
       )}
 
-      {featuredBusinesses.length > 0 && (
+      {tabs.length > 0 && (
         <section className={`${HERO_GRID} pb-16 sm:pb-20`}>
-          <FeaturedDestacadosCarousel businesses={featuredBusinesses} />
+          <FeaturedTabs tabs={tabs} />
         </section>
       )}
 
-      <section className={`${HERO_GRID} pb-16 sm:pb-20`}>
-        <PromoBanner business={promoBusiness} />
-      </section>
+      {slides.length > 0 && (
+        <section className={`${HERO_GRID} pb-16 sm:pb-20`}>
+          <HomeBanners slides={slides} />
+        </section>
+      )}
 
       <BrandStatement />
     </div>

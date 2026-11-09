@@ -56,3 +56,13 @@ export async function getCategoryBySlug(slug: string): Promise<Category | null> 
   if (error) throw error;
   return data;
 }
+
+/** Category ids ordered by how often they were searched/browsed in the
+ * last `days` (aggregate from analytics, see migration 0017). Empty if
+ * there's no data yet or the function isn't deployed. */
+export async function getTopSearchedCategoryIds(limit = 6, days = 90): Promise<string[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("top_searched_categories", { p_days: days, p_limit: limit });
+  if (error) return [];
+  return ((data ?? []) as { category_id: string }[]).map((r) => r.category_id);
+}

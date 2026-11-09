@@ -62,7 +62,7 @@ export interface Plan {
   /** Price when paying 6 months up front. */
   price_6m_ars: number | null;
   max_gallery_images: number;
-  /** Plan's businesses can appear in the homepage destacados carousel. */
+  /** Plan includes a homepage banner (Premium). Column from 0016. */
   home_featured: boolean;
   /** Listing order across plans: higher first. */
   exposure_priority: number;
@@ -147,6 +147,18 @@ export interface AdminUser {
 }
 
 /** Row shape returned by the search_businesses() RPC. */
+export interface HomeBanner {
+  id: string;
+  business_id: string;
+  desktop_image_url: string;
+  mobile_image_url: string;
+  alt_text: string;
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export type ContactReason = "consulta" | "negocio" | "error";
 
 export interface ContactMessage {

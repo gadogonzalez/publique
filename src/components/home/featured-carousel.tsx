@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { FeaturedCarouselCard } from "@/components/home/featured-carousel-card";
@@ -30,12 +30,15 @@ export function FeaturedDestacadosCarousel({
   description = "Conocé una selección de negocios destacados de Guaymallén.",
   moreHref = "/buscar",
   moreLabel = "Ver todos los negocios",
+  toolbar,
 }: {
   businesses: BusinessWithRelations[];
   title?: string;
   description?: string;
   moreHref?: string;
   moreLabel?: string;
+  /** Rendered between the description and the cards (e.g. category tabs). */
+  toolbar?: ReactNode;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(0);
@@ -106,6 +109,7 @@ export function FeaturedDestacadosCarousel({
         )}
       </div>
       <p className="mb-6 text-muted-foreground">{description}</p>
+      {toolbar}
 
       <div
         ref={trackRef}
