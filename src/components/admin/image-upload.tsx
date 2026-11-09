@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 
 interface ImageUploadProps {
-  bucket: "business-logos" | "business-covers" | "business-gallery";
+  bucket: "business-logos" | "business-covers" | "business-gallery" | "home-banners";
   pathPrefix: string; // usually the business id
   value: string | null;
   onChange: (url: string | null) => void;

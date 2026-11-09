@@ -20,6 +20,7 @@ businesses ──┬─ business_categories ─── categories
 admin_users (1:1 with auth.users, staff only)
 analytics_events (append-only)
 contact_messages (public /contacto form)
+home_banners -> businesses (Premium homepage banners, /admin/banners)
 ```
 
 ## Why `locations` is one self-referencing table
@@ -70,7 +71,8 @@ Every table has RLS enabled (`0010_rls_policies.sql`). Rule of thumb:
 - `admin_users` — admins only, both read and write.
 - `analytics_events` — anyone can `insert`, only admins can `select`.
 - `contact_messages` — anyone can `insert` (status forced to `new`), only admins can `select`/`update`/`delete` (0014).
-- `plans.price_ars` is the monthly price; `price_6m_ars` the 6-month price; `max_gallery_images` drives the gallery limit in `src/lib/plans.ts` (0015). `home_featured` (homepage destacados) and `exposure_priority` (listing order) are plan capabilities too (0016).
+- `plans.price_ars` is the monthly price; `price_6m_ars` the 6-month price; `max_gallery_images` drives the gallery limit in `src/lib/plans.ts` (0015). `home_featured` (plan includes a homepage banner) and `exposure_priority` (listing order) are plan capabilities too (0016).
+- `home_banners` — public `select` of active rows, admin-only writes; images in the `home-banners` storage bucket. `top_searched_categories()` is a SECURITY DEFINER aggregate over `analytics_events` (counts per category only) so the homepage can rank category tabs without exposing the raw events (0017).
 
 `is_admin()` (in `0007_admin_users.sql`) is a `security definer` function
 so policies can check admin membership without RLS recursively blocking

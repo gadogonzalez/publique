@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LayoutDashboard, Building2, Tags, MapPinned, Sparkles, Mail } from "lucide-react";
+import { LayoutDashboard, Building2, Tags, MapPinned, Sparkles, Mail, Image as ImageIcon } from "lucide-react";
 import { requireAdmin } from "@/lib/admin-auth";
 import { LogoutButton } from "@/components/admin/logout-button";
 
@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { href: "/admin/categorias", label: "Categorías", icon: Tags },
   { href: "/admin/ubicaciones", label: "Ubicaciones", icon: MapPinned },
   { href: "/admin/destacados", label: "Destacados", icon: Sparkles },
+  { href: "/admin/banners", label: "Banners", icon: ImageIcon },
   { href: "/admin/mensajes", label: "Mensajes", icon: Mail },
 ];
 
