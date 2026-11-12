@@ -18,9 +18,12 @@ import type { BusinessWithRelations } from "@/lib/types/database";
 export function BusinessListRow({
   business,
   variant = "list",
+  showCategory = true,
 }: {
   business: BusinessWithRelations;
   variant?: "list" | "card";
+  /** Off where the category is already obvious (category page, filtered search). */
+  showCategory?: boolean;
 }) {
   const category = business.categories[0];
   const { canUploadLogo } = getPlanCapabilities(business.plan);
@@ -47,7 +50,7 @@ export function BusinessListRow({
         )}
       </div>
       <div className="min-w-0 flex-1">
-        {category && (
+        {showCategory && category && (
           <p className="text-xs font-medium text-muted-foreground">
             {category.name}
           </p>

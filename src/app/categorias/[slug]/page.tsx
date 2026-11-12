@@ -112,6 +112,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             description={`Una selección de ${category.name.toLowerCase()} destacados de Guaymallén.`}
             moreHref={`/buscar?categoria=${category.slug}`}
             moreLabel={`Ver todos los negocios de ${category.name}`}
+            showCategory={false}
           />
         ) : (
           <>
@@ -132,7 +133,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       {listBusinesses.length > 0 ? (
         <section className="mt-16 border-t border-border pt-16 sm:mt-20 sm:pt-20">
           <h2 className="mb-6 font-serif text-2xl font-bold tracking-tight">Todos los negocios</h2>
-          <BusinessList businesses={listBusinesses} />
+          <BusinessList businesses={listBusinesses} showCategory={false} />
           {hasMore && (
             <Link href={`/buscar?categoria=${category.slug}`} className={cn(buttonVariants({ variant: "outline" }), "mt-8")}>
               Ver todos los negocios de {category.name}

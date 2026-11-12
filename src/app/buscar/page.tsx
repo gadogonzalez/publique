@@ -130,7 +130,7 @@ export default async function BuscarPage({ searchParams }: BuscarPageProps) {
         </div>
       ) : (
         <div className="mt-8">
-          <BusinessList businesses={businesses} />
+          <BusinessList businesses={businesses} showCategory={!category} />
         </div>
       )}
 

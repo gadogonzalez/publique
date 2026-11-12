@@ -53,6 +53,7 @@ export function FeaturedTabs({ tabs }: { tabs: FeaturedTab[] }) {
       moreHref={active.moreHref}
       moreLabel={active.moreLabel}
       toolbar={toolbar}
+      showCategory={active.id === "todas"}
     />
   );
 }

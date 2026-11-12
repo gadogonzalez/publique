@@ -8,8 +8,14 @@ import type { BusinessWithRelations } from "@/lib/types/database";
  * distinct from the square FeaturedBusinessCard used elsewhere (category
  * pages, /buscar), which keeps its image-on-top/text-below layout. No logo
  * here on purpose: logos belong on the business profile, not this card. */
-export function FeaturedCarouselCard({ business }: { business: BusinessWithRelations }) {
-  const category = business.categories[0];
+export function FeaturedCarouselCard({
+  business,
+  showCategory = true,
+}: {
+  business: BusinessWithRelations;
+  showCategory?: boolean;
+}) {
+  const category = showCategory ? business.categories[0] : undefined;
 
   return (
     <Link
