@@ -31,6 +31,7 @@ export function FeaturedDestacadosCarousel({
   moreHref = "/buscar",
   moreLabel = "Ver todos los negocios",
   toolbar,
+  showCategory = true,
 }: {
   businesses: BusinessWithRelations[];
   title?: string;
@@ -39,6 +40,8 @@ export function FeaturedDestacadosCarousel({
   moreLabel?: string;
   /** Rendered between the description and the cards (e.g. category tabs). */
   toolbar?: ReactNode;
+  /** Hide the category chip when every card is in the same category. */
+  showCategory?: boolean;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(0);
@@ -117,7 +120,7 @@ export function FeaturedDestacadosCarousel({
       >
         {businesses.map((business) => (
           <div key={business.id} className="w-[85%] shrink-0 snap-start sm:w-[46%] lg:w-[calc(25%-18px)]">
-            <FeaturedCarouselCard business={business} />
+            <FeaturedCarouselCard business={business} showCategory={showCategory} />
           </div>
         ))}
       </div>
